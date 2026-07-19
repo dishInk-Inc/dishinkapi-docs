@@ -1,0 +1,144 @@
+---
+title: "Payroll Records & Lifecycle"
+sidebarTitle: "Records & Lifecycle"
+description: "The Draft → Approved → Paid state machine, plus how disputes are captured and resolved."
+---
+
+Every pay run produces one **payroll record** per staff member. Records move through a strict lifecycle so you always know what has been calculated, approved, and paid.
+
+## The four statuses
+
+<CardGroup cols={2}>
+  <Card title="Draft" icon="pen-to-square">
+    Generated but not yet approved. Editable. Can be regenerated to pick up new data.
+  </Card>
+
+  <Card title="Approved" icon="check">
+    Finance-approved and locked to edits. Ready for payment.
+  </Card>
+
+  <Card title="Paid" icon="money-bill-transfer">
+    Payment recorded. Visible on the staff Earnings page as paid.
+  </Card>
+
+  <Card title="Disputed" icon="triangle-exclamation">
+    Flagged for investigation — either by the operator or by staff via the Earnings page.
+  </Card>
+</CardGroup>
+
+<Frame caption="Payroll records list with status badges.">
+  ![Payroll records](/images/staff/payroll-records.png)
+</Frame>
+
+## The state machine
+
+```text
+Draft ────▶ Approved ────▶ Paid
+  ▲                            │
+  └── revert                   │
+           Disputed ◀─────────┘
+              │
+              └───▶ resolve → Paid
+```
+
+### Transitions
+
+| From | To | Who | Notes |
+| --- | --- | --- | --- |
+| Draft | Approved | Owner or HR admin | Locks the record. Regeneration disabled. |
+| Approved | Paid | Owner or finance | Requires payment method and reference. |
+| Approved | Draft | Owner (revert) | Unlocks the record for corrections. |
+| Paid | Disputed | Staff or admin | Opens an investigation without touching the ledger. |
+| Disputed | Paid | Admin (resolve) | Marks the dispute closed. |
+
+<Note>
+  A record cannot skip a state. To mark something as paid you must first approve it. This preserves the audit trail.
+</Note>
+
+## Approving a record
+
+<Steps>
+  <Step title="Open the Records tab">
+    Select the period.
+  </Step>
+  <Step title="Review the pay slip">
+    Click a record to see the full [pay slip breakdown](/staff/payroll/pay-slips) — gross, hours, tips, deductions, advances, net.
+  </Step>
+  <Step title="Click Approve">
+    Confirm in the dialog. The record is now locked.
+  </Step>
+</Steps>
+
+### Bulk approve
+
+Use the checkboxes at the top of the list to select multiple Draft records, then click **Approve Selected**. Useful for high-volume pay runs.
+
+## Marking a record as paid
+
+<Steps>
+  <Step title="Open an Approved record">
+    Only Approved records can move to Paid.
+  </Step>
+  <Step title="Click Mark as Paid">
+    Enter the payment method (Bank Transfer, Mobile Money, Cash) and reference number.
+  </Step>
+  <Step title="Confirm">
+    The record is now Paid and appears on the staff member's Earnings page as paid income.
+  </Step>
+</Steps>
+
+## Handling disputes
+
+Staff can flag a Paid record from their Earnings portal (see [Staff Earnings Portal](/staff/payroll/staff-earnings)). Admins can also flag a record directly.
+
+<Steps>
+  <Step title="Investigate">
+    Review the pay slip, hours, and any relevant clock-in logs.
+  </Step>
+  <Step title="Correct if needed">
+    If a genuine error is found, generate an adjustment record for the next period rather than editing the disputed one. This preserves the audit trail.
+  </Step>
+  <Step title="Resolve">
+    Click **Resolve Dispute**. The status returns to Paid and the resolution is logged.
+  </Step>
+</Steps>
+
+## Reverting to Draft
+
+Sometimes an approved record needs a correction before payment.
+
+<Steps>
+  <Step title="Open the Approved record">
+    Locate it in the Records tab.
+  </Step>
+  <Step title="Click Revert to Draft">
+    A confirmation dialog appears. The record returns to Draft and becomes editable.
+  </Step>
+  <Step title="Regenerate or adjust">
+    Regenerate to pick up new hours or tips, then re-approve.
+  </Step>
+</Steps>
+
+<Warning>
+  Paid records cannot be reverted. If you need to reverse a payment, generate a correcting record in the next period.
+</Warning>
+
+## Tips and best practices
+
+- Approve on the same day you generate to keep the pipeline moving.
+- Batch **Mark as Paid** once you have processed all bank transfers.
+- Never edit a disputed record directly — always issue a correcting record.
+- Use payment references (bank reference, mobile money confirmation) so staff can verify their pay.
+
+## Common mistakes
+
+- **Skipping approval.** You cannot mark a record as Paid until it is Approved.
+- **Editing after approval.** Impossible — revert to Draft first.
+- **Deleting records to "fix" mistakes.** Records are immutable once approved. Use adjustments instead.
+
+## Related pages
+
+- [Generating Payroll](/staff/payroll/generating)
+- [Pay Slips & Breakdown](/staff/payroll/pay-slips)
+- [Staff Earnings Portal](/staff/payroll/staff-earnings)
+- [Payroll Reports & CSV Export](/staff/payroll/reports)

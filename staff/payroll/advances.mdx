@@ -1,0 +1,118 @@
+---
+title: "Salary Advances"
+sidebarTitle: "Salary Advances"
+description: "Approve, reject, and auto-deduct staff advance requests with per-staff limits."
+---
+
+Salary advances let staff draw against future pay for emergencies. DishInk manages the request, approval, and auto-deduction from the next payroll record so nothing is missed.
+
+## Statuses
+
+<CardGroup cols={2}>
+  <Card title="Pending" icon="clock">
+    Submitted by staff, awaiting admin decision.
+  </Card>
+
+  <Card title="Approved" icon="check">
+    Paid out to the staff member. Scheduled for deduction on the next payroll.
+  </Card>
+
+  <Card title="Rejected" icon="xmark">
+    Declined by admin. Rejection reason visible to staff.
+  </Card>
+
+  <Card title="Deducted" icon="money-bill-transfer">
+    Recovered from a payroll record. The advance is fully settled.
+  </Card>
+</CardGroup>
+
+## Default limits
+
+| Limit | Default |
+| --- | --- |
+| Per-request maximum | **K1,000** |
+| Monthly maximum per staff | **K2,000** |
+
+Per-request cannot exceed the monthly cap. Both limits are configurable per staff on the Limits sub-tab.
+
+<Frame caption="Salary Advances panel with Pending, Staff Overview, and Limits tabs.">
+  ![Salary advances panel](/images/staff/salary-advances.png)
+</Frame>
+
+## Approving a request
+
+<Steps>
+  <Step title="Open Advances → Pending">
+    **Staff → Payroll → Advances → Pending**.
+  </Step>
+  <Step title="Review">
+    Each row shows staff, amount, current month usage, remaining limit, and the staff-supplied reason.
+  </Step>
+  <Step title="Approve or Reject">
+    Approving pays out immediately (recorded in Cash Out) and schedules deduction. Rejecting requires a short reason.
+  </Step>
+</Steps>
+
+<Note>
+  Approved advances are paid outside DishInk (bank transfer, cash from the till, mobile money). Record the payment method in the confirmation dialog for the audit trail.
+</Note>
+
+## Staff Overview
+
+The **Staff Overview** sub-tab lists every staff member with:
+
+- Advances taken this month (ZMW)
+- Remaining monthly limit
+- Outstanding (approved but not yet deducted)
+- Deduction history
+
+Useful for a manager to see who is repeatedly requesting advances — sometimes a signal to review the wage structure.
+
+## Setting limits per staff
+
+<Steps>
+  <Step title="Open the Limits tab">
+    **Staff → Payroll → Advances → Limits**.
+  </Step>
+  <Step title="Pick a staff member">
+    The current per-request and monthly limits are shown.
+  </Step>
+  <Step title="Adjust">
+    Increase for reliable senior staff, decrease for probationary staff. Setting monthly to zero disables advances for that staff.
+  </Step>
+  <Step title="Save">
+    New limits apply to future requests.
+  </Step>
+</Steps>
+
+## Auto-deduction on payroll
+
+When you generate payroll:
+
+1. Every Approved advance for the staff member in the period is picked up.
+2. Total is subtracted from net pay (after deductions).
+3. Each recovered advance moves from **Approved** to **Deducted**.
+4. The pay slip lists each advance line separately.
+
+If net pay would go negative and **Allow negative net pay** is off, DishInk defers the residual advance to the next period.
+
+## Tips and best practices
+
+- Keep the default K1,000 per request and K2,000 per month for most staff. Loosen only for trusted long-tenure staff.
+- Always record the payout method — it becomes part of the shift Cash Out reconciliation.
+- Coach managers to reject with a clear reason so staff understand.
+- Use Staff Overview weekly to spot patterns before they become financial risks.
+
+## Common mistakes
+
+- **Approving beyond the monthly cap.** DishInk blocks this. Increase the limit for that staff or ask them to wait until next month.
+- **Not recording the payout.** The advance appears in payroll but the cash is unaccounted for. Always log the payment method.
+- **Editing a Deducted advance.** Impossible — it is closed. Create a new advance if a further payout is needed.
+
+## Related pages
+
+- [Payroll Overview](/staff/payroll/overview)
+- [Generating Payroll](/staff/payroll/generating)
+- [Pay Slips & Breakdown](/staff/payroll/pay-slips)
+- [Cash Out](/staff/cash-out)
+- [Staff Earnings Portal](/staff/payroll/staff-earnings)

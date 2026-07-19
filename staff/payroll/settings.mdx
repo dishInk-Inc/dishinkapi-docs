@@ -1,0 +1,68 @@
+---
+title: "Payroll Settings"
+sidebarTitle: "Settings"
+description: "Overtime rules, monthly proration, working days per month, and negative net pay policy."
+---
+
+Payroll Settings hold the global rules DishInk applies when generating pay records. Configure them once during onboarding and revisit only when policy changes.
+
+## Where to find them
+
+**Staff → Payroll → Settings**.
+
+## Setting reference
+
+<AccordionGroup>
+  <Accordion title="Overtime threshold (hours per day)">
+    Hours worked in a single day beyond this threshold are paid at the OT rate. Default **8**. Applies to hourly wage structures unless the wage record has its own override.
+  </Accordion>
+
+  <Accordion title="Overtime multiplier">
+    Multiplier applied to the base hourly rate for OT hours. Common values: **1.5×** and **2×**. Default **1.5×**.
+  </Accordion>
+
+  <Accordion title="Prorate monthly wages by days">
+    When **on**, monthly salaries are prorated: `daily_rate = monthly_salary / working_days_per_month`, then multiplied by days worked in the period. When **off**, monthly staff receive the full salary regardless of days worked.
+  </Accordion>
+
+  <Accordion title="Working days per month">
+    Divisor used for monthly proration. Default **26** (six-day working week). Set to 22 for a five-day week or 30 for calendar-day proration.
+  </Accordion>
+
+  <Accordion title="Allow negative net pay">
+    When **on**, deductions and advances can push net pay below zero — the balance rolls forward to the next period. When **off**, deductions cap at the gross so net pay is never negative (residual deductions defer).
+  </Accordion>
+</AccordionGroup>
+
+<Frame caption="Payroll settings panel.">
+  ![Payroll settings](/images/staff/payroll-settings.png)
+</Frame>
+
+## Recommended defaults for Zambian restaurants
+
+<Checklist>
+  * Overtime threshold: **8 hrs/day**
+  * Overtime multiplier: **1.5×**
+  * Prorate monthly wages: **On**
+  * Working days per month: **26**
+  * Allow negative net pay: **Off** (safer for cash flow and staff morale)
+</Checklist>
+
+## Tips and best practices
+
+- Lock these settings after onboarding. Frequent changes create disputes.
+- If you switch to a five-day working week, drop `working_days_per_month` to 22 in the same session you announce the change.
+- Leave **Allow negative net pay** off unless your finance team explicitly needs rollover deductions.
+
+## Common mistakes
+
+- **Setting OT threshold too low.** Every long shift will trigger OT premium, inflating labour cost.
+- **Changing proration mid-period.** Records already generated for the period will not recalculate automatically — revert to draft and regenerate.
+- **Toggling negative net pay after paid records exist.** Historical records are unaffected; only future records use the new policy.
+
+## Related pages
+
+- [Wage Structures](/staff/payroll/wage-structures)
+- [Generating Payroll](/staff/payroll/generating)
+- [Pay Schedules](/staff/payroll/pay-schedules)
+- [Deductions](/staff/payroll/deductions)

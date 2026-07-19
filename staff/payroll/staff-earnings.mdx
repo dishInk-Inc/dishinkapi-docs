@@ -1,0 +1,131 @@
+---
+title: "Staff Earnings Portal"
+sidebarTitle: "Staff Earnings Portal"
+description: "The self-service view every staff member sees: earnings, wage, history, tips, deductions, and advances."
+---
+
+Every staff member has a personal **My Earnings** page on their DishInk dashboard. It shows only their own data — no admin permissions required. This transparency reduces payroll disputes and keeps staff informed.
+
+## The six tabs
+
+<CardGroup cols={3}>
+  <Card title="Earnings" icon="wallet">
+    Current-period gross, tips, deductions, advances, and net pay so far.
+  </Card>
+
+  <Card title="Wage" icon="file-invoice">
+    Current wage structure, base rate, OT rate, effective-from date.
+  </Card>
+
+  <Card title="History" icon="clock-rotate-left">
+    Every past payroll record with status and downloadable pay slip.
+  </Card>
+
+  <Card title="Tips" icon="hand-holding-dollar">
+    Unpaid vs paid tips (mode-aware: pool share or direct waiter tips).
+  </Card>
+
+  <Card title="Deductions" icon="circle-minus">
+    Current preset and any custom deductions assigned to them.
+  </Card>
+
+  <Card title="Advance" icon="hand-holding">
+    Request an advance, see pending/approved/deducted history, and remaining monthly limit.
+  </Card>
+</CardGroup>
+
+<Frame caption="My Earnings page for a staff member.">
+  ![Staff earnings portal](/images/staff/staff-earnings.png)
+</Frame>
+
+## Earnings tab
+
+A live view of the current pay period:
+
+- Hours worked so far (regular \+ OT)
+- Gross earned so far
+- Tips accrued
+- Deductions estimate
+- Approved advances scheduled for deduction
+- **Estimated net pay** for the period
+
+Updates on every clock-out.
+
+## Wage tab
+
+Read-only view of the staff's current wage structure:
+
+- Wage type
+- Base rate (ZMW)
+- OT rate and threshold (hourly wages)
+- Commission percentage (commission wages)
+- Effective-from date
+
+Any change made by admin appears here immediately.
+
+## History tab
+
+Reverse-chronological list of past payroll records:
+
+- Period range
+- Net pay
+- Status badge (Approved / Paid / Disputed)
+- **Download PDF** button for each record
+
+Staff can flag a Paid record as **Disputed** from this tab. See [Payroll Records & Lifecycle](/staff/payroll/records).
+
+## Tips tab
+
+Mode-aware view:
+
+- **Equal Split mode:** unpaid pool share (estimated) and paid pool shares from prior distributions.
+- **To Waiter mode:** unpaid tips from open/closed orders assigned to this staff, and paid tips from past periods.
+
+The tab uses the `distributed_to_staff_id` and `staff_member_id` fields internally to keep the two modes correct even when a staff moves between roles.
+
+## Deductions tab
+
+Shows the assigned preset (e.g. **Zambia Standard**) with each line broken out. Custom deductions appear with their remaining balance if applicable.
+
+## Advance tab
+
+<Steps>
+  <Step title="Request an advance">
+    Enter the amount (up to the per-request limit) and a short reason.
+  </Step>
+  <Step title="Track status">
+    Pending → Approved → Deducted. Rejected requests show the admin reason.
+  </Step>
+  <Step title="See remaining limit">
+    The tab shows monthly cap and remaining balance so staff know what they can still request.
+  </Step>
+</Steps>
+
+## Tips and best practices (for staff)
+
+- Download a PDF pay slip after every Paid record so you have your own archive.
+- Check the **Earnings** tab mid-period to know what you are on track to earn.
+- Only dispute a Paid record if the figures do not match your clock-in data — provide detail.
+- Do not treat advances as a routine. Frequent requests may lead to a limit reduction.
+
+## Tips and best practices (for admins)
+
+- Encourage staff to use the portal weekly — it drastically reduces "where is my pay?" questions.
+- Respond to advance requests within a business day.
+- If staff report inaccurate hours, cross-check clock-in logs before overriding.
+
+## Common mistakes
+
+- **Estimated net pay taken as guaranteed.** The Earnings tab is a projection. The final record may differ if tips or hours change.
+- **Disputing without reason.** Empty disputes are frustrating. Encourage staff to include what they think is wrong.
+- **Requesting advances at end of month.** The monthly cap has usually been hit. Advise staff to request early.
+
+## Related pages
+
+- [Payroll Overview](/staff/payroll/overview)
+- [Pay Slips & Breakdown](/staff/payroll/pay-slips)
+- [Payroll Records & Lifecycle](/staff/payroll/records)
+- [Salary Advances](/staff/payroll/advances)
+- [Tip Distribution](/staff/payroll/tips)
+- [Clock In](/staff/clock-in)
+- [Clock Out](/staff/clock-out)

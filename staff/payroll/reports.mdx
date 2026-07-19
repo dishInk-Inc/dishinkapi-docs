@@ -1,0 +1,115 @@
+---
+title: "Payroll Reports & CSV Export"
+sidebarTitle: "Reports & Export"
+description: "KPIs, composition charts, net pay by staff, hours by staff, and one-click CSV export for accounting."
+---
+
+The Reports tab turns your payroll history into decision-ready analytics. Use it before every pay run and at month-end for management review.
+
+<Frame caption="Payroll Reports tab with KPIs, composition chart, net pay by staff, and CSV export.">
+  ![Payroll reports](/images/staff/payroll-reports.png)
+</Frame>
+
+## KPI strip
+
+| KPI | Description |
+| --- | --- |
+| Total Gross | Sum of gross pay across all records in the period. |
+| Total Tips | Distributed tips in the period. |
+| Total Deductions | Statutory \+ custom deductions. |
+| Total Advances | Advances deducted in the period. |
+| **Total Net Pay** | The bottom-line payroll cost. |
+| Head Count | Staff with at least one record in the period. |
+
+## Payroll composition
+
+A stacked bar chart split by:
+
+- Regular pay
+- Overtime pay
+- Commission
+- Tips
+- Deductions (negative)
+- Advances (negative)
+
+Spot rising OT costs or ballooning advances at a glance.
+
+## Net pay by staff
+
+Bar chart of every staff member's net pay for the period, sorted descending. Useful for spotting outliers.
+
+## Hours by staff
+
+Grouped bar chart with regular hours and overtime hours per staff. Cross-check with clock-in expectations.
+
+## Detailed breakdown
+
+A scrollable table with one row per staff. Columns:
+
+- Staff, Role
+- Regular hours, OT hours
+- Gross, Tips, Deductions, Advances
+- Net
+- Status (Draft/Approved/Paid/Disputed)
+
+### Filters
+
+<CardGroup cols={2}>
+  <Card title="Net pay" icon="filter">
+    Top earners, mid, low, or negative net pay only.
+  </Card>
+
+  <Card title="Hours" icon="clock">
+    High-hour staff, low-hour staff, or overtime-only.
+  </Card>
+
+  <Card title="Tips" icon="hand-holding-dollar">
+    Staff who received tips vs those who did not.
+  </Card>
+
+  <Card title="Status" icon="list-check">
+    Filter by Draft, Approved, Paid, or Disputed.
+  </Card>
+</CardGroup>
+
+## CSV export
+
+<Steps>
+  <Step title="Filter as needed">
+    Apply the period and any filters above.
+  </Step>
+  <Step title="Click Export CSV">
+    A CSV downloads with every row currently visible in the table.
+  </Step>
+  <Step title="Import into accounting">
+    Open in Excel, Google Sheets, QuickBooks, or your accounting package.
+  </Step>
+</Steps>
+
+The CSV columns match the detailed breakdown table, plus internal identifiers for staff and record IDs so accounting can reconcile back to DishInk.
+
+<Note>
+  For a full-period export including all statuses, clear filters and set the period picker to the desired range before exporting.
+</Note>
+
+## Tips and best practices
+
+- Run the report **before** approving records to catch outliers early.
+- Export CSV at month-end into a dedicated folder — you now have a permanent archive.
+- Watch the OT slice of the composition chart. Rising OT usually means understaffing, not high demand.
+- Compare Total Net Pay period-over-period to detect creep.
+
+## Common mistakes
+
+- **Exporting with filters and forgetting them.** Always clear filters if you want a full export.
+- **Reading Draft records as final.** Filter to Approved\+Paid for accounting purposes.
+- **Ignoring negative net pay.** Investigate every negative record — usually excessive advances.
+
+## Related pages
+
+- [Payroll Overview](/staff/payroll/overview)
+- [Payroll Records & Lifecycle](/staff/payroll/records)
+- [Generating Payroll](/staff/payroll/generating)
+- [Revenue Reports](/reports/revenue)
+- [Staff Performance](/reports/staff-performance)
+- [CSV Exports](/reports/csv-exports)

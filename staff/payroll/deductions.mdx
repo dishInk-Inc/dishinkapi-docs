@@ -1,0 +1,116 @@
+---
+title: "Deductions"
+sidebarTitle: "Deductions"
+description: "Zambia PAYE and NAPSA presets plus custom deductions applied per staff or globally."
+---
+
+Deductions reduce gross pay before net is calculated. DishInk ships four presets tuned for Zambian restaurants and supports fully custom deductions on top.
+
+## Presets
+
+<CardGroup cols={2}>
+  <Card title="Zambia Standard" icon="landmark">
+    **PAYE 25%** \+ **NAPSA 5%**. The default for most staff.
+  </Card>
+
+  <Card title="Basic" icon="circle-minus">
+    Only NAPSA 5%. Suits low-income staff below the PAYE threshold.
+  </Card>
+
+  <Card title="Full Package" icon="list-check">
+    PAYE \+ NAPSA \+ Health Insurance \+ Skills Levy. For senior staff on comprehensive packages.
+  </Card>
+
+  <Card title="Hospitality" icon="utensils">
+    PAYE \+ NAPSA \+ Uniform Levy \+ Meal Deduction. Bundled for front-of-house staff.
+  </Card>
+</CardGroup>
+
+<Frame caption="Deductions tab with preset chips and per-staff assignment.">
+  ![Deductions](/images/staff/payroll-deductions.png)
+</Frame>
+
+## Assigning a preset
+
+<Steps>
+  <Step title="Open the Deductions tab">
+    **Staff → Payroll → Deductions**.
+  </Step>
+  <Step title="Choose scope">
+    Assign a preset to a single staff member, a role, or the whole team as a default.
+  </Step>
+  <Step title="Pick a preset">
+    Click the preset chip.
+  </Step>
+  <Step title="Adjust rates if needed">
+    You can override any individual line (for example, drop PAYE to 20% for a specific staff member).
+  </Step>
+  <Step title="Save">
+    Future payroll records use the new preset.
+  </Step>
+</Steps>
+
+## Creating a custom deduction
+
+<Steps>
+  <Step title="Click Add Custom Deduction">
+    Opens the deduction editor.
+  </Step>
+  <Step title="Name and describe">
+    Example: "Locker fee", "Late fine", "Loan repayment".
+  </Step>
+  <Step title="Choose type">
+    Percentage of gross, fixed amount per period, or one-off.
+  </Step>
+  <Step title="Assign">
+    Select staff members. One-off deductions apply once and expire.
+  </Step>
+  <Step title="Save">
+    Appears on the next generated pay slip.
+  </Step>
+</Steps>
+
+## How deductions interact with net pay
+
+1. Gross pay is calculated (hours or salary \+ commission).
+2. Tips are added.
+3. Percentage deductions are calculated on **gross pay** (not gross \+ tips) unless the deduction is configured otherwise.
+4. Fixed and one-off deductions are subtracted.
+5. Approved salary advances scheduled for this period are subtracted.
+6. **Net pay** = the remainder.
+
+If **Allow negative net pay** is off (see [Payroll Settings](/staff/payroll/settings)), deductions cap at gross so net is never below zero. Residual deductions defer to the next period.
+
+## Statutory reference (Zambia)
+
+| Deduction | Rate | Basis |
+| --- | --- | --- |
+| PAYE | 25% (illustrative simplified band) | Employee — subtract from gross. |
+| NAPSA | 5% employee \+ 5% employer | Employee portion only appears on pay slip. |
+| Health Insurance | Configurable | Depends on employer scheme. |
+| Skills Levy | Employer-side | Not shown on pay slip. |
+
+<Warning>
+  PAYE bands change with Zambian budget cycles. Review presets after every budget announcement or consult your accountant. The **Zambia Standard** preset uses a simplified single-rate model — confirm with your tax advisor before using in production.
+</Warning>
+
+## Tips and best practices
+
+- Start with **Zambia Standard** and only diverge when finance requests it.
+- Add loan repayments and locker fees as **custom deductions**, never as ad-hoc pay slip edits.
+- Use one-off deductions for fines and short-term recovery items.
+- Communicate any new deduction to affected staff _before_ the pay run, not after.
+
+## Common mistakes
+
+- **Applying PAYE to below-threshold staff.** Use the Basic preset instead.
+- **Double-counting NAPSA.** Only the employee portion appears on the pay slip; the employer side is a business expense, not a staff deduction.
+- **Custom deduction with no end date.** For loan repayments, always set the total amount or duration to avoid over-recovery.
+
+## Related pages
+
+- [Payroll Overview](/staff/payroll/overview)
+- [Generating Payroll](/staff/payroll/generating)
+- [Pay Slips & Breakdown](/staff/payroll/pay-slips)
+- [Payroll Settings](/staff/payroll/settings)
+- [Salary Advances](/staff/payroll/advances)

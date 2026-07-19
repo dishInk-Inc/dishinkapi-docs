@@ -1,0 +1,119 @@
+---
+title: "Wage Structures"
+sidebarTitle: "Wage Structures"
+description: "Configure hourly, daily, monthly, or commission-based pay with overtime rules per staff member."
+icon: "sack-dollar"
+---
+
+## Overview
+
+A **wage structure** defines how a staff member is paid: the pay type, the base rate, and (for hourly staff) the overtime rate and threshold. Every staff member on payroll must have an active wage structure — without one, generated pay slips show K0 base pay.
+
+Wage structures are versioned by `effective_from` date. When you raise a wage, set the new effective date; DishInk will use the old rate for periods before that date and the new rate after.
+
+<Frame>
+  ![Wage modal with type, base rate, overtime rate, and threshold hours](/images/payroll/wage-modal.png)
+</Frame>
+
+## Wage types
+
+<CardGroup cols={2}>
+  <Card title="Hourly" icon="clock">
+    Paid per hour clocked. Overtime kicks in after threshold hours per shift.
+  </Card>
+
+  <Card title="Daily" icon="calendar-day">
+    Fixed daily rate regardless of hours. Best for casual or part-time staff.
+  </Card>
+
+  <Card title="Monthly" icon="calendar-days">
+    Fixed monthly salary. Optionally prorated by days worked (see [Payroll Settings](/payroll/settings)).
+  </Card>
+
+  <Card title="Commission" icon="percent">
+    Percentage of attributed sales. Combines with any base rate if set.
+  </Card>
+</CardGroup>
+
+## Setting a wage
+
+<Steps>
+  <Step title="Open Admin Payroll">
+    Go to **Payroll → Wages**.
+  </Step>
+  <Step title="Select a staff member">
+    Click the staff member's row. If they have no wage yet, click **Set Wage**; otherwise click **Edit**.
+  </Step>
+  <Step title="Choose type">
+    Pick **Hourly**, **Daily**, **Monthly**, or **Commission**.
+  </Step>
+  <Step title="Enter base rate">
+    - Hourly: rate per hour (e.g. K15/hr)
+    - Daily: rate per day (e.g. K120/day)
+    - Monthly: gross salary (e.g. K5,000/month)
+    - Commission: leave zero if pure commission, or set a base retainer
+  </Step>
+  <Step title="Configure overtime (hourly only)">
+    - **OT threshold hrs** — hours per shift before OT starts (default: **8**)
+    - **OT rate** — either an absolute per-hour rate or a multiplier of base (1.5× or 2×, see [Payroll Settings](/payroll/settings))
+  </Step>
+  <Step title="Set commission % (commission only)">
+    Enter the percentage of attributed sales, e.g. **5%** of drink sales for a bar attendant.
+  </Step>
+  <Step title="Set effective from date">
+    Defaults to today. For a scheduled raise, pick a future date; the current wage stays active until then.
+  </Step>
+  <Step title="Save">
+    The new wage becomes the active structure for that staff member from the effective date forward.
+  </Step>
+</Steps>
+
+<Frame>
+  ![Wages tab showing staff list and current wage structures](/images/payroll/wages-tab.png)
+</Frame>
+
+## Overtime calculation
+
+For hourly staff, overtime is calculated **per shift**, not per period:
+
+```text
+Regular hours = min(shift_hours, OT_threshold)
+OT hours      = max(0, shift_hours - OT_threshold)
+Base pay      = Regular hours × base_rate
+OT pay        = OT hours × (base_rate × OT_multiplier)  OR  OT hours × OT_rate
+```
+
+**Example:** Base rate K15/hr, OT threshold 8, OT multiplier 1.5×. Staff works a 10-hour shift.
+
+- Regular: 8 × K15 = **K120**
+- Overtime: 2 × (K15 × 1.5) = **K45**
+- Shift total: **K165**
+
+## Wage history
+
+Every wage change is recorded. The **Wages** tab shows the current active wage; click **History** on a staff row to see every past wage with its effective range.
+
+<Note>
+  Retroactive wage changes only affect payroll records **generated after** the change. Approved records use the wage that was active when they were generated.
+</Note>
+
+## Tips
+
+- Keep wage structures **consistent within roles** — same rate for all cashiers, same for all waiters.
+- Use **effective from** for scheduled raises so payroll runs correctly around the raise date.
+- For **commission staff**, always attribute sales at close-out — see [Staff Accounts](/staff/staff-accounts).
+- Review wages **annually** for compliance with Zambian minimum wage regulations.
+
+## Common mistakes
+
+- **No active wage.** New hires generate K0 pay slips until a wage is saved.
+- **OT threshold too low.** If your standard shift is 9 hours, an 8-hour threshold means OT every shift — set to match your operation.
+- **Commission with no attribution.** Commission staff must be linked to sales at checkout, or their pay will be zero.
+- **Editing an approved wage retroactively.** Won't change past pay slips — you need to adjust the record manually.
+
+## Related pages
+
+- [Payroll Overview](/payroll/overview)
+- [Payroll Settings](/payroll/settings) — OT multiplier and monthly proration rules
+- [Generating Payroll](/payroll/generating-payroll)
+- [Staff Accounts](/staff/staff-accounts)

@@ -92,15 +92,11 @@
             "group": "Inventory",
             "icon": "boxes-stacked",
             "pages": [
-              "inventory/overview",
+              "inventory/products",
               "inventory/ingredients",
               "inventory/stock-levels",
-              "inventory/recipes",
-              "inventory/modifiers",
               "inventory/adjustments",
               "inventory/low-stock",
-              "inventory/overrides",
-              "inventory/settings",
               "inventory/purchase-tracking"
             ]
           },
@@ -114,7 +110,34 @@
               "staff/shift-reports",
               "staff/clock-in",
               "staff/clock-out",
-              "staff/cash-out"
+              "staff/cash-out",
+              {
+                "group": "Payroll",
+                "icon": "money-check-dollar",
+                "pages": [
+                  "staff/payroll/overview",
+                  "staff/payroll/wage-structures",
+                  "payroll/overview",
+                  "staff/payroll/pay-schedules",
+                  "staff/payroll/settings",
+                  "payroll/wage-structures",
+                  "staff/payroll/generating",
+                  "payroll/settings",
+                  "staff/payroll/records",
+                  "payroll/generating-payroll",
+                  "payroll/records",
+                  "staff/payroll/pay-slips",
+                  "payroll/pay-slips",
+                  "staff/payroll/tips",
+                  "payroll/tip-distribution",
+                  "staff/payroll/deductions",
+                  "staff/payroll/advances",
+                  "payroll/salary-advances",
+                  "staff/payroll/reports",
+                  "payroll/deductions",
+                  "staff/payroll/staff-earnings"
+                ]
+              }
             ]
           },
           {

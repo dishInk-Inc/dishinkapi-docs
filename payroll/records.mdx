@@ -1,0 +1,100 @@
+---
+title: "Payroll Records & Lifecycle"
+sidebarTitle: "Records & Lifecycle"
+description: "Understand the draft → approved → paid → disputed pay slip lifecycle."
+icon: "file-invoice-dollar"
+---
+
+## Overview
+
+Every pay slip in DishInk is a **payroll record** with a lifecycle: **draft → approved → paid → disputed**. Records are stored per staff member per period. Managers can filter by status, period, or staff on the **Records** tab of the Admin Payroll page.
+
+<Frame>
+  ![Payroll records table with status badges and action buttons](/images/payroll/records-tab.png)
+</Frame>
+
+## Lifecycle states
+
+<CardGroup cols={2}>
+  <Card title="Draft" color="#6b7280" icon="pen">
+    Just generated. Editable. Not visible to staff. Can be regenerated freely.
+  </Card>
+
+  <Card title="Approved" color="#2563eb" icon="circle-check">
+    Amounts locked. Visible on the staff earnings page. Awaiting payment.
+  </Card>
+
+  <Card title="Paid" color="#16a34a" icon="money-bill-transfer">
+    Marked as disbursed. Staff can download the pay slip PDF. Final state under normal flow.
+  </Card>
+
+  <Card title="Disputed" color="#dc2626" icon="triangle-exclamation">
+    Flagged by staff or admin. Under investigation. Amounts locked pending resolution.
+  </Card>
+</CardGroup>
+
+## Moving through the lifecycle
+
+<Steps>
+  <Step title="Draft → Approved">
+    On the record row, click **Approve**. Verify the totals, confirm. The record becomes visible to the staff member.
+  </Step>
+  <Step title="Approved → Paid">
+    After disbursing funds (bank transfer, mobile money, cash), click **Mark Paid**. The record is now final.
+  </Step>
+  <Step title="Approved / Paid → Disputed">
+    Either the staff member (from their earnings page) or an admin can flag the record. Add a dispute reason.
+  </Step>
+  <Step title="Disputed → Approved / Paid">
+    Investigate, adjust if needed, and re-approve or mark paid. The dispute reason and resolution are stored on the record.
+  </Step>
+  <Step title="Reverting to Draft">
+    An approved record can be reverted to draft (admin only) to fix an error. Paid records typically cannot be reverted — create an adjustment instead.
+  </Step>
+</Steps>
+
+## What a record contains
+
+| Field | Description |
+| --- | --- |
+| **Staff member** | Owner of the record |
+| **Period start / end** | Date range covered |
+| **Regular hours / OT hours** | For hourly wage types |
+| **Base pay / OT pay / commission** | Gross earnings breakdown |
+| **Tips** | Distributed pool share or direct-to-waiter total |
+| **Deductions** | Line-by-line list with amounts |
+| **Advances** | Outstanding advance balance applied |
+| **Gross pay** | Base \+ OT \+ commission \+ tips |
+| **Net pay** | Gross − deductions − advances |
+| **Status** | draft / approved / paid / disputed |
+| **Generated at / approved at / paid at** | Audit timestamps |
+
+## Filters
+
+The Records tab supports filtering by:
+
+- **Period** — last 7 days, last 30 days, custom range
+- **Status** — draft, approved, paid, disputed (or all)
+- **Staff member** — single staff search
+- **Net pay range** — top, middle, low, or negative
+
+## Tips
+
+- **Approve records in batches** — use a session to review all drafts, then approve as a block.
+- **Mark Paid the same day** funds are sent so the audit trail matches reality.
+- Keep **dispute reasons specific** — "Missing overtime for 5 April shift" is easier to resolve than "Wrong pay".
+- Export **paid records as CSV** monthly for accounting and tax filing.
+
+## Common mistakes
+
+- **Leaving records in draft.** Staff can't see draft records — approve them so they appear on the earnings page.
+- **Marking paid before actual disbursement.** Creates confusion if a bank transfer fails. Mark paid only after money moves.
+- **Deleting a disputed record.** Never delete disputed records — resolve them for the audit trail.
+- **Regenerating an approved record.** Blocked by design; revert to draft first.
+
+## Related pages
+
+- [Generating Payroll](/payroll/generating-payroll)
+- [Pay Slips & Breakdown](/payroll/pay-slips)
+- [Payroll Reports & CSV Export](/payroll/reports)
+- [Staff Earnings Portal](/payroll/staff-earnings)

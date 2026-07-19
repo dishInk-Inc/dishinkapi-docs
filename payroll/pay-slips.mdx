@@ -1,0 +1,120 @@
+---
+title: "Pay Slips & Breakdown"
+sidebarTitle: "Pay Slips"
+description: "Line-by-line anatomy of a DishInk pay slip and how to download the PDF."
+icon: "receipt"
+---
+
+## Overview
+
+A **pay slip** is the human-readable view of an approved or paid payroll record. Every staff member can download their own pay slip PDF from the **Staff Earnings** page. Admins can download any pay slip from the **Records** tab.
+
+<Frame>
+  ![Sample pay slip PDF with all line items](/images/payroll/pay-slip.png)
+</Frame>
+
+## Anatomy
+
+### Header
+
+- Business name, address, TPIN
+- Staff name, role, staff ID
+- Pay period (start → end)
+- Pay slip number
+- Generation date
+
+### Earnings section
+
+| Line | Formula |
+| --- | --- |
+| **Regular hours** | Sum of shift hours up to OT threshold |
+| **Overtime hours** | Sum of shift hours above OT threshold |
+| **Base pay** | Regular hours × base rate (or daily/monthly equivalent) |
+| **Overtime pay** | OT hours × OT rate (multiplier of base or absolute) |
+| **Commission** | Commission % × attributed sales (if applicable) |
+| **Tips** | Pool share or direct-to-waiter total for the period |
+| **Gross pay** | Sum of the above |
+
+### Deductions section
+
+Each active deduction shown with its label and amount:
+
+- **PAYE** — Zambian Pay-As-You-Earn tax
+- **NAPSA** — National Pension Scheme contribution
+- **Salary advance repayment** — outstanding advance balance
+- **Custom deductions** — uniform, meals, other agreed items
+
+### Net pay
+
+```text
+Net pay = Gross pay − Total deductions − Advance repayment
+```
+
+<Note>
+  If **allow negative net pay** is disabled ([Payroll Settings](/payroll/settings)), net pay is capped at zero and any remaining balance rolls into the next period.
+</Note>
+
+### Footer
+
+- Approval signature block (if configured)
+- Business contact for pay slip queries
+- Generation timestamp
+
+## Downloading a pay slip
+
+### As a staff member
+
+<Steps>
+  <Step title="Open Staff Earnings">
+    From the staff dashboard, tap **Earnings**.
+  </Step>
+  <Step title="Select the period">
+    Choose the current period or a past one from **History**.
+  </Step>
+  <Step title="Download PDF">
+    Tap the download icon on the record. The pay slip opens as a PDF.
+  </Step>
+</Steps>
+
+### As an admin
+
+<Steps>
+  <Step title="Open Payroll Records">
+    Go to **Payroll → Records**.
+  </Step>
+  <Step title="Find the record">
+    Filter by staff or period.
+  </Step>
+  <Step title="Click the download icon">
+    Generates the pay slip PDF for the selected record.
+  </Step>
+</Steps>
+
+## Sending pay slips
+
+Approved and paid pay slips are automatically visible on the staff earnings page. For staff who need email or WhatsApp copies:
+
+1. Download the PDF.
+2. Send via your normal channel.
+
+Automated email/WhatsApp pay slip delivery can be enabled per venue — contact support.
+
+## Tips
+
+- Encourage staff to **check their pay slip on approval day** so disputes surface early.
+- Store paid pay slips as **CSV export** at month-end for your accountant.
+- If your logo isn't on the pay slip, upload it in **Business Settings**.
+- Include **TPIN** on every pay slip if you're VAT-registered — add it in business settings.
+
+## Common mistakes
+
+- **Editing a pay slip PDF externally.** Never edit the PDF — always adjust the source record and regenerate.
+- **Different totals on PDF vs. earnings page.** Usually means the record was regenerated after PDF download. Download the fresh PDF.
+- **Missing tips on the pay slip.** Tips only appear after distribution is run. See [Tip Distribution](/payroll/tip-distribution).
+
+## Related pages
+
+- [Payroll Records & Lifecycle](/payroll/records)
+- [Tip Distribution](/payroll/tip-distribution)
+- [Deductions](/payroll/deductions)
+- [Staff Earnings Portal](/payroll/staff-earnings)

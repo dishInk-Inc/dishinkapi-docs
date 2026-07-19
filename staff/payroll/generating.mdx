@@ -1,0 +1,107 @@
+---
+title: "Generating Payroll"
+sidebarTitle: "Generating Payroll"
+description: "Bulk-generate payroll for the whole team or produce a single record on demand."
+---
+
+Payroll generation reads clock-in hours, sales attributions, tip pools, deductions, and advances for the chosen period, then produces a **Draft** record per staff member. All calculations happen server-side through the `payroll-operations` edge function.
+
+## Two ways to generate
+
+<CardGroup cols={2}>
+  <Card title="Bulk generation" icon="users">
+    One click, all eligible staff, chosen period. Ideal for scheduled pay runs. <br />Action: `bulk_generate_payroll`.
+  </Card>
+
+  <Card title="Single staff record" icon="user">
+    Generate for one staff member — useful for adjustments, final pay, or a new hire mid-period. <br />Action: `generate_payroll_record`.
+  </Card>
+</CardGroup>
+
+## Bulk generation
+
+<Steps>
+  <Step title="Open the Records tab">
+    **Staff → Payroll → Records**.
+  </Step>
+  <Step title="Set the period">
+    Use the period navigator arrows or the date-range picker. Default is the last 7 days.
+  </Step>
+  <Step title="Click Generate Payroll">
+    The Payroll Generation modal opens with the period pre-filled.
+  </Step>
+  <Step title="Select Bulk">
+    Choose **Bulk generation for all staff**.
+  </Step>
+  <Step title="Review the summary">
+    The modal previews how many staff qualify. Staff without a wage structure are listed as skipped.
+  </Step>
+  <Step title="Confirm Generate">
+    DishInk creates one Draft record per staff member. The Records list refreshes.
+  </Step>
+</Steps>
+
+<Frame caption="Payroll generation modal with bulk option selected.">
+  ![Payroll generation modal](/images/staff/payroll-generate-modal.png)
+</Frame>
+
+## Single-staff generation
+
+<Steps>
+  <Step title="Open the modal">
+    Same **Generate Payroll** button.
+  </Step>
+  <Step title="Select Single Staff">
+    Choose the staff member from the dropdown.
+  </Step>
+  <Step title="Confirm">
+    A single Draft record is created for that staff member and period.
+  </Step>
+</Steps>
+
+<Note>
+  Regenerating for a staff member who already has a Draft record for the period replaces the existing draft. Approved and Paid records are never overwritten.
+</Note>
+
+## What a generated record contains
+
+Each Draft record includes:
+
+- **Hours** — regular and overtime, from clock-in/clock-out pairs.
+- **Gross pay** — wage type applied to hours or attributed sales.
+- **Tips** — pooled and distributed for the period (see [Tip Distribution](/staff/payroll/tips)).
+- **Deductions** — statutory (PAYE, NAPSA) and custom, from the assigned deduction preset.
+- **Advances** — approved salary advances auto-applied to this period.
+- **Net pay** — the final take-home amount.
+
+## Prerequisites
+
+<Checklist>
+  * Wage structures assigned to every staff member.
+  * Clock-in/clock-out data captured for the period.
+  * Tip distribution mode configured.
+  * Deduction preset selected.
+  * No open (un-clocked-out) shifts within the period.
+</Checklist>
+
+## Tips and best practices
+
+- Close every open shift before generating — otherwise those hours are missing from the record.
+- Distribute tips **before** generating so pooled tips appear on the pay slip.
+- Use single-staff generation for termination pay or a mid-period new hire.
+- Keep generation and approval on separate days if you have a review workflow.
+
+## Common mistakes
+
+- **Open shifts.** Hours after the last clock-out are not counted.
+- **Missing wage structure.** Zero-gross record. Fix in the Wages tab and regenerate.
+- **Skipping tip distribution.** Tips appear as 0 on the pay slip until you distribute the pool.
+- **Regenerating after approval.** Not possible — approved records are locked. Revert to draft first.
+
+## Related pages
+
+- [Payroll Records & Lifecycle](/staff/payroll/records)
+- [Wage Structures](/staff/payroll/wage-structures)
+- [Tip Distribution](/staff/payroll/tips)
+- [Deductions](/staff/payroll/deductions)
+- [Salary Advances](/staff/payroll/advances)

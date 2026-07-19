@@ -1,0 +1,98 @@
+---
+title: "Payroll Settings"
+sidebarTitle: "Settings"
+description: "Configure overtime rules, monthly proration, and negative net pay policy."
+icon: "gear"
+---
+
+## Overview
+
+**Payroll Settings** is your one-stop control panel for how DishInk calculates every pay slip. These settings apply to your entire venue and take effect on the **next** generated payroll run — approved records are never retroactively changed.
+
+<Frame>
+  ![Payroll Settings panel with OT rules and proration options](/images/payroll/settings.png)
+</Frame>
+
+## Settings
+
+### Overtime threshold hours
+
+The number of hours per shift before overtime kicks in.
+
+- **Default:** 8
+- **Range:** 4–12
+- Applies to all hourly wage structures unless overridden per staff.
+
+### Overtime multiplier
+
+How much overtime is paid relative to the base rate.
+
+- **1.5×** (time-and-a-half) — most common
+- **2×** (double time) — Sundays, public holidays
+
+<Note>
+  If a specific wage structure has an absolute **OT rate** set (e.g. K20/hr), that overrides the multiplier for that staff member.
+</Note>
+
+### Allow negative net pay
+
+Controls what happens when deductions and advances exceed gross pay.
+
+| Value | Behavior |
+| --- | --- |
+| **On** | Net pay can be negative. Staff owes the difference. Rare — usually disabled. |
+| **Off** (default) | Net pay is capped at zero. Remaining deduction / advance balance rolls into the next period. |
+
+### Monthly proration by days
+
+Only applies to **monthly** wage structures.
+
+- **On** — monthly salary is prorated by actual days worked. If a staff member joins mid-month, they get a partial salary.
+- **Off** — full monthly salary paid regardless of days present.
+
+### Working days per month
+
+Used for monthly proration.
+
+- **Default:** 26 (standard 6-day work week)
+- **Alternatives:** 22 (5-day week), 30 (calendar-day proration)
+
+Formula when proration is on:
+
+```text
+daily_equivalent = monthly_salary / working_days_per_month
+prorated_pay     = daily_equivalent × days_worked_in_period
+```
+
+## Configuring settings
+
+<Steps>
+  <Step title="Open Admin Payroll">
+    Go to **Payroll → Records** and click the **Settings** button in the toolbar.
+  </Step>
+  <Step title="Adjust each field">
+    Change threshold, multiplier, negative-pay toggle, and proration as needed.
+  </Step>
+  <Step title="Save">
+    Changes apply from the next payroll generation.
+  </Step>
+</Steps>
+
+## Tips
+
+- Set **OT threshold** to match your standard shift length — 8 hours for most restaurants, 12 for split shifts.
+- Keep **allow negative net pay off** unless you have a legal/policy reason otherwise; it protects staff from take-home shocks.
+- Use **22 working days** if your operation is Monday–Friday only.
+- Review settings at the **start of each financial year** with your accountant.
+
+## Common mistakes
+
+- **Changing settings mid-period** — settings only affect newly generated records, so a mid-period change can create inconsistency between shifts.
+- **Working days = 30** but only staffed 26 days a month — proration undercounts pay. Match this to your actual operating schedule.
+- **Multiplier 2× as default** — pay ramps up fast on long shifts; only use for premium OT policies.
+
+## Related pages
+
+- [Wage Structures](/payroll/wage-structures)
+- [Generating Payroll](/payroll/generating-payroll)
+- [Payroll Overview](/payroll/overview)

@@ -1,0 +1,114 @@
+---
+title: "Wage Structures"
+sidebarTitle: "Wage Structures"
+description: "Set hourly, daily, monthly, or commission pay rates per staff, with overtime thresholds and effective-from dates."
+---
+
+A wage structure tells DishInk how to calculate gross pay for a staff member. Every person on the payroll needs one — without it, payroll generates a zero-gross record.
+
+## Wage types
+
+<CardGroup cols={2}>
+  <Card title="Hourly" icon="clock">
+    Pay a base rate per hour worked. Hours come from Clock In/Out. Supports overtime.
+  </Card>
+
+  <Card title="Daily" icon="calendar-day">
+    Pay a fixed amount per day worked, regardless of hours. Common for casual staff.
+  </Card>
+
+  <Card title="Monthly" icon="calendar">
+    Pay a fixed monthly salary. Optionally prorated by working days.
+  </Card>
+
+  <Card title="Commission" icon="percent">
+    Pay a percentage of sales attributed to the staff (typically waiters). Combine with a base rate if needed.
+  </Card>
+</CardGroup>
+
+## Fields in a wage structure
+
+| Field | Applies to | Description |
+| --- | --- | --- |
+| Wage Type | All | Hourly, Daily, Monthly, or Commission. |
+| Base Rate | Hourly, Daily, Monthly, Commission | The base amount in ZMW (hourly rate, daily rate, monthly salary, or fixed base on top of commission). |
+| Overtime Rate | Hourly | ZMW per OT hour. Usually 1.5× or 2× the base rate. |
+| Overtime Threshold (hrs) | Hourly | Hours per day before OT kicks in. Default **8**. |
+| Commission % | Commission | Percentage of attributed sales. |
+| Effective From | All | The date this wage becomes active. Older records use the previous structure. |
+
+<Frame caption="Wage modal with type, base rate, overtime, and effective-from fields.">
+  ![Wage modal](/images/staff/payroll-wage-modal.png)
+</Frame>
+
+## Assigning a wage
+
+<Steps>
+  <Step title="Open the Wages tab">
+    Go to **Staff → Payroll → Wages**. Every active staff member is listed with their current wage summary.
+  </Step>
+  <Step title="Click Set Wage or Edit Wage">
+    Opens the wage modal.
+  </Step>
+  <Step title="Choose the wage type">
+    Hourly, Daily, Monthly, or Commission. The form adjusts to show only relevant fields.
+  </Step>
+  <Step title="Enter base rate and overtime">
+    For hourly wages, set the OT rate and threshold. Defaults: threshold 8 hrs, multiplier 1.5×.
+  </Step>
+  <Step title="Set Effective From">
+    Choose today for immediate effect, or a future date to schedule the change.
+  </Step>
+  <Step title="Save">
+    The wage is versioned. Older payroll records continue to reference the prior wage.
+  </Step>
+</Steps>
+
+## How overtime is calculated (Hourly)
+
+For each day in the pay period:
+
+1. Sum the hours worked (from clock-in/clock-out pairs).
+2. If daily hours exceed the **OT threshold** (default 8), the excess is paid at the **OT rate**.
+3. Non-OT hours are paid at the **base rate**.
+
+<Note>
+  The OT threshold and multiplier defaults live in [Payroll Settings](/staff/payroll/settings) but can be overridden on the wage record itself.
+</Note>
+
+## How monthly proration works
+
+When **Prorate monthly wages by days** is enabled in [Payroll Settings](/staff/payroll/settings):
+
+- Daily rate = `monthly_salary / working_days_per_month` (default **26**).
+- Gross for the period = daily rate × days worked in the period.
+
+With proration off, monthly staff receive their full salary regardless of the days in the period.
+
+## Commission staff
+
+- Sales attributed to the staff (via the waiter assigned to each order) are summed for the period.
+- Commission = `attributed_sales × commission_percent`.
+- If a base rate is set, it is added on top. Useful for a small guaranteed retainer plus performance pay.
+
+## Tips and best practices
+
+- Set **Effective From** in the future when a raise takes effect at the start of a new pay period. It keeps history clean.
+- Use hourly wages for shift staff (waiters, cashiers, kitchen) so overtime is tracked automatically.
+- Reserve commission structures for staff who directly drive sales.
+- Keep OT threshold at **8 hrs/day** to match Zambian labour norms; adjust only when your operating agreement differs.
+
+## Common mistakes
+
+- **No wage assigned.** Payroll generates a zero-gross record. Always assign a wage before the first pay run.
+- **Backdated Effective From.** Rewriting history can break existing paid records. Prefer future-dating.
+- **Forgetting the OT rate.** With only a base rate set, all hours are paid at base — no overtime premium.
+- **Commission % over 100.** Always a validation error. Commission is a percentage of sales, not a multiplier.
+
+## Related pages
+
+- [Payroll Settings](/staff/payroll/settings)
+- [Generating Payroll](/staff/payroll/generating)
+- [Clock In](/staff/clock-in)
+- [Clock Out](/staff/clock-out)
+- [Payroll Overview](/staff/payroll/overview)

@@ -1,0 +1,112 @@
+---
+title: "Payroll Overview"
+sidebarTitle: "Overview"
+description: "End-to-end automated payroll: wages, hours, tips, deductions, and advances rolled into approvable records."
+---
+
+DishInk Payroll turns clock-in data, tips, wage structures, and deductions into ready-to-approve payroll records in one click. It is designed for restaurant operators who need Zambia-compliant PAYE and NAPSA calculations without a spreadsheet.
+
+## Who this is for
+
+- **Owners and finance managers** approving pay runs and cutting salaries.
+- **HR administrators** managing wages, deductions, and advances.
+- **Staff** viewing their own pay slips, tips, and history on the Staff Earnings portal.
+
+## What Payroll automates
+
+<CardGroup cols={2}>
+  <Card title="Wage calculation" icon="calculator">
+    Reads hours from Clock In/Out and applies the staff wage structure (hourly, daily, monthly, or commission) with overtime rules.
+  </Card>
+
+  <Card title="Tip distribution" icon="hand-holding-dollar">
+    Splits pooled tips by role or routes them directly to the assigned waiter, and appends them to the pay slip.
+  </Card>
+
+  <Card title="Statutory deductions" icon="landmark">
+    Applies Zambia PAYE (25%) and NAPSA (5%) presets, plus any custom or hospitality-specific deductions you configure.
+  </Card>
+
+  <Card title="Salary advances" icon="hand-holding">
+    Auto-deducts approved advances from the next payroll record and marks them settled.
+  </Card>
+</CardGroup>
+
+## The admin Payroll workspace
+
+Open **Staff → Payroll** to see six tabs:
+
+| Tab | What it does |
+| --- | --- |
+| Records | Generate, approve, and pay records for a chosen period. |
+| Tips | Configure distribution mode, preview payouts, and view distribution history. |
+| Wages | Assign hourly, daily, monthly, or commission structures per staff member. |
+| Deductions | Apply Zambia Standard, Basic, Full Package, Hospitality, or custom presets. |
+| Advances | Review, approve, or reject salary advance requests and set per-staff limits. |
+| Reports | KPIs, composition charts, net pay by staff, hours by staff, CSV export. |
+
+<Frame caption="Admin Payroll page with the six tabs and period navigator.">
+  ![Payroll admin workspace](/images/staff/payroll-overview.png)
+</Frame>
+
+## The staff self-service view
+
+Each staff member sees a **My Earnings** page on their dashboard with six tabs: Earnings, Wage, History, Tips, Deductions, Advance. See [Staff Earnings Portal](/staff/payroll/staff-earnings) for the full breakdown.
+
+## The typical pay run
+
+<Steps>
+  <Step title="Pick a period">
+    The period navigator defaults to the current 7-day window. Use the arrows to move week-by-week or open the picker for a custom range.
+  </Step>
+  <Step title="Generate payroll">
+    Click **Generate Payroll** to run bulk generation for every eligible staff member, or pick a single staff for a one-off record. See [Generating Payroll](/staff/payroll/generating).
+  </Step>
+  <Step title="Review draft records">
+    Each record shows gross, tips, deductions, advances, and net pay. Open a record to inspect the [pay slip breakdown](/staff/payroll/pay-slips).
+  </Step>
+  <Step title="Approve">
+    Move records from **Draft** to **Approved** once you are satisfied. Approved records are locked to edits.
+  </Step>
+  <Step title="Mark as paid">
+    Record the payment (bank transfer, mobile money, cash) and set the record to **Paid**. The staff member sees it instantly on their Earnings page.
+  </Step>
+</Steps>
+
+<Note>
+  Records that need investigation can be flagged as **Disputed**. See [Payroll Records & Lifecycle](/staff/payroll/records) for the full state machine.
+</Note>
+
+## Prerequisites before your first pay run
+
+<Checklist>
+  * [Staff Accounts](/staff/staff-accounts) created for every person on the payroll.
+  * [Wage structure](/staff/payroll/wage-structures) assigned to each staff member.
+  * [Payroll Settings](/staff/payroll/settings) reviewed (OT threshold, monthly proration, negative net pay policy).
+  * [Deductions](/staff/payroll/deductions) preset selected (Zambia Standard is the default).
+  * [Tip Distribution](/staff/payroll/tips) mode chosen (Equal Split or To Waiter).
+</Checklist>
+
+## Tips and best practices
+
+- Run payroll at the same day and time every period so staff know when to expect payment.
+- Approve records in bulk once you have verified totals — approval is the audit-safe checkpoint.
+- Use **Reports → CSV Export** to keep an offline archive for accounting.
+- Enable [Salary Advances](/staff/payroll/advances) with sensible limits (default K1,000/request, K2,000/month) to avoid cash requests mid-shift.
+
+## Common mistakes
+
+- **Skipping wage structures.** Staff without an assigned wage generate a zero-gross record.
+- **Forgetting to clock out.** Open shifts do not contribute hours to the current period.
+- **Approving before checking tips.** Distribute tips first, then generate — otherwise the record excludes the pool.
+- **Editing an approved record.** Approved and paid records are immutable. Revert to draft if a correction is needed and re-approve.
+
+## Related pages
+
+- [Generating Payroll](/staff/payroll/generating)
+- [Wage Structures](/staff/payroll/wage-structures)
+- [Tip Distribution](/staff/payroll/tips)
+- [Deductions](/staff/payroll/deductions)
+- [Salary Advances](/staff/payroll/advances)
+- [Payroll Reports & CSV Export](/staff/payroll/reports)
+- [Staff Earnings Portal](/staff/payroll/staff-earnings)

@@ -1,0 +1,101 @@
+---
+title: "Pay Slips & Breakdown"
+sidebarTitle: "Pay Slips"
+description: "Every line item on a DishInk pay slip — gross, hours, tips, deductions, advances, and net pay."
+---
+
+A pay slip is the human-readable view of a payroll record. Staff see it on their Earnings page; admins see the same breakdown when reviewing records.
+
+## Anatomy of a pay slip
+
+<Frame caption="A full pay slip showing gross, hours, tips, deductions, advances, and net pay.">
+  ![Pay slip breakdown](/images/staff/pay-slip.png)
+</Frame>
+
+### Header
+
+- Staff name and role
+- Pay period (start → end)
+- Record status badge (Draft / Approved / Paid / Disputed)
+- Payment reference and date (once paid)
+
+### Earnings section
+
+| Line | Description |
+| --- | --- |
+| Regular hours | Hours worked at the base rate. |
+| Overtime hours | Hours above the OT threshold, paid at the OT multiplier. |
+| Regular pay | `regular_hours × base_rate` (or daily/monthly equivalent). |
+| Overtime pay | `ot_hours × ot_rate`. |
+| Commission | Applied to attributed sales for commission wages. |
+| **Gross pay** | Sum of the above. |
+
+### Tips section
+
+| Line | Description |
+| --- | --- |
+| Tip pool share | If distribution mode is `equal_split`, this is the pool share for the staff role. |
+| Direct tips | If mode is `to_waiter`, tips linked to orders served by this staff. |
+| **Total tips** | Sum. |
+
+See [Tip Distribution](/staff/payroll/tips) for how tips are calculated.
+
+### Deductions section
+
+Each applicable deduction line appears with its label and amount. Common Zambia presets:
+
+- **PAYE** (25%)
+- **NAPSA** (5%)
+- Any custom deductions (uniform levy, meal allowance clawback, etc.)
+
+### Advances section
+
+- Any approved [salary advances](/staff/payroll/advances) applied to this period.
+- Only advances flagged for deduction in this period appear.
+
+### Net pay
+
+**Net pay = Gross \+ Tips − Deductions − Advances.**
+
+If **Allow negative net pay** is on (see [Payroll Settings](/staff/payroll/settings)), the value can be negative and rolls into the next period as a carried balance.
+
+## Exporting a pay slip
+
+Both admins and staff can export a pay slip as PDF.
+
+<Steps>
+  <Step title="Open the record">
+    From the Records tab or the staff Earnings page.
+  </Step>
+  <Step title="Click Download PDF">
+    A branded PDF is generated with all sections above.
+  </Step>
+  <Step title="Share">
+    Email, WhatsApp, or print. The PDF is the same for staff and admin.
+  </Step>
+</Steps>
+
+<Note>
+  The PDF includes the pay period, DishInk branding, and a verification reference. It is suitable for bank loan applications, immigration, and audit.
+</Note>
+
+## Tips and best practices
+
+- Ask staff to download a PDF each pay run so they have their own archive.
+- Include the payment reference before marking as Paid — it appears on the PDF for verification.
+- Use the PDF as the primary source of truth in any dispute discussion.
+
+## Common mistakes
+
+- **Distributing tips after generation.** Tip lines appear as 0 unless tips are distributed before payroll is generated. Regenerate after distribution.
+- **Missing OT lines.** The wage record probably has no OT rate set — fix on the Wages tab.
+- **Blank commission line.** No sales attributed to the staff for the period, or wage type is not Commission.
+
+## Related pages
+
+- [Payroll Records & Lifecycle](/staff/payroll/records)
+- [Wage Structures](/staff/payroll/wage-structures)
+- [Tip Distribution](/staff/payroll/tips)
+- [Deductions](/staff/payroll/deductions)
+- [Salary Advances](/staff/payroll/advances)
+- [Staff Earnings Portal](/staff/payroll/staff-earnings)

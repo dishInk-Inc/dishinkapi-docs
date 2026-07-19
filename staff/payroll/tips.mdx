@@ -1,0 +1,108 @@
+---
+title: "Tip Distribution"
+sidebarTitle: "Tip Distribution"
+description: "Equal-split pooled tips across roles, or route tips directly to the waiter who served the table."
+---
+
+DishInk collects tips at checkout (see [POS → Discounts & Tips](/pos/discounts)) and holds them for distribution before each pay run. Two distribution modes cover the common restaurant policies.
+
+## Modes
+
+<CardGroup cols={2}>
+  <Card title="Equal Split" icon="users">
+    Tips are pooled and divided equally across all active staff in the selected roles. Standard for restaurants where multiple staff share tables. <br />Mode: `equal_split`.
+  </Card>
+
+  <Card title="To Waiter" icon="user-tie">
+    Every tip goes to the waiter attached to the order at the time of payment. Standard for waiter-service-only restaurants. <br />Mode: `to_waiter`.
+  </Card>
+</CardGroup>
+
+## Pool composition (Equal Split)
+
+Choose which roles participate in the pool:
+
+- Waiter
+- Cashier
+- Kitchen (Chef, Cook, Kitchen Assistant)
+- Bartender
+- Host
+- Any custom role you have created
+
+Each staff member marked **active** in the selected roles for the period receives an equal share of the pool.
+
+<Frame caption="Tip Distribution settings with role checkboxes and pay_after selector.">
+  ![Tip distribution settings](/images/staff/tip-distribution-settings.png)
+</Frame>
+
+## Distribution cadence (pay\_after)
+
+| Value | When tips are distributed |
+| --- | --- |
+| `shift` | At the end of every shift (via Clock Out reconciliation). |
+| `week` | Weekly, aligned to the pay schedule. |
+| `month` | Monthly, aligned to the pay schedule. |
+
+<Note>
+  Distribution timing should match your pay schedule so pooled tips appear on the correct pay slip.
+</Note>
+
+## Configuring distribution
+
+<Steps>
+  <Step title="Open the Tips tab">
+    **Staff → Payroll → Tips → Settings**.
+  </Step>
+  <Step title="Choose mode">
+    Equal Split or To Waiter.
+  </Step>
+  <Step title="Pick roles in the pool">
+    Only for Equal Split. Tick every role that shares.
+  </Step>
+  <Step title="Set pay_after cadence">
+    Shift, Week, or Month.
+  </Step>
+  <Step title="Save">
+    Future tips follow the new rule.
+  </Step>
+</Steps>
+
+## Preview
+
+The **Preview** tab simulates how the current pool would distribute right now. Use it before every pay run to sanity-check the split.
+
+## History
+
+The **History** tab shows every completed batch distribution with:
+
+- Distribution date and cadence
+- Pool total (ZMW)
+- Number of recipients
+- Per-staff breakdown (name, role, share)
+
+Records are immutable and linked from each affected payroll record.
+
+## Distributing manually
+
+Occasionally you need an off-cycle distribution (e.g. a large private-event tip). From the Preview tab, click **Distribute Now**. The batch appears in History and future payroll records include it.
+
+## Tips and best practices
+
+- Distribute at the end of each shift for hourly staff so tips are visible on the same-day pay slip.
+- Include kitchen staff in the pool where it matches your culture — morale-positive and legal in Zambia.
+- Use **Preview** every time before hitting **Distribute Now**.
+- Keep the distribution history public to staff to build trust.
+
+## Common mistakes
+
+- **Generating payroll before distributing.** Pay slips show zero tips until you regenerate.
+- **Including inactive staff.** Only staff clocked in during the period should share. Deactivate staff who have left.
+- **Switching modes mid-period.** Existing pool balance may not redistribute cleanly. Distribute the current pool first, then switch.
+
+## Related pages
+
+- [Payroll Overview](/staff/payroll/overview)
+- [Generating Payroll](/staff/payroll/generating)
+- [Pay Slips & Breakdown](/staff/payroll/pay-slips)
+- [Staff Earnings Portal](/staff/payroll/staff-earnings)
+- [Discounts & Tips](/pos/discounts)
