@@ -1,26 +1,85 @@
 ---
 title: "Purchase Tracking"
 sidebarTitle: "Purchase Tracking"
-description: "Record purchase orders and receive deliveries to update stock and costs automatically."
+description: "Track supplier deliveries, spend by ingredient, and cost trends over time using the restock history and adjustments log."
 ---
 
-Record every purchase order to keep stock levels accurate and food-cost analytics reliable.
+Purchase Tracking is the manager and owner's view of what you're buying, how often, and at what price. It's derived entirely from the **Adjustments log** — every restock is a purchase — so the two stay in perfect sync.
 
-## Overview
+<Frame>
+  ![Purchase tracking view grouped by supplier with spend and quantity summaries](/images/inventory/purchase-tracking.png)
+</Frame>
 
-A purchase order (PO) captures:
+## Who this is for
 
-- Supplier
-- Line items with quantity and unit cost
-- Delivery date and receipt reference
-- Invoice attachment (photo or PDF)
+- **Owner** — monthly spend review, supplier comparison.
+- **Manager** — cross-checks against supplier statements before payment.
+- **Accountant** — cost-of-goods reporting.
 
-When a PO is marked **Received**, ingredient stock rises automatically and weighted average cost updates.
+## Three ways to read the data
 
-## Record a purchase
+<CardGroup cols={3}>
+  <Card title="By ingredient" icon="carrot">
+    Total quantity received and total spend per ingredient over the selected period. Best for spotting price hikes.
+  </Card>
+
+  <Card title="By reference number" icon="file-invoice">
+    One row per supplier invoice. Best for reconciliation against supplier statements.
+  </Card>
+
+  <Card title="By day / week / month" icon="calendar">
+    Purchase spend over time. Best for cash-flow planning and identifying spend spikes.
+  </Card>
+</CardGroup>
+
+## Reviewing month-end
 
 <Steps>
+  <Step title="Filter to Restock, last month">
+    On the Adjustments log, set type = **Restock** and date range = previous month.
+  </Step>
+  <Step title="Group by reference number">
+    Each supplier invoice becomes a single row with total quantity and total cost across ingredients.
+  </Step>
+  <Step title="Export CSV">
+    Hand to the accountant or import into your bookkeeping system.
+  </Step>
+  <Step title="Cross-check against supplier statements">
+    Any invoice you were charged for that isn't in the export is a delivery someone didn't log.
+  </Step>
 </Steps>
+
+## Price-trend analysis
+
+For any ingredient, tap **View history** on the ingredient row (Stock tab). You get a chart of unit cost over time — every restock plots a point. This is how you spot:
+
+- Gradual supplier price creep
+- One-off spikes from an emergency supplier
+- Volume-discount thresholds
+
+<Note>
+  DishInk stores the unit cost at the moment of each restock. Changing the ingredient's saved unit cost later does not rewrite history — old restocks keep the cost you paid on the day.
+</Note>
+
+## Supplier comparison
+
+If you buy the same ingredient from multiple suppliers, use different reference-number prefixes (e.g. `SPA-1234` for Supplier A, `SPB-9821` for Supplier B). Group the log by reference prefix in your export to compare average price per unit.
+
+## Tips & best practices
+
+<Tip>
+  **Standardise reference numbers.** Agree with each supplier on a format and stick to it. Everything else in purchase tracking depends on those numbers.
+</Tip>
+
+<Tip>
+  Review the top 5 ingredients by spend every month. A 5% price drop on your highest-volume ingredient is worth more than a 20% drop on a rarely used one.
+</Tip>
+
+## Common mistakes
+
+- **Empty reference numbers** — a restock without a reference vanishes into a "no invoice" bucket at month-end.
+- **Using Manual adjustment instead of Restock** — captures neither unit cost nor reference. Deliveries must be restocked, never adjusted.
+- **Not tagging supplier** — without a reference prefix, you can't compare suppliers over time.
 
 <Frame caption="Purchase order">
   ![Purchase](/images/inventory/purchase-tracking.png)

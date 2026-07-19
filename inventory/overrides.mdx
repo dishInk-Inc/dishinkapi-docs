@@ -1,0 +1,124 @@
+---
+title: "Inventory Overrides"
+sidebarTitle: "Inventory Overrides"
+description: "Manager-approved temporary unblocks for menu items that were auto-marked unavailable but can still be served — with expiry modes and full audit trail."
+---
+
+An **override** temporarily unblocks a menu item that DishInk has auto-marked **Unavailable** because its ingredient stock ran low. Overrides are the escape hatch: when the kitchen tells you they can still make three more portions but the system doesn’t know, a manager can unblock the item, serve those portions, and let the override expire.
+
+Every override is logged. Nothing is silent.
+
+<Frame>
+  ![Overrides tab with Active and History sub-views](/images/inventory/overrides-tab.png)
+</Frame>
+
+## Who this is for
+
+- **Manager / Owner** — creates and deactivates overrides. Requires the **Allow Staff Override** setting to be on ([Inventory Settings](/inventory/settings)).
+- **Cashier / Waiter** — sees an override-unblocked item as available; the override is transparent to service.
+
+<Note>
+  Overrides are stored in the `inventory_overrides` table with the acting manager, timestamp, expiry mode, and any deactivation reason. The full history is retained even after expiry.
+</Note>
+
+## When to override
+
+Use an override when **all** of these are true:
+
+1. The item is auto-marked Unavailable.
+2. The kitchen confirms they can still serve it (uncounted stock, substitute prep, edge-of-recipe portioning).
+3. The unblock is temporary — you plan to restock, adjust the recipe, or let the override expire naturally.
+
+Do **not** override to hide a recipe or ingredient problem. If the same item is being overridden every day, fix the root cause: recalibrate the recipe, adjust `ignore_stock`, or update the ingredient’s minimum stock.
+
+## Create an override
+
+<Steps>
+  <Step title="Open the Overrides tab">
+    **Inventory → Overrides**. The **Active** sub-view shows every currently unblocked item.
+  </Step>
+  <Step title="Tap Add Override">
+    Pick the menu item that’s currently auto-marked Unavailable. Only auto-blocked items appear here — you can’t override an item that was manually turned off in Menu Management.
+  </Step>
+  <Step title="Choose an expiry mode">
+    Three options:
+
+    | Mode | When it expires |
+    | --- | --- |
+    | **End of day** | Automatically at midnight (device time). Best default for a temporary unblock during the current shift. |
+    | **On restock** | Automatically when any ingredient in the recipe receives a restock. Best when you’re unblocking because a delivery is imminent. |
+    | **Fixed duration** | After N hours (1–24). Best for lunch-service unblocks (“hold this open for 3 hours”). |
+  </Step>
+  <Step title="Enter a reason (recommended)">
+    Free-text — e.g. `Chef has 4 portions plated ready` or `Waiting on afternoon delivery`. Shows in the log and helps the next manager understand the decision.
+  </Step>
+  <Step title="Confirm with manager PIN">
+    The override is created immediately. The menu item is unblocked across POS, Waiter, QR menu, and online ordering within seconds.
+  </Step>
+</Steps>
+
+## Deactivate an override manually
+
+Active overrides can be deactivated at any time before their expiry.
+
+<Steps>
+  <Step title="Find the override">
+    **Overrides → Active**, or search by menu item.
+  </Step>
+  <Step title="Tap Deactivate">
+    A confirmation modal asks for a reason (optional) and a manager PIN.
+  </Step>
+  <Step title="Confirm">
+    The menu item is re-evaluated against current stock. If it’s still below the servings threshold, it becomes Unavailable again immediately.
+  </Step>
+</Steps>
+
+<Warning>
+  Deactivating an active override in the middle of service will remove the item from the menu on every device. Warn the waiters first.
+</Warning>
+
+## Active vs History
+
+- **Active** — currently in force. Each row shows the menu item, expiry mode, remaining time, creating manager, and reason.
+- **History** — every past override, including who created it, who deactivated it (or the auto-expiry reason: `end_of_day`, `on_restock`, `timed_expiry`), and the timestamps.
+
+Use History for audits and for spotting patterns — if the same item appears repeatedly, fix the recipe.
+
+## What auto-expiry looks like
+
+| Expiry mode | Trigger | Log entry |
+| --- | --- | --- |
+| **End of day** | Local midnight | `Auto-expired: end_of_day` |
+| **On restock** | Any restock to a linked ingredient (see [Stock Levels](/inventory/stock-levels)) | `Auto-expired: on_restock (restock #A234)` |
+| **Fixed duration** | Duration elapsed | `Auto-expired: timed (2h)` |
+
+The menu item re-evaluates against current stock immediately after expiry.
+
+## Tips & best practices
+
+<Tip>
+  Default to **End of day**. It’s the safest choice — you never accidentally leave an item overridden across shifts.
+</Tip>
+
+<Tip>
+  Use **On restock** when you know a delivery is coming. It self-cleans the moment the ingredient is back in stock, without a manager having to remember.
+</Tip>
+
+<Tip>
+  Review the History tab weekly. If the same three items are overridden every Friday night, the recipe or the minimum stock level for their key ingredient is wrong.
+</Tip>
+
+## Common mistakes
+
+- **Using overrides to hide a broken recipe** — fix the recipe. Overrides are for edge cases, not chronic issues.
+- **Fixed duration set too long** — “24 hours” becomes “forgotten override”. Prefer End of day.
+- **No reason entered** — the next manager has no context. Always give a one-line justification.
+- **Overriding without telling the kitchen** — the item comes back on POS but the kitchen is out of stock. Confirm with the head chef _before_ creating the override.
+
+## Related pages
+
+- [Inventory Settings](/inventory/settings)
+- [Recipes & Food Costing](/inventory/recipes)
+- [Stock Levels & Restocking](/inventory/stock-levels)
+- [Low Stock Alerts](/inventory/low-stock)
+- [Menu Availability](/menu-management/availability)

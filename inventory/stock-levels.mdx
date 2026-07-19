@@ -1,42 +1,114 @@
 ---
-title: "Stock Levels"
-sidebarTitle: "Stock Levels"
-description: "Live quantity of every ingredient across every branch."
+title: "Stock Levels & Restocking"
+sidebarTitle: "Stock Levels & Restocking"
+description: "Record deliveries with unit cost and reference number, keep on-hand quantities accurate, and use the live restock preview to reconcile stock as it comes in."
 ---
 
-Stock Levels shows the live quantity of every ingredient across every branch. Values update automatically with every sale, purchase, and adjustment.
+The **Stock** tab shows current on-hand quantities for every ingredient, colour-coded by status. Restocking is how you record a delivery — it updates the quantity, captures the unit cost for food-cost analysis, and stores a reference number for reconciliation.
 
-## Overview
-
-- Deductions happen on sale (via product recipe).
-- Additions happen on purchase (see [Purchase Tracking](/inventory/purchase-tracking)).
-- Manual corrections happen via [Adjustments](/inventory/adjustments).
-
-## View stock
-
-<Frame caption="Stock levels">
-  ![Stock levels](/images/inventory/stock-levels.png)
+<Frame>
+  ![Restock modal with quantity, unit cost, reference number, and live preview](/images/inventory/restock-modal.png)
 </Frame>
 
-<Note>
-  Stock counts sync in real time across the POS, KDS, and dashboard. Selling an out-of-stock item is blocked automatically.
-</Note>
+## Who this is for
+
+- **Manager** — receives deliveries, enters restocks.
+- **Owner / Admin** — reviews restock history in the Adjustments log.
+
+## Reading the Stock tab
+
+Each ingredient row shows:
+
+| Field | Meaning |
+| --- | --- |
+| **Name** | Ingredient name and category badge |
+| **Current stock** | Live on-hand quantity in the ingredient's base unit |
+| **Min / Max** | Threshold levels |
+| **Unit cost** | Latest recorded cost per unit (ZMW) |
+| **Status** | Green (healthy) · Amber (low) · Red (critical) · Grey (out) |
+| **Actions** | **Restock**, **Waste**, **Damage**, **Adjust** |
+
+Tap a status badge to filter the tab to just that band. Tap the ingredient name to open the edit drawer.
+
+## Record a restock (delivery)
+
+<Steps>
+  <Step title="Open the ingredient">
+    On the **Stock** tab, tap **Restock** on the ingredient row — or tap the ingredient and choose **Restock** from the drawer.
+  </Step>
+  <Step title="Enter the quantity received">
+    Enter the amount that arrived, in the ingredient's base unit. The **After restock** preview updates live to show your new on-hand quantity.
+
+    <Note>
+      If a supplier delivers in a different unit (e.g. a 25 kg sack of flour and your ingredient is in kg), enter `25`. If they deliver in a box that contains multiple units, convert to the base unit first.
+    </Note>
+  </Step>
+  <Step title="Enter the unit cost">
+    Cost per one unit of ingredient — for example `ZMW 32` per **kg** of onions. The **Total cost** preview multiplies quantity × unit cost so you can cross-check against the invoice.
+
+    <Warning>
+      The unit cost you enter here **overwrites** the ingredient's saved unit cost. This is intentional — food-cost analysis should reflect what you actually paid on the last delivery. If your supplier's price fluctuates weekly, the restock modal is where that new price flows into the system.
+    </Warning>
+  </Step>
+  <Step title="Enter the reference number (optional but recommended)">
+    Supplier invoice number, purchase order, or delivery note. Stored on the adjustment row and shown in the Adjustments log for reconciliation.
+  </Step>
+  <Step title="Confirm">
+    Tap **Restock** to save. The current stock updates immediately, a row is written to the Adjustments log with type `restock`, and (if enabled) any items that were auto-blocked because of this ingredient are re-evaluated. Overrides with expiry mode **On restock** are auto-expired.
+  </Step>
+</Steps>
+
+## Record waste or damage
+
+Use **Waste** for spoilage (yesterday's prawns, expired milk) and **Damage** for anything broken or unusable (a dropped bottle, freezer failure). Both **subtract** from current stock and write to the Adjustments log with the corresponding type — separated so your reports can distinguish preventable loss from operational spoilage.
+
+<Steps>
+  <Step title="Choose Waste or Damage">
+    From the ingredient row action menu.
+  </Step>
+  <Step title="Enter the quantity">
+    In the ingredient's base unit.
+  </Step>
+  <Step title="Enter a reason (optional)">
+    Free-text — e.g. `Freezer power cut overnight` or `Dropped during service`. Highly recommended for audits.
+  </Step>
+  <Step title="Confirm">
+    Requires a manager PIN. Stock is reduced immediately.
+  </Step>
+</Steps>
+
+## Manual adjustment (audit / recount)
+
+Use **Adjust** only when a physical stock count reveals a discrepancy you cannot attribute to a specific cause. It writes a row to the Adjustments log with type `manual`, requires a manager PIN, and forces a **reason** — this is your audit trail.
+
+<Warning>
+  Never use Adjust to record a delivery. Use **Restock** so the unit cost and reference number are captured.
+</Warning>
 
 ## Tips & best practices
 
 <Tip>
-  Do a physical stock count at least weekly. Compare against system counts and record variances in [Adjustments](/inventory/adjustments).
+  **Restock at the door.** Enter the delivery on the tablet while the supplier is still there. Any short-delivery or wrong-price is caught before the driver leaves.
+</Tip>
+
+<Tip>
+  **Do a weekly recount on your top 10 ingredients.** Compare the physical count to `current_stock` and use **Adjust** with a reason if they don't match. Small drifts are normal; large drifts point to a broken recipe or an untracked modifier.
+</Tip>
+
+<Tip>
+  If the same ingredient comes from multiple suppliers with different prices, restock as separate entries. The Adjustments log preserves each supplier's price for cost analysis.
 </Tip>
 
 ## Common mistakes
 
-<Warning>
-  Do not trust system stock without a periodic physical count. Recipe errors, spillage, and staff meals cause silent drift.
-</Warning>
+- **Restocking in the wrong unit** — the delivery is 25 kg but somebody types `25000` thinking in grams. The preview will show an absurd total cost — always sanity-check the total.
+- **Skipping the reference number** — makes it impossible to reconcile with supplier invoices at month-end.
+- **Using Adjust for a delivery** — hides the unit cost from food-cost reports and loses the invoice trail.
+- **Recording waste as damage (or vice-versa)** — muddies the reports. Waste = spoiled but was going to be used. Damage = physical loss.
 
 ## Related pages
 
 - [Ingredients](/inventory/ingredients)
-- [Adjustments](/inventory/adjustments)
-- [Low Stock Alerts](/inventory/low-stock)
+- [Inventory Adjustments](/inventory/adjustments)
 - [Purchase Tracking](/inventory/purchase-tracking)
+- [Low Stock Alerts](/inventory/low-stock)

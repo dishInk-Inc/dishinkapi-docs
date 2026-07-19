@@ -1,41 +1,115 @@
 ---
 title: "Ingredients"
 sidebarTitle: "Ingredients"
-description: "Central library of raw materials with units, cost, and low-stock thresholds."
+description: "Create and maintain the master list of ingredients — units, categories, unit cost, and min/max stock levels — that every recipe and modifier draws from."
 ---
 
-Ingredients are the raw materials that make up your products: flour, oil, chicken breast, whisky. DishInk tracks each ingredient's stock, cost, and usage.
+The **Stock** tab is the master list of every ingredient your restaurant tracks. Ingredients are the atomic unit of Inventory: recipes, modifiers, restocks, waste entries, and auto-deductions all reference them.
 
-## Overview
+<Frame>
+  ![Stock tab showing ingredients grouped by category with status badges](/images/inventory/ingredients-stock-tab.png)
+</Frame>
 
-- Ingredients live in a central library shared across all products.
-- Each ingredient has a unit of measure (kg, g, L, ml, unit, bottle).
-- Cost per unit feeds food-cost analytics and margin reports.
+## Who this is for
+
+- **Owner / Admin** — sets up ingredients during onboarding, maintains costs.
+- **Manager** — adds new ingredients when a supplier delivers something new, updates unit cost after price changes.
+
+<Note>
+  Ingredients are **shared across all branches** of a restaurant. Adding tomatoes at your Kabulonga branch adds them at every branch. Only stock quantities are branch-specific.
+</Note>
 
 ## Add an ingredient
 
-<Frame caption="Ingredient library">
-  ![Ingredients](/images/inventory/ingredients.png)
-</Frame>
+<Steps>
+  <Step title="Open the Stock tab">
+    Go to **Inventory → Stock** and tap **Add Ingredient** (top right).
+  </Step>
+  <Step title="Enter the name">
+    Use the exact name that will appear in recipes — e.g. `Chicken breast`, not `Chix`. Recipes and search rely on this label.
+  </Step>
+  <Step title="Choose a unit">
+    Pick the unit you buy and count the ingredient in. Available units:
 
-<Note>
-  Cost per unit should be your **weighted average** — update when you receive a new purchase order.
-</Note>
+    | Unit | Use for |
+    | --- | --- |
+    | **kg** | Bulk proteins, produce, flour, rice |
+    | **g** | Spices, small-quantity items |
+    | **l** | Cooking oil, beverages by the litre |
+    | **ml** | Sauces, extracts, small liquids |
+    | **pieces** | Eggs, bread rolls, whole fruit |
+    | **portions** | Pre-portioned proteins, plated sides |
+    | **boxes** | Boxed goods (cases of drinks) |
+    | **slices** | Sliced cheese, bread, tomato |
+    | **cups** | Cup-measured ingredients |
+
+    <Warning>
+      **Do not change units after the ingredient is in use.** Existing recipe quantities will not auto-convert. If you must switch, edit every recipe line that references this ingredient.
+    </Warning>
+  </Step>
+  <Step title="Pick a category">
+    One of: **Proteins**, **Produce**, **Beverages**, **Dry Goods**, **Dairy**, **Spices**, **Other**. Categories drive grouping on the Stock tab and in Low Stock Alerts.
+  </Step>
+  <Step title="Set the current stock">
+    Enter what you have on hand right now. This seeds the initial value — from here on, restocks and auto-deductions update it automatically.
+  </Step>
+  <Step title="Set min and max stock levels">
+    - **Minimum stock** — the level at which the ingredient appears in **Low Stock Alerts**. Set to at least one day of typical usage.
+    - **Maximum stock** — the target reorder-up-to level. Shown as a reference on the restock modal.
+  </Step>
+  <Step title="Set the unit cost (ZMW)">
+    Cost per one unit — for example `ZMW 85` per **kg** of chicken breast. This drives food-cost analysis on every recipe that uses the ingredient.
+  </Step>
+  <Step title="Save">
+    The ingredient appears in the Stock tab under its category, with a colour-coded status badge based on current stock vs. minimum:
+
+    - **Green** — healthy (above minimum)
+    - **Amber** — low (at or near minimum)
+    - **Red** — critical (below minimum, appears in Alerts)
+    - **Grey** — out of stock (`current_stock = 0`)
+  </Step>
+</Steps>
+
+## Edit an ingredient
+
+Tap any ingredient row to open the edit drawer. You can safely update:
+
+- Name
+- Category
+- Min / max stock
+- Unit cost
+- Current stock (manual adjustment — writes to the Adjustments log)
+
+Changing **unit** requires a manager PIN and a warning confirmation because it silently rescales every recipe.
+
+## Delete an ingredient
+
+You can only delete an ingredient that is not referenced by any recipe or modifier. If it is in use, DishInk shows the exact recipes blocking deletion. Remove the recipe links first, then delete.
+
+<Tip>
+  Instead of deleting, set **current stock** to 0 and **min stock** to 0. The ingredient stays available for historical reports without cluttering the Alerts tab.
+</Tip>
 
 ## Tips & best practices
 
 <Tip>
-  Store ingredients in the unit you buy in (per kg, per L). Convert only in the recipe (e.g. 30 g of flour per pizza). This keeps purchasing simple.
+  **Cost your ingredients accurately, once a quarter.** Food-cost reports are only as good as the unit costs behind them. Pull three recent invoices, average the price, update the ingredient.
+</Tip>
+
+<Tip>
+  Use `portions` for anything you pre-portion in the kitchen (e.g. 200 g steak). It makes recipes read as `1 portion` instead of `0.2 kg` and eliminates conversion mistakes.
 </Tip>
 
 ## Common mistakes
 
-<Warning>
-  Do not create duplicate ingredients (e.g. "tomato" and "tomatoes"). Stock movement will scatter and reporting becomes unreliable.
-</Warning>
+- **Duplicate ingredients** — `Chicken`, `Chicken breast`, `Chix breast` all created separately. Consolidate before building recipes.
+- **Cost in the wrong unit** — `ZMW 45` entered when the unit is `g` instead of `kg` makes cost-per-serving 1000× too high.
+- **Min stock left at 0** — the ingredient will never appear in Low Stock Alerts and you'll run out mid-service.
+- **Manual adjustments used for deliveries** — always use **Restock** for deliveries; it captures unit cost and reference number for reconciliation.
 
 ## Related pages
 
-- [Products](/inventory/products)
-- [Stock Levels](/inventory/stock-levels)
+- [Stock Levels & Restocking](/inventory/stock-levels)
+- [Recipes & Food Costing](/inventory/recipes)
 - [Inventory Adjustments](/inventory/adjustments)
+- [Low Stock Alerts](/inventory/low-stock)

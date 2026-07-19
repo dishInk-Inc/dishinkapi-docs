@@ -92,11 +92,15 @@
             "group": "Inventory",
             "icon": "boxes-stacked",
             "pages": [
-              "inventory/products",
+              "inventory/overview",
               "inventory/ingredients",
               "inventory/stock-levels",
+              "inventory/recipes",
+              "inventory/modifiers",
               "inventory/adjustments",
               "inventory/low-stock",
+              "inventory/overrides",
+              "inventory/settings",
               "inventory/purchase-tracking"
             ]
           },

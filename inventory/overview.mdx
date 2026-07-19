@@ -1,0 +1,134 @@
+---
+title: "Inventory Overview"
+sidebarTitle: "Overview"
+description: "Tour of the seven Inventory tabs — Stock, Recipes, Modifiers, Adjustments, Alerts, Reports, and Overrides — and how they work together to keep the menu accurate in real time."
+---
+
+The Inventory module is where ingredients, recipes, stock movements, and menu availability all meet. When a waiter sends an order, when the kitchen marks it Ready, and when a manager restocks a delivery, Inventory is the system of record that updates the menu across every device — POS, Waiter, KDS, QR menu, and online ordering — in real time.
+
+All amounts are in Zambian Kwacha (**ZMW**).
+
+<Frame>
+  ![Inventory dashboard with the seven tabs across the top](/images/inventory/overview-tabs.png)
+</Frame>
+
+## Who this is for
+
+| Role | What they do in Inventory |
+| --- | --- |
+| **Owner / Admin** | Full access. Sets recipes, modifier links, thresholds, override policy, and inventory settings. |
+| **Manager** | Restocks, records waste/damage, deactivates staff overrides, reviews the adjustment log. |
+| **Cashier / Waiter** | Read-only — sees the _effect_ of Inventory (out-of-stock badges, “~X servings left”). Cannot edit here. |
+| **Kitchen Staff** | No direct access — but every completed order auto-deducts ingredients through the recipe. |
+
+## The seven tabs
+
+<CardGroup cols={2}>
+  <Card title="Stock" icon="boxes-stacked" href="/inventory/ingredients">
+    Master list of ingredients — units, categories, min/max levels, current on-hand quantity, and a colour-coded stock status.
+  </Card>
+
+  <Card title="Recipes" icon="scroll" href="/inventory/recipes">
+    Link each menu item to the ingredients it consumes. Powers **auto-deduction**, **food-cost analysis**, and the “~X servings left” badge.
+  </Card>
+
+  <Card title="Modifiers" icon="sliders" href="/inventory/modifiers">
+    Attach ingredients to modifier options (extra cheese, add bacon) so add-ons deduct stock too.
+  </Card>
+
+  <Card title="Adjustments" icon="clock-rotate-left" href="/inventory/adjustments">
+    Full audit log of every stock movement — restocks, waste, damage, and automatic deductions from orders.
+  </Card>
+
+  <Card title="Alerts" icon="triangle-exclamation" href="/inventory/low-stock">
+    Live view of every ingredient below its minimum threshold, with one-click restock.
+  </Card>
+
+  <Card title="Reports" icon="chart-column" href="/reports/menu-analytics">
+    Food-cost analysis per menu item — healthy / warning / critical bands, with margin and projected profit.
+  </Card>
+
+  <Card title="Overrides" icon="shield-halved" href="/inventory/overrides">
+    Manager-approved temporary unblocks when a menu item is auto-marked unavailable but the kitchen can still serve it.
+  </Card>
+</CardGroup>
+
+## How the pieces fit together
+
+<Steps>
+  <Step title="Ingredients are the source of truth">
+    Every ingredient has a **unit** (kg, g, l, ml, pieces, portions, boxes, slices, cups), a **category**, and a **current stock** level. Ingredients live in the **Stock** tab.
+  </Step>
+  <Step title="Recipes turn ingredients into menu items">
+    A recipe lists the ingredients (and quantity per serving) needed to make one unit of a menu item. Recipes power both **auto-deduction** and the **food-cost card**.
+  </Step>
+  <Step title="Modifiers extend recipes">
+    Optional add-ons (Extra cheese, Add bacon) can link to the same ingredients with a `deduct_quantity`, so add-ons deplete stock correctly.
+  </Step>
+  <Step title="Orders auto-deduct in real time">
+    When the kitchen marks an item **Ready**, the recipe’s ingredients are deducted from stock and a row is written to the **Adjustments** log with type `auto_deduction`.
+  </Step>
+  <Step title="Availability updates the menu everywhere">
+    If an ingredient drops below the servings threshold, the linked menu items are auto-marked **Unavailable** on POS, Waiter, QR menu, and online ordering — instantly.
+  </Step>
+  <Step title="Managers restock, override, or adjust">
+    Deliveries are recorded with **Restock**, spoilage with **Waste** or **Damage**, and blocked items can be temporarily unblocked with an **Override**.
+  </Step>
+</Steps>
+
+## Key concepts at a glance
+
+<AccordionGroup>
+  <Accordion title="Auto-deduction">
+    When a kitchen item is completed, the linked recipe deducts each ingredient by `quantity_per_serving × order_qty`. This runs server-side and is logged as `auto_deduction` in the Adjustments log.
+  </Accordion>
+
+  <Accordion title="Servings left">
+    For any menu item, servings left = `min(ingredient.current_stock / recipe_line.quantity_per_serving)` across every ingredient in the recipe. Ingredients flagged `ignore_stock` are excluded.
+  </Accordion>
+
+  <Accordion title="Auto-unavailability">
+    Controlled in **Inventory Settings**. When enabled, items are auto-blocked as soon as servings-left drops below **Min Servings Before Block**. Waiters see a red _Unavailable_ badge; QR menus can either grey out or hide the item.
+  </Accordion>
+
+  <Accordion title="Staff overrides">
+    A manager can temporarily unblock an auto-unavailable item. Overrides expire on **End of day**, **On restock**, or after a **Fixed duration**. Every override is logged and can be deactivated at any time.
+  </Accordion>
+
+  <Accordion title="Food-cost analysis">
+    For each recipe, DishInk sums `quantity_per_serving × ingredient.unit_cost` to get cost-per-serving, then compares it to the menu price: <br />• **Healthy** — food cost \< 30% <br />• **Warning** — 30% – 40% <br />• **Critical** — \> 40%
+  </Accordion>
+</AccordionGroup>
+
+## Tips & best practices
+
+<Tip>
+  Set up ingredients **first**, then recipes, then modifiers. Trying to build a recipe before the ingredient exists will slow you down.
+</Tip>
+
+<Tip>
+  Use consistent units. If flour is stocked in **kg**, always express recipe quantities in kg (e.g. `0.25` kg), not grams. Mixing units per ingredient is a common source of food-cost errors.
+</Tip>
+
+<Tip>
+  Turn on **Show Servings Badge** in Inventory Settings during pilot week — it gives waiters an early warning before an item goes unavailable.
+</Tip>
+
+## Common mistakes
+
+- **Recipe missing an ingredient** — the item will never auto-deduct or auto-block. Check the recipe’s **Attention** count.
+- **Wrong unit on the ingredient** — a cost of `ZMW 45 / kg` becomes `ZMW 45,000 / kg` if you accidentally save it as grams.
+- **Ignoring `ignore_stock`** — mark garnishes and negligible items as `ignore_stock` so a missing sprig of parsley doesn’t block the whole dish.
+- **Overrides left on** — a manager unblocks an item “just for tonight” but forgets to set an expiry. Use **End of day** or **On restock** as the default.
+
+<Note>
+  Inventory settings, recipes, and modifier links are **shared across all branches** of a restaurant. Only stock levels and adjustments are branch-scoped.
+</Note>
+
+## Related pages
+
+- [Ingredients](/inventory/ingredients)
+- [Stock Levels & Restocking](/inventory/stock-levels)
+- [Recipes & Food Costing](/inventory/recipes)
+- [Inventory Settings](/inventory/settings)
+- [Menu Availability](/menu-management/availability)

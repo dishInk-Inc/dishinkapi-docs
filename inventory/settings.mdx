@@ -1,0 +1,151 @@
+---
+title: "Inventory Settings"
+sidebarTitle: "Inventory Settings"
+description: "Configure how stock levels affect menu availability — auto-unavailability, servings badge, staff override policy, and expiry modes."
+---
+
+Inventory Settings is where owners and managers decide **how strictly stock controls the menu**. The panel groups every rule into three cards: Auto-Unavailability, Serving Capacity, and Staff Override.
+
+<Frame>
+  ![Inventory Settings panel showing three grouped cards](/images/inventory/inventory-settings.png)
+</Frame>
+
+## Who this is for
+
+- **Owner / Manager** — the only roles who can change these settings. Every other role sees a read-only view with an info notice: _“Only owners and managers can change inventory settings.”_
+
+<Note>
+  Settings are **shared across all branches** of the restaurant. Changing a value here changes it everywhere.
+</Note>
+
+## Auto-Unavailability
+
+Controls whether DishInk automatically blocks menu items when their ingredients run out.
+
+### Enable Auto-Unavailability
+
+**Toggle.** When on, DishInk continuously calculates servings-left for every menu item (see [Recipes](/inventory/recipes)) and auto-marks items **Unavailable** as soon as servings drop below the block threshold.
+
+- **On (default)** — recommended for any restaurant with recipes configured. Prevents selling items you can’t deliver.
+- **Off** — turns the whole system into an advisory-only inventory tracker. Managers manually toggle availability in Menu Management.
+
+### Hide Unavailable Items
+
+**Toggle.** Only editable when Auto-Unavailability is on.
+
+- **On** — unavailable items are **hidden** from POS, Waiter, QR menu, and online ordering.
+- **Off (default)** — unavailable items are shown **greyed out** with an _Unavailable_ badge. Better for staff training and for regulars who ask about a favourite.
+
+<Tip>
+  Use **greyed out** in the dining room (staff know the item exists) and consider **hidden** on the QR menu (guests aren’t tempted to order something you can’t deliver).
+</Tip>
+
+## Serving Capacity
+
+Controls when auto-unavailability actually fires, and whether guests see a “X servings left” hint.
+
+### Min Servings Before Block
+
+**Number, 1–100. Default: 1.**
+
+Block a menu item as soon as fewer than this many servings can be made. Only editable when Auto-Unavailability is on.
+
+- **1** — block only when the item can’t be made at all. Aggressive availability, higher risk of over-selling due to portioning drift.
+- **2–3** — recommended for busy dinner service. Leaves a safety buffer for portioning variance.
+- **5\+** — conservative. Blocks items early. Use only if you have precise recipes and low variance.
+
+### Show Servings Badge
+
+**Toggle. Default: on.**
+
+When on, a “~X servings left” chip appears on the menu item across POS, Waiter, and QR menu once servings drop below the badge threshold. Only editable when Auto-Unavailability is on.
+
+### Badge Threshold
+
+**Number, 1–100. Default: 10.**
+
+Only shown when Show Servings Badge is on. The badge appears when servings-left falls below this number.
+
+<Tip>
+  Setting the badge threshold to **10** and **Min Servings Before Block** to **2** gives waiters an 8-portion warning band before the item goes unavailable — enough time to steer a table toward alternatives.
+</Tip>
+
+## Staff Override
+
+Controls whether managers can temporarily unblock auto-marked items (see [Overrides](/inventory/overrides)).
+
+### Allow Staff Override
+
+**Toggle. Default: off.**
+
+When on, managers can create overrides from the Overrides tab. When off, the only way to unblock an auto-marked item is to restock or edit the recipe.
+
+<Warning>
+  Every override is logged in `inventory_overrides` with the acting manager, timestamp, expiry mode, and reason. Turning this on is not “bypass mode” — it’s a documented, audited escape hatch.
+</Warning>
+
+### Override Expiry
+
+**Select. Only editable when Allow Staff Override is on.**
+
+The default expiry mode applied to new overrides. Managers can still pick a different mode per override.
+
+| Value | Behaviour |
+| --- | --- |
+| **End of day** | Expires at local midnight. Safe default. |
+| **On restock** | Expires as soon as any linked ingredient is restocked. |
+| **Fixed duration** | Expires after a set number of hours (see below). |
+
+### Override Duration
+
+**Number, 1–24 hours. Only shown when Override Expiry = Fixed duration.**
+
+How long timed overrides last before auto-expiring.
+
+## Save flow
+
+<Steps>
+  <Step title="Change a value">
+    The **Save** button appears in the header as soon as any field differs from the saved state.
+  </Step>
+  <Step title="Tap Save">
+    Requires the _owner_ or _manager_ role. Non-eligible staff see the read-only notice and the toggles are disabled.
+  </Step>
+  <Step title="Confirmation">
+    A green ✓ **Saved** indicator appears in the header for 2.5 seconds. Menu availability re-evaluates immediately using the new rules.
+  </Step>
+</Steps>
+
+<Note>
+  If a save fails (network error, missing permission), a red banner shows the exact error message. The draft stays on screen — no changes are lost.
+</Note>
+
+## Recommended presets
+
+<CardGroup cols={3}>
+  <Card title="Small café" icon="mug-hot">
+    Auto-Unavailability: **On**<br />Hide Unavailable: **Off**<br />Min Servings: **1**<br />Badge: **On, threshold 5**<br />Overrides: **Off**
+  </Card>
+
+  <Card title="Busy restaurant" icon="utensils">
+    Auto-Unavailability: **On**<br />Hide Unavailable: **Off**<br />Min Servings: **2**<br />Badge: **On, threshold 10**<br />Overrides: **On, End of day**
+  </Card>
+
+  <Card title="Multi-location chain" icon="buildings">
+    Auto-Unavailability: **On**<br />Hide Unavailable: **On** (QR)<br />Min Servings: **3**<br />Badge: **Off** (avoid inter-branch confusion)<br />Overrides: **On, On restock**
+  </Card>
+</CardGroup>
+
+## Common mistakes
+
+- **Auto-Unavailability off with recipes configured** — you’re paying the cost of maintaining recipes without getting the benefit. Turn it on.
+- **Min Servings set to 0** — not possible in the UI (minimum is 1), but if you ever see items being sold at zero stock, check for `ignore_stock` on the recipe line.
+- **Overrides on but Expiry = Fixed 24h** — overrides linger overnight. Prefer **End of day**.
+- **Badge threshold higher than block threshold** — pointless configuration; badge never fires before the block. Set threshold at least 3× the block value.
+
+## Related pages
+
+- [Inventory Overview](/inventory/overview)
+- [Recipes & Food Costing](/inventory/recipes)
+- [Inventory Overrides](/inventory/overrides)
+- [Menu Availability](/menu-management/availability)

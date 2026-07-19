@@ -1,44 +1,115 @@
 ---
 title: "Inventory Adjustments"
-sidebarTitle: "Adjustments"
-description: "Correct physical vs system stock discrepancies with reason codes and audit trail."
+sidebarTitle: "Inventory Adjustments"
+description: "The complete audit log of every stock movement — restocks, waste, damage, and automatic deductions — with filters, pagination, and reference numbers."
 ---
 
-Inventory Adjustments correct discrepancies between physical stock and system stock. Common reasons: spillage, breakage, expiry, theft, staff meals, or count errors.
+The **Adjustments** tab is your inventory audit trail. Every change to any ingredient's stock — whether recorded manually or generated automatically by an order — writes a row here. Nothing is ever silently overwritten.
 
-## Overview
-
-Every adjustment records:
-
-- Ingredient and quantity delta (positive or negative)
-- Reason code (spillage, expiry, correction, staff meal, theft)
-- Staff member and timestamp
-- Optional note
-
-## Record an adjustment
-
-<Frame caption="Inventory adjustment">
-  ![Adjustment](/images/inventory/adjustments.png)
+<Frame>
+  ![Adjustments log filtered by type with pagination controls](/images/inventory/adjustments-log.png)
 </Frame>
 
+## Who this is for
+
+- **Manager / Owner / Admin** — reviews stock movements at end-of-day, reconciles deliveries, investigates discrepancies.
+- **Accountant / Auditor** — pulls the log for cost-of-goods reconciliation.
+
+## What a row contains
+
+Each entry shows:
+
+| Field | Description |
+| --- | --- |
+| **Time** | When the change was recorded (device local time, stored in UTC). |
+| **Ingredient** | Name and category. |
+| **Type** | `restock`, `waste`, `damage`, `manual`, or `auto_deduction`. |
+| **Change** | Positive (green) for stock added, negative (red) for stock removed. |
+| **New stock** | Resulting `current_stock` after the change. |
+| **User** | The staff member who recorded the change (or `System` for auto-deduction). |
+| **Reference** | Supplier invoice number (restocks), reason (waste/damage/manual), or order ID (auto-deduction). |
+| **Unit cost** | For restocks only — the cost per unit recorded at the time of delivery. |
+
+## Filter the log
+
+The filter bar (top of the tab) lets you narrow by type:
+
+- **All** — every row.
+- **Restock** — only deliveries.
+- **Waste** — spoilage.
+- **Damage** — physical loss.
+- **Auto-deduction** — order-driven deductions.
+
+Filters combine with the ingredient search box and the date range.
+
 <Note>
-  Adjustments require **Manager** or higher role. All adjustments feed the shrinkage report.
+  The log paginates 20 rows per page. Use the arrows at the bottom to move through history. Pagination is server-driven, so scrolling deep costs nothing on the device.
 </Note>
+
+## Adjustment types explained
+
+<AccordionGroup>
+  <Accordion title="restock">
+    Recorded via the [Restock modal](/inventory/stock-levels). Adds stock and captures unit cost \+ reference number. Triggers a re-check of menu availability and expires **On restock** overrides.
+  </Accordion>
+
+  <Accordion title="waste">
+    Manager records spoilage (expired, past prep window, over-portioned). Subtracts stock. Recommended to include a reason.
+  </Accordion>
+
+  <Accordion title="damage">
+    Physical loss (dropped, broken, freezer failure, theft). Subtracts stock. Kept separate from waste so reports can distinguish preventable vs operational loss.
+  </Accordion>
+
+  <Accordion title="manual">
+    A raw override to `current_stock`, used only after a physical recount. Requires a manager PIN and a reason.
+  </Accordion>
+
+  <Accordion title="auto_deduction">
+    Written by the system when the kitchen completes an order line. Subtracts each linked ingredient by `quantity_per_serving × order_qty`. Order-driven modifiers add additional lines. Voids and cancellations write a matching reversal row.
+  </Accordion>
+</AccordionGroup>
+
+## Reconciling with supplier invoices
+
+<Steps>
+  <Step title="Filter to Restock, this week">
+    Set type = **Restock** and the date range to the invoice period.
+  </Step>
+  <Step title="Group by ingredient">
+    Tap **Group by ingredient** (top right of the log). Each ingredient shows total received and total cost for the period.
+  </Step>
+  <Step title="Cross-check against invoices">
+    Match your restock reference numbers to the supplier's invoice numbers. Any missing reference is a delivery someone forgot to log.
+  </Step>
+  <Step title="Export">
+    Tap **Export → CSV** to download the filtered log for your accountant.
+  </Step>
+</Steps>
+
+## Reversing a mistake
+
+You cannot edit or delete an adjustment row — the audit log is append-only. If a restock was entered wrong, record a **Waste** or **Manual** adjustment with the difference and a clear reason (`Correction: restock #A234 entered as 25kg, actual 15kg`). Both rows remain visible.
 
 ## Tips & best practices
 
 <Tip>
-  Log spillage and breakage the moment it happens. End-of-day batch adjustments hide operational issues.
+  **Filter to Waste \+ Damage every Monday.** Review last week's losses with the head chef. A spike in waste on a specific ingredient usually means a portioning or storage issue.
+</Tip>
+
+<Tip>
+  Use the **User** column to spot training gaps. If one waiter regularly triggers void-driven reversals on the same items, they may need a refresher on the modifier flow.
 </Tip>
 
 ## Common mistakes
 
-<Warning>
-  Do not use adjustments to "fix" purchase records. Use [Purchase Tracking](/inventory/purchase-tracking) instead — adjustments are for actual variance.
-</Warning>
+- **Trying to edit a row** — the log is immutable by design. Record a corrective adjustment with a reason.
+- **Empty reference on restocks** — makes reconciliation slow and error-prone at month-end.
+- **Confusing waste vs damage** — muddies reports. Waste = would have been used. Damage = physical loss.
 
 ## Related pages
 
-- [Stock Levels](/inventory/stock-levels)
+- [Stock Levels & Restocking](/inventory/stock-levels)
+- [Recipes & Food Costing](/inventory/recipes)
 - [Purchase Tracking](/inventory/purchase-tracking)
-- [Low Stock Alerts](/inventory/low-stock)
+- [Ingredients](/inventory/ingredients)

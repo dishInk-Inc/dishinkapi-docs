@@ -1,41 +1,90 @@
 ---
 title: "Low Stock Alerts"
 sidebarTitle: "Low Stock Alerts"
-description: "Automatic alerts when ingredients drop below configured thresholds."
+description: "Live view of every ingredient below its minimum threshold, grouped by severity, with one-click restock to keep the kitchen running."
 ---
 
-Low Stock Alerts fire when any ingredient drops below the threshold you configured. Managers can act before an item runs out mid-service.
+The **Alerts** tab is where managers spot problems before service. It lists every ingredient that has fallen below its minimum stock level, grouped by severity, with the menu items each ingredient affects.
 
-## Overview
-
-- Threshold set per ingredient during creation.
-- Alerts appear on the dashboard, POS home screen, and by email/SMS if enabled.
-- Optional: block the sale of any product that requires an out-of-stock ingredient.
-
-## Configure alerts
-
-<Frame caption="Low stock alert">
-  ![Low stock](/images/inventory/low-stock.png)
+<Frame>
+  ![Low Stock Alerts tab grouped by severity with menu-item impact](/images/inventory/low-stock-alerts.png)
 </Frame>
 
-<Note>
-  Alerts can be configured per branch. A central warehouse and one branch can have different thresholds for the same ingredient.
-</Note>
+## Who this is for
+
+- **Manager** — reviews before every shift, restocks as needed.
+- **Owner / Admin** — reviews weekly, adjusts min/max levels if the same ingredients keep appearing.
+
+## Severity levels
+
+| Badge | Condition | Colour |
+| --- | --- | --- |
+| **Out of stock** | `current_stock = 0` | Grey |
+| **Critical** | `current_stock < min_stock × 0.25` | Red |
+| **Low** | `current_stock < min_stock` | Amber |
+
+Ingredients are sorted with **Out of stock** first, then **Critical**, then **Low**. Within each band they're ordered by the number of menu items impacted, descending.
+
+## What each row shows
+
+- Ingredient name and category
+- Current stock \+ minimum stock
+- **Impacted menu items** — a chip list of every menu item whose recipe uses this ingredient
+- **Restock** button — opens the Restock modal in one tap
+
+Tap a menu-item chip to jump to its recipe.
+
+## Restock from the Alerts tab
+
+<Steps>
+  <Step title="Tap Restock on the alert row">
+    Opens the [Restock modal](/inventory/stock-levels#record-a-restock-delivery) prefilled with the ingredient.
+  </Step>
+  <Step title="Enter quantity, unit cost, reference">
+    Same flow as restocking from the Stock tab.
+  </Step>
+  <Step title="Confirm">
+    On save, DishInk:
+
+    1. Adds the quantity to `current_stock`.
+    2. Writes a `restock` row to the Adjustments log.
+    3. Re-evaluates menu availability — every impacted item is re-checked against **Min Servings Before Block**.
+    4. Auto-expires any **On restock** overrides for the impacted items (see [Overrides](/inventory/overrides)).
+    5. Removes the ingredient from the Alerts tab if it now exceeds its minimum.
+  </Step>
+</Steps>
+
+## Bulk restock
+
+For deliveries that touch many ingredients, tap **Bulk Restock** at the top of the Alerts tab. Tick every ingredient you're receiving today and enter quantities in a single form. Reference number is applied to all rows.
+
+## Tuning your alerts
+
+If the same ingredients appear in Alerts every day, your min stock is too low — increase it to at least two days of usage. If ingredients never appear, your min stock is too high — decrease it so alerts stay meaningful.
+
+<Tip>
+  A useful rule of thumb: **min\_stock = average daily usage × supplier lead-time in days × 1.3 safety buffer**.
+</Tip>
 
 ## Tips & best practices
 
 <Tip>
-  Set thresholds at your **lead time** — e.g. if reorder takes 2 days and you use 3 kg/day, set the threshold at 6 kg minimum.
+  Check Alerts once before service starts and once after service ends. The morning check tells you what to expedite; the evening check tells you what's on tomorrow's order.
+</Tip>
+
+<Tip>
+  If a critical ingredient goes to zero mid-service, take the affected menu items **off the menu** (Menu Management → Availability) rather than relying only on auto-unavailability. Waiters see the change instantly and don't waste time explaining substitutes.
 </Tip>
 
 ## Common mistakes
 
-<Warning>
-  Do not set thresholds too low to "reduce noise". You'll run out of stock and disappoint guests before the alert fires.
-</Warning>
+- **Ignoring the amber band** — Low means the day's service will finish stock. Waiting until Critical is too late.
+- **Restocking without a reference number** — see [Stock Levels](/inventory/stock-levels#record-a-restock-delivery). Alerts is a shortcut, not an excuse to skip reconciliation.
+- **Setting a min\_stock of 1** on high-turnover items — the alert fires too late.
 
 ## Related pages
 
 - [Ingredients](/inventory/ingredients)
-- [Stock Levels](/inventory/stock-levels)
-- [Purchase Tracking](/inventory/purchase-tracking)
+- [Stock Levels & Restocking](/inventory/stock-levels)
+- [Inventory Overrides](/inventory/overrides)
+- [Inventory Settings](/inventory/settings)
