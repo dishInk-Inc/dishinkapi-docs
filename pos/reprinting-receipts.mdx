@@ -1,0 +1,94 @@
+---
+title: "Reprinting Receipts"
+sidebarTitle: "Reprinting Receipts"
+description: "Preview any receipt, reprint a lost one, or generate a duplicate — from either the Shift tab or the pre-charge preview."
+---
+
+## Overview
+
+DishInk lets you reprint receipts through two flows:
+
+| Flow | Where | When to use |
+| --- | --- | --- |
+| **Preview Receipt** (pre-charge) | Charge Modal → **Preview Receipt** | Show the customer the total before paying, or reprint the running-bill snapshot. |
+| **Reprint from Shift** | POS → **Shift** tab → tap transaction → **Reprint** | Reprint an already-paid receipt (customer lost theirs, extra copy for records). |
+
+Both flows go through the same print router — QZ Tray, Bluetooth, Network, USB Bridge, POS Steward, RawBT, and Browser A4 fallback (see [Batch Invoice — Print Methods](/pos/batch-cash-out#print-methods-7-supported)).
+
+## Preview Receipt (Pre-Charge)
+
+In the Charge Modal or Quick Sale Ticket, tap **Preview Receipt**. A modal opens showing:
+
+- Full receipt layout with your logo, branch, TPIN, and ZRA fiscal placeholder
+- **Print Copy** button — sends the preview to the printer (marked _PROFORMA_, not a fiscal receipt)
+- **Print & Charge Now** — prints and confirms payment in one action
+
+<Note>
+  The preview is a **proforma** — it is _not_ a fiscal receipt and carries no ZRA Smart Invoice number. The fiscal receipt only prints after payment is confirmed.
+</Note>
+
+## Reprint from Shift
+
+<Steps>
+  <Step title="Open the Shift tab">
+    POS → **Shift** (third tab).
+  </Step>
+  <Step title="Find the transaction">
+    Filter by date, staff, method, or search by receipt number, table, or customer tag.
+  </Step>
+  <Step title="Tap the transaction">
+    The transaction detail panel opens with all line items, discounts, tax, tips, and the fiscal invoice number.
+  </Step>
+  <Step title="Tap Reprint">
+    A duplicate prints, watermarked **COPY** so it's distinguishable from the original.
+  </Step>
+</Steps>
+
+<Frame caption="Reprint dialog from the Shift tab showing a paid transaction.">
+  ![Reprint receipt placeholder](/images/pos/reprint-receipt.png)
+</Frame>
+
+## What's on the Receipt
+
+Every DishInk fiscal receipt includes:
+
+- Branch name, address, phone
+- Your business **TPIN**
+- ZRA **Smart Invoice Number** and QR code
+- Transaction number, date, time, cashier name
+- Table / order tag if provided
+- Line items with qty, price, and modifiers
+- Discounts (if any) with reason
+- Subtotal, Tax, Tip, Grand Total
+- Payment method(s) and change/tip note
+- Footer message (custom — configure in Settings → Receipt)
+
+Copies are watermarked **COPY**; proformas are watermarked **PROFORMA – NOT A TAX INVOICE**.
+
+## Print Method Fallback
+
+If the primary printer is offline:
+
+1. DishInk tries QZ Tray → Bluetooth → Network → USB Bridge → POS Steward → RawBT.
+2. Final fallback: **Browser A4** opens a printable preview in a new tab.
+3. If nothing works, the receipt is queued and marked **⚠ Print Pending** on the Shift tab — tap **Retry** when your printer's back.
+
+## Tips & Best Practices
+
+- Enable **Auto-print preview** in Settings for large groups — waiters check the bill visually before charging.
+- Keep the **Browser A4** fallback usable by having a plain office printer connected to any laptop on the network.
+- Train staff that a **COPY** watermark exists — customers occasionally ask _"is this fiscal?"_ — the ZRA QR code answers that.
+
+## Common Mistakes
+
+- **Handing a proforma to a customer as a receipt.** It says PROFORMA in big letters and doesn't have a ZRA invoice number. Only fiscal receipts count for their expenses.
+- **Reprinting mid-refund.** The transaction may be locked while the refund is processing — wait a moment then retry.
+- **Using Browser A4 for kitchen tickets.** Fine for receipts, terrible for kitchens (formatting is off, the paper is too big). Fix the kitchen printer instead — see [Kitchen Printers](/printing/kitchen-printers).
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Transaction History (Shift)](/pos/shift)
+- [Printing](/printing/usb-printers)
+- [Kitchen Printers](/printing/kitchen-printers)
+- [ZRA Integration](/smart-invoice/zra-integration)

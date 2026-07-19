@@ -1,0 +1,137 @@
+---
+title: "Waiter Assignments"
+sidebarTitle: "Waiter Assignments"
+description: "Assign waiters (and cashiers, managers) to tables from the Waiter Assignment Panel — with grouping, search, unassigned view, and role rules."
+---
+
+The **Waiter Assignment Panel** is where managers see — and change — who covers which tables. It's also where waiters check their own section at the start of a shift.
+
+## Overview
+
+Assignments do two important things:
+
+1. **Filter what each waiter sees.** A waiter only sees their assigned tables on the floor plan. Reassigning is instant — the new table appears on their device within seconds.
+2. **Anchor tips and shift reports.** Sales made on an assigned table are attributed to the assigned waiter for tip splits and performance analytics.
+
+Managers can assign anyone with role **waiter**, **cashier**, or **manager**. Kitchen and admin roles are excluded.
+
+## Open the panel
+
+From the floor plan, tap the **Waiter Assignments** icon (people icon) in the top bar, or navigate from **Staff** \> **Assignments**.
+
+<Frame caption="Waiter Assignment Panel — grouped by waiter with unassigned section">
+  ![Waiter assignment panel](/images/tables/waiter-assignments.png)
+</Frame>
+
+At the top you see four stat cards:
+
+| Stat | Meaning |
+| --- | --- |
+| **Total Assignments** | Every assignment across the branch. |
+| **Active Waiters** | Number of unique staff who have at least one table. |
+| **Assigned Tables** | Tables with one or more waiters. |
+| **Unassigned Tables** | Tables with **no** waiter — needs attention. |
+
+Below the stats: a **search box** (by staff name or table name/section) and grouped cards — one per waiter, each showing their tables and each table's live status.
+
+## Assign a waiter to a table
+
+Two entry points:
+
+### From the panel (bulk / unassigned view)
+
+1. Scroll to the **Unassigned Tables** card.
+2. Beside a table, tap **Assign**.
+3. The **Assign Waiter** modal opens.
+4. Pick a staff member from the dropdown. Assignable staff are shown with their role: _"Kelvin Banda · waiter"_, _"Chanda Mwape · cashier"_.
+5. Tap **Assign Waiter**.
+
+<Frame caption="Assign Waiter modal">
+  ![Assign waiter](/images/tables/waiter-assignments-modal.png)
+</Frame>
+
+### Reassign
+
+If the table already has a waiter, the same modal shows a **Currently Assigned** panel with an **Unassign** button and a **Reassign To** dropdown. Tap **Reassign** to swap.
+
+## Unassign a waiter
+
+Open the Assign Waiter modal for the table, then tap **Unassign** in the Currently Assigned panel. Confirm.
+
+The table returns to the **Unassigned Tables** section immediately.
+
+## Who can be assigned
+
+Only **active** staff with an assignable role appear in the dropdown:
+
+- `waiter`
+- `cashier`
+- `manager`
+
+Inactive staff, kitchen roles, and admin-only accounts are filtered out.
+
+## What waiters see
+
+Waiters see a **filtered** panel:
+
+- Their **own** tables highlighted with a red **Mine** pill.
+- **Other waiters' tables** grouped but read-only — they can see coverage without being able to change it.
+- **Unassigned tables** section — visible but with no **Assign** button (managers only).
+
+This lets a waiter check coverage at the start of a shift without waiting for a manager.
+
+## Multiple waiters per table
+
+A table can have more than one assignment (e.g. a trainee shadowing a lead). All assigned waiters see it on their floor plan, and each is listed in the assignment panel. Tip splits and performance analytics prorate revenue between them.
+
+## Refresh
+
+Assignments update in real time via Supabase realtime. If you suspect the view is stale, tap the **refresh icon** in the panel header — it spins while re-fetching.
+
+## Search
+
+Type a **staff name** ("Kelvin") or a **table name / section** ("Patio", "Table 12") into the search box. The panel narrows both the grouped cards and the unassigned list.
+
+## Assign by section (fastest at shift start)
+
+A common flow is _"Kelvin covers Patio tonight."_ To do this efficiently:
+
+1. Filter the floor plan by section (Patio).
+2. Enter **Edit mode**.
+3. Bulk-select all Patio tables.
+4. Assign to Kelvin.
+
+Much faster than assigning table-by-table. See [Floor Plan](/tables/floor-plan) for edit-mode bulk actions.
+
+## Tips & best practices
+
+<Tip>
+  Assign at the **start of the shift**, not on demand. Waiters can see their tables before service begins, prep their sections, and greet correctly.
+</Tip>
+
+<Tip>
+  Watch the **Unassigned Tables** count during peak service. If it's climbing, someone's sections aren't being covered.
+</Tip>
+
+<Tip>
+  Use **section-based** assignment where possible. It scales better and shift reports become cleaner.
+</Tip>
+
+<Tip>
+  For split-shift coverage (e.g. lunch waiter leaves, dinner waiter arrives), **reassign** — don't create a new assignment. This keeps the audit trail clean.
+</Tip>
+
+## Common mistakes
+
+- **Assigning kitchen staff.** They're filtered out. If you can't find someone, check their role.
+- **Assuming a waiter can self-assign.** Only managers can create or change assignments. Waiters see coverage but cannot edit.
+- **Leaving assignments from yesterday.** Sweep the panel at open. Reassignments are 2 seconds; missing coverage is a bad guest experience.
+- **Not unassigning at end of shift.** Not critical (assignments carry over), but if roles are changing tomorrow, clean up tonight.
+
+## Related pages
+
+- [Floor Plan](/tables/floor-plan)
+- [Assigned Tables](/waiter/assigned-tables)
+- [Staff Accounts](/staff/staff-accounts)
+- [Permissions](/staff/permissions)
+- [Staff Performance](/reports/staff-performance)

@@ -1,0 +1,114 @@
+---
+title: "Creating Tables"
+sidebarTitle: "Creating Tables"
+description: "Add permanent and temporary tables from the Add Table modal — name, capacity, section, and staff-vs-manager rules."
+---
+
+Build your floor plan by adding tables. Every table has a **name**, an optional **default capacity**, an optional **section**, and a **temporary** flag that controls its lifetime.
+
+## Overview
+
+Tables are the anchor for every dine-in interaction:
+
+- Bills, sessions, and split payments are linked to a table.
+- Kitchen Display tickets carry the table name so runners know where to deliver.
+- Waiter assignments and shift reports are grouped by table.
+- Reservations attach to a table.
+
+There are two kinds:
+
+| Type | Who can create | Behaviour |
+| --- | --- | --- |
+| **Permanent** | Managers only | Stays on the floor plan forever until deleted. Historical bills preserved. |
+| **Temporary** | Managers **and** staff | Auto-archives from the grid once its bill is paid and the session closes. Ideal for walk-ins and pop-up seating. |
+
+<Note>
+  Staff-created tables are **always** temporary. The "Temporary table" checkbox is locked on for non-managers.
+</Note>
+
+## Add a table
+
+From the **Floor Plan**, tap **Add Table** (or **\+** in edit mode).
+
+<Frame caption="Add Table modal">
+  ![Add Table modal](/images/tables/add-table-modal.png)
+</Frame>
+
+Fill in:
+
+1. **Table Name** _(required)_ — e.g. `Table 1`, `Bar 3`, `Patio A`. Must be unique per branch.
+2. **Default Capacity** _(optional)_ — use the `−` / `+` stepper or type a number. Minimum is 1. This is only a default — the **actual guest count** is set when the session is opened, and DishInk **does not enforce a limit**. A 4-seat table can seat 6 for a birthday.
+3. **Section** _(optional)_ — pick from your existing sections or choose **\+ Create new section** to add one on the fly (e.g. `Indoor`, `Outdoor`, `Bar`, `Rooftop`).
+4. **Temporary table** — leave unchecked for a permanent table. Managers can uncheck it; staff cannot.
+
+Tap **Add Table** to save. The card appears immediately on the floor plan.
+
+## Edit a table
+
+Tap a table's edit icon on the floor plan (or long-press on tablet), or enter **Edit mode** and tap the pencil.
+
+<Frame caption="Edit Table modal">
+  ![Edit Table modal](/images/tables/edit-table-modal.png)
+</Frame>
+
+You can change:
+
+- **Name** — managers only for permanent tables. Staff can rename their own temporary tables.
+- **Capacity** — anyone with access to the modal.
+- **Section** — anyone with access to the modal. Choose an existing section or create a new one. The special `Walk-in` section is hidden from the picker; it's system-managed.
+
+Tap **Save Changes** to apply. The **Save** button stays disabled until you actually change something.
+
+## Delete a table
+
+In the Edit Table modal, tap **Delete Table**. A red confirmation panel appears:
+
+> _Delete "Table 7"? This cannot be undone. Historical session data is kept._
+
+Tap **Yes, delete table** to confirm, or **Cancel** to back out.
+
+<Warning>
+  **Manager PIN required.** Staff can delete their own temporary tables. Bulk-deleting permanent tables from the floor plan's edit mode requires a Manager PIN if the current user isn't a manager.
+</Warning>
+
+<Note>
+  Deleting a table does **not** delete its history. Past bills, ZRA-submitted invoices, and shift reports keep the original table name for auditing.
+</Note>
+
+## Sections
+
+Sections are lightweight labels — no configuration screen, no rules. Create them from the Add or Edit modal. They power:
+
+- The **section filter** on the floor plan.
+- **Waiter assignment by section** (assign one waiter to all tables in Patio at once).
+- **Section-based reports** in Reports & Analytics.
+
+The `Walk-in` section is reserved and system-managed. Do not rename tables into it manually.
+
+## Tips & best practices
+
+<Tip>
+  Use consistent naming: `Table 1`, `Table 2`, `Patio 1`, `Patio 2`, `Bar A`, `Bar B`. Predictable names make voice communication ("running food to Patio 3") faster.
+</Tip>
+
+<Tip>
+  Set a **default capacity** even though it's not enforced. Managers use it in shift reports to estimate turnover.
+</Tip>
+
+<Tip>
+  Create sections that match how you actually staff. If waiters cover "Front" vs "Back", those are your sections — not the physical room layout.
+</Tip>
+
+## Common mistakes
+
+- **Duplicate table names.** DishInk rejects them per-branch. Rename or delete the old one first.
+- **Creating too many permanent tables for a pop-up event.** Use [temporary tables](/tables/temporary-tables) instead — they self-clean once paid.
+- **Renaming a table with an open bill.** Allowed, but confusing for kitchen staff. Prefer to close the bill first.
+- **Deleting a table with unpaid bills.** DishInk keeps the historical data but you lose the ability to reopen the session. Close it properly instead.
+
+## Related pages
+
+- [Floor Plan](/tables/floor-plan)
+- [Temporary Tables](/tables/temporary-tables)
+- [Table Statuses](/tables/table-statuses)
+- [Waiter Assignments](/tables/waiter-assignments)

@@ -1,0 +1,172 @@
+---
+title: "Creating Sales"
+sidebarTitle: "Creating Sales"
+description: "The four-tab POS layout, the three-column checkout, the Bill Ready gate, and every payment method flow."
+---
+
+## Overview
+
+The DishInk POS is organised into **four tabs** across the top:
+
+| Tab | What it's for |
+| --- | --- |
+| **Table / Quick Sale Checkout** | The default working screen — active tables and the checkout panel. |
+| **Quick Sale** | Fast counter service (cafés, bars, takeaway) with no table. |
+| **Shift** | Every transaction you (or your whole team, if you're a manager) processed in a date range. |
+| **Batch Invoice** | Consolidated cash-out report for end-of-shift or end-of-day reconciliation. |
+
+<Note>
+  If this device has never claimed a terminal, the **Terminal Setup** screen appears first. See [Terminal Setup](/pos/terminal-setup).
+</Note>
+
+## The Checkout Screen (Three Columns)
+
+On the **Table / Quick Sale Checkout** tab, the screen is split into three columns:
+
+1. **Active Tables** (left) — every open session on your terminal.
+2. **Bill View** (middle) — the selected table's running bill.
+3. **Payment Panel** (right) — payment methods, discount, and split.
+
+### Column 1: Active Tables
+
+Every open session on this terminal, filterable by status. The filter chips show live counts:
+
+- **All** — everything
+- **Pending** — bill request sent from the Waiter App, not yet handled
+- **Billing** — customer has asked to pay
+- **Ordering** — order is still open, guests still adding
+- **Served** — food delivered, awaiting the ask for the bill
+- **Open** — session created, no items yet
+
+Paid table cards show extra kitchen-status badges so you know when the food is out:
+
+| Badge | Colour | Meaning |
+| --- | --- | --- |
+| **Paid — In Kitchen** | Blue | Ticket accepted by KDS, not yet started |
+| **Paid — Cooking** | Blue | Kitchen has started preparing |
+| **Paid — Ready** | Emerald | KDS has marked ready for pickup |
+
+<Note>
+  Paid takeaway/counter orders show a **"Has the customer collected?"** prompt 15 minutes after payment (the `PaidServedCard` auto-timer). Tap **Yes** to clear the card, or **Not Yet** to snooze.
+</Note>
+
+### Manager Toggles
+
+Managers with the right permissions see two extra toggles above the table list:
+
+- **All Terminals** — see open sessions from every terminal, not just this one (requires _Manage Terminals_).
+- **All Tables** — see every table, ignoring waiter assignments (requires _View All Tables_).
+
+Waiters without _View All Tables_ only see the tables they were assigned to for this shift.
+
+### Column 2: Bill View
+
+Shows the items on the selected session, discount line, tax, tip, and total. Long-press or tap an item to void a single line (see [Voids](/pos/voids)).
+
+### Column 3: Payment Panel
+
+Four large buttons: **Cash**, **Mobile Money**, **Card**, **Split Bill**. Below them, an **Apply Discount / Manager Override** button.
+
+## Take a Table Sale — Step by Step
+
+<Steps>
+  <Step title="Open the table (Waiter App)">
+    The waiter opens the table on the Waiter App and takes the order. See [Opening Tables](/waiter/opening-tables) and [Taking Orders](/waiter/taking-orders). The session appears immediately on the POS in the **Ordering** status.
+  </Step>
+  <Step title="Wait for the bill request">
+    When the customer asks for the bill, the waiter taps **Request Bill** on the Waiter App. Your POS shows a **Bill Request** toast (with a sound if enabled) and the session flips to **Billing**.
+  </Step>
+  <Step title="Select the session">
+    Tap the table card in the Active Tables column. The Bill View loads on the right.
+  </Step>
+  <Step title="Preview the receipt (optional)">
+    Tap **Preview Receipt** to show the customer their total before charging. On a table sale, the preview has a **Mark as Awaiting Payment** option — useful when the customer needs a minute.
+  </Step>
+  <Step title="Charge">
+    Tap the payment method (Cash / Mobile Money / Card / Split Bill). The Charge Modal opens on the right side of the screen — see the per-method flows below.
+  </Step>
+  <Step title="Confirm">
+    Tap **Charge K …** at the bottom of the modal. The Smart Invoice submits to ZRA, the receipt prints, and the session closes.
+  </Step>
+</Steps>
+
+<Frame caption="Three-column POS checkout screen with the payment panel on the right.">
+  ![POS checkout placeholder](/images/pos/checkout.png)
+</Frame>
+
+## The Bill Ready Gate
+
+The **Charge** button is locked until _both_ of the following are true:
+
+- Every item on the session is `ready` or `served` **OR** the session status is `billing`, `served`, or `pending_payment`.
+- The session is not currently in a split-active state (see [Split Bills](/pos/split-bills)).
+
+If a customer is trying to pay while food is still being cooked, you'll see a hint that says _"Waiting for kitchen — bill locked."_ This prevents charging for items that could still be voided by the kitchen.
+
+## Payment Method Flows
+
+### Cash
+
+- Type or tap **Tendered** on the number pad, or pick a **Quick Select** chip (`K10`, `K20`, `K50`, `K100`, `K200`, `K500`).
+- Tap **Exact — K…** to auto-fill the exact amount.
+- If the tendered amount is more than the bill, DishInk shows a **Leave change as tip?** choice: **Give Change** or **Tip · K…**.
+- Optionally add an explicit tip (percent chip: 5%, 10%, 15%, 20%, or fixed amount) — this is _added on top of_ the bill.
+
+### Mobile Money
+
+- Pick a provider: **MTN MoMo**, **Airtel Money**, or **Zamtel Kwacha**.
+- Enter the transaction reference (e.g. `MP250529.1830.A12345`) — optional but strongly recommended for reconciliation.
+- Optionally add a tip.
+
+### Card
+
+- Process the card on your bank's terminal first.
+- Enter the terminal slip ID (optional, e.g. `SLIP-4821`).
+- Optionally add a tip.
+
+### Split Bill
+
+Opens the Split Configure panel. See [Split Bills](/pos/split-bills).
+
+## Offline Resilience
+
+The POS runs on a **3-tier fallback**:
+
+1. **Cloud** — normal state, everything syncs live.
+2. **LAN** — if the internet drops, the POS keeps working against the local LAN server.
+3. **Local Storage** — if the LAN is also down, sales queue locally on the device.
+
+Queued payments show a **Payment Queue** banner at the top of the screen. When the network comes back, the queue auto-replays and each transaction submits to ZRA in order.
+
+<Warning>
+  Voids require an active internet connection (the void button is grayed out offline). Refunds _can_ be queued offline. See [Voids](/pos/voids) and [Refunds](/pos/refunds).
+</Warning>
+
+## Bill Request Toasts
+
+Every bill request from the Waiter App triggers a toast on every POS terminal that can see the table. There's a small speaker icon on the toast to toggle the alert sound — the preference is saved per device in `pos_bill_sound` local storage.
+
+## Tips & Best Practices
+
+- Keep the **Billing** filter selected during peak hours — you'll only see tables that need charging.
+- Use **Preview Receipt** before charging split bills or discount overrides — customers get a chance to spot mistakes.
+- If two cashiers get the same bill request, whoever charges first wins. The second cashier's screen will show the session as closed.
+- Turn the bill-request sound off at bar terminals where waiters don't need it, and on at the cashier till.
+
+## Common Mistakes
+
+- **Trying to charge with the kitchen still cooking.** The Bill Ready gate locks payment. Wait for KDS to mark items ready, or move the customer to _Awaiting Payment_ using the receipt preview.
+- **Charging without picking a session first.** The Payment Panel is disabled until you tap a table card.
+- **Adding a tip _and_ leaving the change as tip.** Only one applies — the explicit tip wins. Watch the _Bill \+ Tip = Total_ summary line above the Charge button.
+- **Trying to void offline.** Voids need the internet; they're grayed out and require same-day. Use a refund instead if the day has rolled over.
+
+## Related Pages
+
+- [Quick Sales](/pos/quick-sales)
+- [Table Billing](/pos/table-billing)
+- [Split Bills](/pos/split-bills)
+- [Partial Payments](/pos/partial-payments)
+- [Discounts](/pos/discounts)
+- [Voids](/pos/voids)
+- [Refunds](/pos/refunds)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)

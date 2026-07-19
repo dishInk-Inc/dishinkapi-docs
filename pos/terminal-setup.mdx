@@ -1,0 +1,96 @@
+---
+title: "Terminal Setup"
+sidebarTitle: "Terminal Setup"
+description: "Assign a device to a POS terminal before it can take sales. Every DishInk POS session is scoped to a terminal."
+---
+
+## Overview
+
+Every device that runs the DishInk POS must be **claimed by a terminal** before it can open tables or take sales. This is a one-time setup per device — DishInk remembers the assignment and skips this screen on future logins.
+
+A **terminal** represents a physical POS station (e.g. `Bar 1`, `Main Till`, `Poolside iPad`). Table sessions lock to the terminal that opened them, receipts print to that terminal's assigned printer, and the Batch Invoice Cash Out is scoped to that terminal by default.
+
+Owners and managers with the terminal permission can create branches (POS Areas), add terminals, deactivate old terminals, and reassign devices from **Settings → Branch & Terminals**.
+
+<Note>
+  If your POS opens directly on the checkout screen, this device is already claimed. You only see the Terminal Setup screen on a brand-new device or after a manager has released the terminal.
+</Note>
+
+## Before You Start
+
+- At least one **POS Area (branch)** must exist. If this is your first device, create one first.
+- At least one **terminal** must exist under that branch.
+- You must be logged in as an owner, or a manager with the _Manage Terminals_ permission, to add or edit branches and terminals.
+
+## Claim This Device to a Terminal
+
+<Steps>
+  <Step title="Open the POS">
+    Log in on the device. If no terminal is assigned yet, the **Terminal Setup** screen appears automatically before the checkout loads.
+  </Step>
+  <Step title="Choose a POS Area">
+    Pick the branch this device belongs to (e.g. `Main Restaurant`, `Rooftop Bar`). If none exist, tap **Add POS Area** and enter a name, address, and phone number.
+  </Step>
+  <Step title="Pick a terminal">
+    Choose an existing terminal from the list, or tap **Add Terminal** to create a new one (e.g. `Till 1`, `Bar POS`).
+  </Step>
+  <Step title="Confirm">
+    Tap **Claim Terminal**. The device is now bound to that terminal and the POS opens.
+  </Step>
+</Steps>
+
+<Frame caption="Terminal Setup screen shown on a new device.">
+  ![Terminal Setup screen placeholder](/images/pos/terminal-setup.png)
+</Frame>
+
+## Manage Branches & Terminals
+
+Go to **Settings → Branch & Terminals**. The panel has three sections:
+
+1. **POS Areas** — your branches. Add, rename, edit address/phone, or deactivate.
+2. **Terminals** — grouped by branch. Add new terminals, rename, or deactivate.
+3. **This Device** — shows the currently claimed terminal and lets a manager release the device so someone else can claim it to a different terminal.
+
+<Warning>
+  Deactivating a terminal does **not** delete its sales history. But any device currently claimed to that terminal will lose access to open sessions until it is reassigned. Reassign devices before deactivating.
+</Warning>
+
+## Terminal Transfer (Session Handover)
+
+Table sessions are **locked to the terminal that opened them** to prevent two cashiers charging the same bill twice. If Terminal A opened Table 5 and Terminal B tries to charge it, DishInk shows a **Transfer** prompt.
+
+<Steps>
+  <Step title="Ask a manager">
+    A manager (or a user with _Manage Terminals_) must confirm the transfer.
+  </Step>
+  <Step title="Confirm on the new terminal">
+    Tap **Transfer to This Terminal** in the prompt. The session unlocks from Terminal A and locks to Terminal B atomically — no chance of double-billing.
+  </Step>
+  <Step title="Charge as normal">
+    The bill now appears in the Active Tables list on the new terminal.
+  </Step>
+</Steps>
+
+<Note>
+  Managers with the _All Terminals_ permission see every terminal's open sessions in the POS without needing a transfer. This is meant for supervisors doing floor-wide oversight — normal staff should stay locked to their own terminal.
+</Note>
+
+## Tips & Best Practices
+
+- Name terminals by **physical location**, not by staff (`Bar 1` is better than `John's Till`) — staff change, physical spots don't.
+- Use one branch (POS Area) per venue. Only use multiple branches if you have physically separate premises.
+- Keep a spare terminal named `Spare` or `Reserve` — you can claim it in seconds if a main terminal fails during service.
+- Review the terminal list every quarter and deactivate anything no longer in use to keep the Batch Invoice terminal filter clean.
+
+## Common Mistakes
+
+- **Creating a new terminal for every device instead of reusing the same one.** Multiple devices can share a terminal (e.g. a floor tablet and a backup phone), but they still take turns claiming it. Only create separate terminals for physically separate stations.
+- **Deactivating a terminal that still has open unpaid sessions.** Close or transfer all sessions first, or a manager will need to force-reset the tables.
+- **Sharing one terminal across two branches.** Terminals belong to exactly one POS Area. If you move a terminal to a new venue, create a new terminal under the correct branch.
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)
+- [Table Billing](/pos/table-billing)
+- [Roles & Permissions](/getting-started/roles-permissions)

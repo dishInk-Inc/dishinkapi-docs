@@ -13,66 +13,206 @@
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Getting Started",
+            "icon": "rocket",
             "pages": [
-              "introduction",
-              "quickstart",
-              "plans-and-pricing",
-              "hardware"
+              "getting-started/welcome",
+              "getting-started/system-requirements",
+              "getting-started/logging-in",
+              "getting-started/switching-accounts",
+              "getting-started/clocking-in-out",
+              "getting-started/roles-permissions",
+              "getting-started/navigation-overview"
             ]
           },
           {
-            "group": "Core Modules",
+            "group": "Point of Sale",
+            "icon": "cash-register",
             "pages": [
-              "modules/pos",
-              "modules/kds",
-              "modules/waiter-app",
-              "modules/table-management",
-              "modules/qr-menu",
-              "modules/online-ordering"
+              "pos/terminal-setup",
+              "pos/creating-sales",
+              "pos/quick-sales",
+              "pos/table-billing",
+              "pos/split-bills",
+              "pos/partial-payments",
+              "pos/transferring-bills",
+              "pos/discounts",
+              "pos/voids",
+              "pos/refunds",
+              "pos/batch-cash-out",
+              "pos/reprinting-receipts",
+              "pos/tips",
+              "pos/transaction-history"
             ]
           },
           {
-            "group": "Operations",
+            "group": "Waiter Module",
+            "icon": "person-walking",
             "pages": [
-              "operations/inventory",
-              "operations/hrm-payroll",
-              "operations/staff-management",
-              "operations/analytics",
-              "operations/offline-mode"
+              "waiter/assigned-tables",
+              "waiter/opening-tables",
+              "waiter/temporary-tables",
+              "waiter/taking-orders",
+              "waiter/sending-orders",
+              "waiter/editing-orders",
+              "waiter/moving-items",
+              "waiter/requesting-bills",
+              "waiter/closing-tables"
             ]
           },
           {
-            "group": "Setup & Configuration",
+            "group": "Kitchen Display",
+            "icon": "display",
             "pages": [
-              "setup/account-setup",
-              "setup/menu-setup",
-              "setup/integrations",
-              "setup/multi-location"
+              "kds/receiving-orders",
+              "kds/kitchen-stations",
+              "kds/preparing-orders",
+              "kds/completing-orders",
+              "kds/kitchen-statuses"
             ]
           },
           {
-            "group": "Help",
+            "group": "Table Management",
+            "icon": "table-list",
             "pages": [
-              "help/faq",
-              "help/troubleshooting",
-              "help/contact"
+              "tables/floor-plan",
+              "tables/creating-tables",
+              "tables/merging-tables",
+              "tables/temporary-tables",
+              "tables/unmerging-tables",
+              "tables/table-transfers",
+              "tables/item-transfers",
+              "tables/table-statuses",
+              "tables/stuck-tables",
+              "tables/waiter-assignments",
+              "tables/reservations"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Solutions",
-        "groups": [
+          },
           {
-            "group": "By Venue Type",
+            "group": "Inventory",
+            "icon": "boxes-stacked",
             "pages": [
-              "solutions/full-service",
-              "solutions/fast-food",
-              "solutions/cafes",
-              "solutions/bars",
-              "solutions/multi-location",
-              "solutions/online-ordering"
+              "inventory/products",
+              "inventory/ingredients",
+              "inventory/stock-levels",
+              "inventory/adjustments",
+              "inventory/low-stock",
+              "inventory/purchase-tracking"
+            ]
+          },
+          {
+            "group": "Staff Management",
+            "icon": "users",
+            "pages": [
+              "staff/staff-accounts",
+              "staff/pin-login",
+              "staff/permissions",
+              "staff/shift-reports",
+              "staff/clock-in",
+              "staff/clock-out",
+              "staff/cash-out"
+            ]
+          },
+          {
+            "group": "Reports & Analytics",
+            "icon": "chart-line",
+            "pages": [
+              "reports/revenue-reports",
+              "reports/staff-performance",
+              "reports/kitchen-analytics",
+              "reports/menu-analytics",
+              "reports/category-reports",
+              "reports/pdf-exports",
+              "reports/csv-exports"
+            ]
+          },
+          {
+            "group": "Menu Management",
+            "icon": "book-open",
+            "pages": [
+              "menu/categories",
+              "menu/menu-items",
+              "menu/pricing",
+              "menu/availability",
+              "menu/images"
+            ]
+          },
+          {
+            "group": "Website & QR Menus",
+            "icon": "qrcode",
+            "pages": [
+              "website/managing-website",
+              "website/qr-menu",
+              "website/editing-content",
+              "website/themes",
+              "website/gallery",
+              "website/contact-information"
+            ]
+          },
+          {
+            "group": "WhatsApp & Online Ordering",
+            "icon": "whatsapp",
+            "pages": [
+              "whatsapp/overview",
+              "whatsapp/setup",
+              "whatsapp/auto-replies",
+              "whatsapp/order-management",
+              "whatsapp/order-lifecycle",
+              "whatsapp/delivery-pickup",
+              "whatsapp/online-payments"
+            ]
+          },
+          {
+            "group": "Multi-Location",
+            "icon": "buildings",
+            "pages": [
+              "multi-location/managing-branches",
+              "multi-location/staff-access",
+              "multi-location/shared-menus",
+              "multi-location/reporting"
+            ]
+          },
+          {
+            "group": "Printing",
+            "icon": "print",
+            "pages": [
+              "printing/usb-printers",
+              "printing/network-printers",
+              "printing/kitchen-printers",
+              "printing/receipt-printing",
+              "printing/troubleshooting"
+            ]
+          },
+          {
+            "group": "Smart Invoice (ZRA)",
+            "icon": "receipt",
+            "pages": [
+              "smart-invoice/overview",
+              "smart-invoice/zra-integration",
+              "smart-invoice/invoice-generation",
+              "smart-invoice/fiscal-compliance",
+              "smart-invoice/faq"
+            ]
+          },
+          {
+            "group": "Troubleshooting",
+            "icon": "screwdriver-wrench",
+            "pages": [
+              "troubleshooting/login-problems",
+              "troubleshooting/printer-problems",
+              "troubleshooting/payment-problems",
+              "troubleshooting/kitchen-orders",
+              "troubleshooting/network-issues",
+              "troubleshooting/faq"
+            ]
+          },
+          {
+            "group": "Support",
+            "icon": "life-ring",
+            "pages": [
+              "support/contact-support",
+              "support/report-a-bug",
+              "support/feature-requests"
             ]
           }
         ]

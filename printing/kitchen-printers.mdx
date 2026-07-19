@@ -1,0 +1,43 @@
+---
+title: "Kitchen Printers"
+sidebarTitle: "Kitchen Printers"
+description: "Paper kitchen tickets routed by category or station."
+---
+
+Kitchen printers deliver paper tickets in kitchens where a KDS is not used, or as a fallback to KDS screens. Different from receipt printers — they print orders, not bills.
+
+## Overview
+
+Kitchen printer routing:
+
+- Route by category (drinks → bar printer, food → kitchen printer)
+- Route by station (grill, fry, prep) — same logic as KDS station view
+- Automatic reprint if not acknowledged within N minutes
+
+## Set up a kitchen printer
+
+<Frame caption="Kitchen printer routing">
+  ![Kitchen printer](/images/printing/kitchen.png)
+</Frame>
+
+<Note>
+  Kitchen printers complement, not replace, the KDS. Many venues use both — printer as a paper backup.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Set the auto-reprint interval to 3 minutes. Rare but critical for busy kitchens where a paper ticket falls off the pass.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not run kitchen printer only — use it alongside a KDS. Paper is lossy; screens don't lose tickets.
+</Warning>
+
+## Related pages
+
+- [Network Printers](/printing/network-printers)
+- [KDS: Receiving Orders](/kds/receiving-orders)
+- [Categories](/menu/categories)

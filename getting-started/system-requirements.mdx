@@ -1,0 +1,67 @@
+---
+title: "System Requirements"
+sidebarTitle: "System Requirements"
+description: "Supported devices, browsers, network configuration, and hardware recommendations for running DishInk."
+---
+
+DishInk runs on standard consumer and commercial hardware. No proprietary devices are required. This page lists minimum, recommended, and enterprise-tier specifications for every part of the platform.
+
+## Overview
+
+DishInk is a cloud-based web and mobile application. It works on any modern browser and on Android tablets, phones, and touchscreen POS terminals. Kitchen and receipt printers connect over USB, Bluetooth, or the local network.
+
+## Supported devices
+
+| Device type | Minimum | Recommended |
+| --- | --- | --- |
+| **POS terminal** | Android 9, 2 GB RAM, 8" screen | Android 12\+, 4 GB RAM, 10–15" screen |
+| **Tablet (waiter/host)** | Android 10 or iPad OS 14 | Android 12\+ or iPad OS 16\+ |
+| **Phone (waiter)** | Android 10, 3 GB RAM | Android 12\+, 4 GB RAM |
+| **KDS screen** | Android 10, 15" HDMI display | Android TV box \+ 22"\+ HDMI display |
+| **Manager laptop/desktop** | Chrome 100\+, 4 GB RAM | Chrome/Edge latest, 8 GB RAM |
+
+## Supported browsers
+
+- Google Chrome (recommended)
+- Microsoft Edge
+- Mozilla Firefox
+- Safari 15\+ (macOS and iPad)
+
+<Warning>
+  Internet Explorer is not supported. Older Android WebView builds (below version 90) may render incorrectly.
+</Warning>
+
+## Network requirements
+
+| Requirement | Detail |
+| --- | --- |
+| Internet | 5 Mbps down / 2 Mbps up minimum, 20 Mbps recommended |
+| Local WiFi | 2.4 GHz \+ 5 GHz dual-band router recommended |
+| Static IP (printers) | Recommended for network kitchen printers |
+| Ports | 80, 443, 631, 9100 |
+
+<Note>
+  DishInk works offline through a three-tier fallback: Cloud → LAN → Local Storage. Orders continue on the local network even without internet, and sync automatically when connectivity is restored.
+</Note>
+
+## Printer compatibility
+
+- **Receipt printers** — any 58 mm or 80 mm ESC/POS-compatible thermal printer (USB, Bluetooth, or Ethernet)
+- **Kitchen printers** — Ethernet or WiFi ESC/POS thermal printers
+- **QZ Tray** — supported for desktop-based print bridging
+
+See [Printing](/printing/usb-printers) for detailed setup.
+
+<Frame caption="Recommended terminal layout">
+  ![Terminal layout](/images/getting-started/terminal-layout.png)
+</Frame>
+
+## Tips & best practices
+
+## Common mistakes
+
+## Related pages
+
+- [Logging In](/getting-started/logging-in)
+- [Printing setup](/printing/usb-printers)
+- [Network troubleshooting](/troubleshooting/network-issues)

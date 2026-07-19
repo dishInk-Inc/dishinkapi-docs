@@ -1,0 +1,105 @@
+---
+title: "Merging Tables"
+sidebarTitle: "Merging Tables"
+description: "Combine two active tables so one bill covers both — how to merge, what carries over, and the split-lock rule."
+---
+
+Merging combines the **active sessions** of two tables into one shared bill. Perfect for two groups that decided to sit together, or a family pushing tables together for a birthday.
+
+## Overview
+
+When you merge:
+
+- The **items** from both tables move onto **one bill**.
+- Both tables remain visible on the floor plan, linked by the **Merged** badge.
+- One table becomes the **primary** (the bill lives here); the other is the **secondary**.
+- Kitchen tickets already sent stay attached to the group under the primary table.
+- Payments, discounts, and splits are all applied to the merged bill from the primary table.
+
+Merging is **not** the same as [Transferring](/tables/table-transfers). Transfer moves a session to a _free_ table; merge combines two _active_ sessions.
+
+## Merge two tables
+
+1. Open the source table by tapping its card.
+2. In the Table Session modal, tap **Transfer / Merge**.
+3. The **Transfer Merge modal** opens.
+
+<Frame caption="Transfer / Merge modal in Merge mode">
+  ![Transfer merge modal](/images/tables/merging-tables.png)
+</Frame>
+
+4. Toggle to **Merge** mode.
+5. The candidate list now shows only **active tables** in the branch (free tables are hidden in Merge mode). Each row shows the target table's name, section, current status, and assigned waiter names.
+6. Pick your target. This will be the **primary** — the merged bill lives here.
+7. Confirm.
+
+Both cards on the floor plan update: they both show a **Merged** badge, and their borders link them visually.
+
+## Opening a merged table
+
+Tap either card. The Table Session modal shows:
+
+- The **primary bill** (all items from both tables combined).
+- A **Merged Tables panel** listing every table in the merge group.
+- A per-row **Unmerge** button beside each secondary table (see [Unmerging Tables](/tables/unmerging-tables)).
+- All the usual actions — add items, discount, split, pay, close.
+
+## What carries over
+
+| Item | Behaviour on merge |
+| --- | --- |
+| Kitchen items already sent | Stay in KDS, now grouped under the primary table |
+| Un-sent items in the cart | Move to the primary cart |
+| Discounts | Combined onto the primary bill |
+| Split payment state | See split-lock rule below |
+| Waiter assignments | Both waiters remain assigned to their original tables |
+| Guest count | Sum of both sessions' guest counts |
+
+## Split lock — the critical rule
+
+If **either** table has an active split payment configured, merging is **blocked**. You'll see:
+
+> _Cannot merge — one of the tables has an active split. Clear the split first._
+
+Why: a split payment references specific items and specific payers. Merging would silently break those references. Resolve the split (pay it, or clear it) before merging.
+
+The same rule blocks: item transfers, discount edits on split-locked lines, and table transfers.
+
+<Warning>
+  **Split lock is contagious.** After merging, if the merged bill has any active split, you cannot merge additional tables in. Plan splits after the merge, not before.
+</Warning>
+
+## Multi-way merges
+
+You can merge more than two tables — merge A into B, then merge C into B. The Merged Tables panel will list A, B, C together with B as the primary.
+
+There is no hard limit, but merging more than 4–5 tables makes the bill hard to read. Consider using a single large table instead.
+
+## Tips & best practices
+
+<Tip>
+  **Choose the busier table as the primary.** If Table 4 already has 12 items and Table 5 has 2, merge 5 into 4 so the KDS tickets don't need to move.
+</Tip>
+
+<Tip>
+  Tell the kitchen you've merged. Their tickets stay put but the runner needs to know that Table 5's food should be delivered to Table 4's group.
+</Tip>
+
+<Tip>
+  If groups will pay separately, merge is the wrong tool. Keep them as two tables and settle each one on its own.
+</Tip>
+
+## Common mistakes
+
+- **Merging to save a keystroke.** If two groups aren't actually paying together, keep them separate.
+- **Merging with an active split.** Blocked. Clear the split first.
+- **Assuming waiter assignments merge.** They don't. Each table keeps its assigned waiter — helpful for tip calculation and shift reports.
+- **Merging a table with kitchen items still preparing.** Allowed, but confirm with the kitchen runner so food goes to the right physical spot.
+
+## Related pages
+
+- [Unmerging Tables](/tables/unmerging-tables)
+- [Table Transfers](/tables/table-transfers)
+- [Item Transfers](/tables/item-transfers)
+- [Split Bills](/pos/split-bills)
+- [Table Statuses](/tables/table-statuses)

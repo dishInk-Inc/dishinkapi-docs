@@ -1,0 +1,141 @@
+---
+title: "Table Statuses"
+sidebarTitle: "Table Statuses"
+description: "Every status a table can be in — Free, Ordering, Preparing, Served, Billing, Reserved, Merged, Stuck — and how to change them."
+---
+
+Every table on the Floor Plan has a **status** that tells staff at a glance what's happening. Statuses are colour-coded on the card border and shown as status pills at the top of the screen.
+
+## Overview
+
+Statuses drive everything: the colour on the floor plan, the filter pills, the badge stack, and the buttons visible in the Table Session modal.
+
+## The status catalogue
+
+| Status | Meaning | Typical next action |
+| --- | --- | --- |
+| **Free** | No active session. Ready for guests. | Open the table when guests arrive. |
+| **Ordering** | Session is open, guests are choosing / waiter is taking order. | Send items to kitchen when ready. |
+| **Preparing** | Items sent to KDS, kitchen is cooking. | Wait for KDS completion. |
+| **Served** | Kitchen has completed all items; food is (or has been) delivered. | Guests are eating. |
+| **Billing** | Guests have requested the bill. | Process payment and close. |
+| **Reserved** | Held for a future guest. | Convert to Ordering when they arrive. |
+| **Merged** | Part of a merged group. | Manage from the primary table. |
+| **Stuck** | Marked busy on the server, but no session found. | Force-reset (Manager PIN). |
+
+## Reading the card border
+
+The table card border encodes status **visually**:
+
+- **1 state** → uniform border colour.
+- **2 states** → diagonal split (e.g. Ordering \+ Preparing shows two colours diagonally).
+- **3\+ states** → one colour per side (top / right / bottom / left).
+
+This lets waiters see complex states at a glance: an **Ordering \+ Preparing \+ Split** table has three border colours without needing to open the modal.
+
+## Badge stack
+
+Beside the border colours, small badges sit at the bottom-right of each card:
+
+- **Temp** — this is a [temporary table](/tables/temporary-tables).
+- **Stuck** — session is missing (see [Stuck Tables](/tables/stuck-tables)).
+- **Split** — an active split payment is configured on the bill.
+- **Preparing** — count of items currently in the kitchen (from KDS realtime).
+- **Waiting** — count of items completed by kitchen but not marked served.
+
+## Change a table's status
+
+Open the table. The Table Session modal shows **5 status buttons** across the top:
+
+- **Open** (starts a session on a free table)
+- **Ordering**
+- **Served**
+- **Billing**
+- **Reserved**
+
+<Frame caption="Table Session modal — status buttons across the top">
+  ![Table status buttons](/images/tables/table-statuses.png)
+</Frame>
+
+Tap the button matching the new state. The floor plan updates immediately.
+
+<Note>
+  **Preparing** and **Stuck** are computed automatically. You don't set them:
+
+  - **Preparing** is inferred from live KDS ticket state.
+  - **Stuck** is inferred when a table is marked busy but no session exists (see below).
+</Note>
+
+## The Bill Confirm modal
+
+If you tap **Billing** while items are still preparing in the kitchen, DishInk shows a **Bill Confirm** warning:
+
+> _2 items are still in the kitchen. Are you sure you want to move to billing?_
+
+Choose **Wait** to cancel, or **Bill anyway** if the guests have decided to leave.
+
+This warning uses **cached KDS items**, so it works even when the tablet is offline.
+
+## Closing without payment
+
+Closing a table with an unpaid balance requires a **Manager PIN**. This is a deliberate friction point: it's how you write off a bad debt (walked out without paying, comp'd the meal, etc.).
+
+The reason for the close is recorded in the manager audit log.
+
+## Reserved is table-level, not session-level
+
+**Reserved** is a state of the _table_, not a session. That means:
+
+- A Reserved table is still Free — no session, no bill.
+- When the guest arrives, you tap **Open** to start the session; Reserved clears automatically.
+- You cannot mark a table Reserved if it's already active (Ordering, Preparing, etc.). Close the current session first.
+
+See [Reservations](/tables/reservations) for the full flow.
+
+## Stuck state
+
+If a table appears **busy** on the floor plan but the Table Session modal shows _"No session found"_, the table is **Stuck**. DishInk waits 600 ms before revealing this state, to avoid flashing "Stuck" during normal loading.
+
+Managers can **Force-Reset** the table (Manager PIN required). See [Stuck Tables](/tables/stuck-tables).
+
+## Split lock effects on status
+
+When a bill has an active split payment:
+
+- **Merge** is blocked.
+- **Table Transfer** is blocked.
+- **Item Transfers** in and out are blocked.
+- **Discount edits** on split-locked lines are blocked.
+- **Quick-discount chips** in the Table Session modal are locked (greyed out).
+
+Clear the split before performing any of the above.
+
+## Tips & best practices
+
+<Tip>
+  Train waiters on the **Bill Confirm** warning. If the kitchen still has items, they should choose **Wait** unless the guest is genuinely leaving.
+</Tip>
+
+<Tip>
+  Use **Reserved** for phoned-in reservations. It saves the table from being taken by walk-ins and gives the host a clean cue on the floor.
+</Tip>
+
+<Tip>
+  If you find the **Stuck** badge appearing often, check network stability. Most stuck tables are the result of a partial write during offline mode.
+</Tip>
+
+## Common mistakes
+
+- **Marking Billing too early.** Preparing items are still in the kitchen. Wait or explicitly acknowledge the warning.
+- **Trying to Reserve an active table.** Close the session first.
+- **Ignoring split lock.** If a button is greyed out with a split badge visible, the split is blocking you — resolve it first.
+- **Force-resetting instead of investigating.** Stuck tables usually mean an offline write hasn't synced. Wait 10 seconds first.
+
+## Related pages
+
+- [Floor Plan](/tables/floor-plan)
+- [Stuck Tables](/tables/stuck-tables)
+- [Reservations](/tables/reservations)
+- [Merging Tables](/tables/merging-tables)
+- [Split Bills](/pos/split-bills)
+- [Closing Tables](/waiter/closing-tables)

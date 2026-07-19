@@ -1,0 +1,89 @@
+---
+title: "Temporary Tables"
+sidebarTitle: "Temporary Tables"
+description: "Create walk-in and pop-up seating from the Waiter Floor — always temporary for staff, auto-archives once paid."
+---
+
+The \+ button on the Waiter Floor lets you create a **temporary table** on the fly. Perfect for walk-ins, patio spillover, or groups that appear without a reservation.
+
+## Overview
+
+Staff can create tables at any time, but the created table is **always temporary** — the "Temporary" checkbox is locked on when the actor isn't a manager. Once the bill is paid and the session closes, the table auto-archives from the floor plan.
+
+<Note>
+  This is a Waiter Module-specific view of temporary tables. For the full concept, see [Temporary Tables in Table Management](/tables/temporary-tables).
+</Note>
+
+## Create a temporary table
+
+1. On the Floor view, tap the **emerald \+ button** in the top bar.
+2. The **Add Table** modal opens.
+
+<Frame caption="Add Table modal launched from the Waiter Floor">
+  ![Add temporary table](/images/waiter/temporary-tables.png)
+</Frame>
+
+3. Enter a **name** — e.g. `Walk-in 1`, `Group of 6`, `Bar Stool`, `Birthday party`.
+4. Set **default capacity** with the − / \+ stepper (optional).
+5. Pick a **section** (or **\+ Create new section**) — many restaurants use `Walk-in`.
+6. The **Temporary table** checkbox is checked and greyed out with the note: _"Staff-created tables are always temporary."_
+7. Tap **Add Table**.
+
+The card appears on your floor plan immediately, tagged with a purple **Temp** badge. You are automatically assigned as the covering waiter (`assignToStaffMemberId` = your staff ID).
+
+## Auto-assignment
+
+Because you created it, DishInk auto-assigns you to the table. You'll see it on your **My Tables** view without asking a manager. Managers can reassign it later from [Waiter Assignments](/tables/waiter-assignments).
+
+## Opening the session
+
+Tap the newly created card and follow the [Opening Tables](/waiter/opening-tables) flow — same guest-count sheet as any other table.
+
+## Auto-archive
+
+Once **both** of these are true, the table auto-archives from the floor plan:
+
+1. The session is closed (via [Closing Tables](/waiter/closing-tables) or the POS Pay & Close flow).
+2. The bill is fully paid (payment ≥ total).
+
+Historical data (bill, ZRA submission, KDS records) is preserved. The card simply disappears the next time the floor refreshes.
+
+## Editing and deleting
+
+- **Rename**: tap the table's edit icon (available to you as the creator without a Manager PIN).
+- **Change capacity / section**: same edit modal.
+- **Delete before ordering**: allowed without Manager PIN for staff-created temporary tables.
+- **Delete with unpaid bill**: blocked. Close the bill first, or ask a manager to force-close.
+
+## Offline creation
+
+If your tablet is offline, temporary-table creation queues via the offline queue manager and applies on reconnect. The card appears optimistically so you can start taking the order.
+
+## Tips & best practices
+
+<Tip>
+  Give walk-in temporary tables **descriptive names** — `Group of 4 · Patio`, `Birthday party · main floor`. The kitchen sees these on tickets and can prioritise or ask questions if needed.
+</Tip>
+
+<Tip>
+  Use a consistent `Walk-in` section. Combined with the Floor **Walk-in preference** toggle, it keeps your permanent layout clean.
+</Tip>
+
+<Tip>
+  If you regularly create the same walk-in slot every night, ask a manager to convert it to a permanent table.
+</Tip>
+
+## Common mistakes
+
+- **Trying to uncheck Temporary.** Not possible for staff — this is by design.
+- **Deleting a temporary table with an unpaid bill.** Blocked. Settle first.
+- **Creating a temporary table when a permanent one is free.** Prefer the permanent table; it keeps reporting cleaner.
+- **Naming everything `Walk-in`.** They pile up. Add a descriptor.
+
+## Related pages
+
+- [Temporary Tables (Table Management)](/tables/temporary-tables)
+- [Assigned Tables](/waiter/assigned-tables)
+- [Opening Tables](/waiter/opening-tables)
+- [Closing Tables](/waiter/closing-tables)
+- [Waiter Assignments](/tables/waiter-assignments)

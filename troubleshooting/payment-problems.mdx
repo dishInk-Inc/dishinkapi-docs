@@ -1,0 +1,44 @@
+---
+title: "Payment Problems"
+sidebarTitle: "Payment Problems"
+description: "Diagnose card, mobile money, and cash variance issues."
+---
+
+Payment issues cover failed card transactions, mobile-money mismatches, cash variances, and unresolved partial payments.
+
+## Overview
+
+Symptoms:
+
+- Card terminal declined but customer says it went through
+- Mobile money not confirmed on POS
+- Cash drawer variance at cash-out
+- Split bill balance doesn't reach zero
+
+## Diagnostic flow
+
+<Frame caption="Payment reconciliation">
+  ![Payment problems](/images/troubleshooting/payment.png)
+</Frame>
+
+<Note>
+  DishInk records payments alongside your provider — it does not process money. Any discrepancy must be traced back to your provider's ledger, not DishInk.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Reconcile mobile-money receipts hourly during peak service. Waiting until end-of-day makes tracing individual transactions painful.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not refund a card payment as cash. Card payments must be reversed through the card terminal.
+</Warning>
+
+## Related pages
+
+- [Cash Out](/staff/cash-out)
+- [Refunds](/pos/refunds)
+- [Partial Payments](/pos/partial-payments)

@@ -1,0 +1,44 @@
+---
+title: "Network Issues"
+sidebarTitle: "Network Issues"
+description: "Diagnose and resolve internet, LAN, and offline-mode connectivity problems."
+---
+
+DishInk keeps running through network outages, but persistent connectivity issues degrade the experience. This page walks through diagnosing and fixing them.
+
+## Overview
+
+DishInk's three-tier resilience:
+
+1. **Cloud** — normal operation.
+2. **LAN** — if internet drops, devices talk over the local WiFi.
+3. **Local Storage** — if LAN drops, orders save on-device and sync when reconnected.
+
+Service never stops — but sluggish or intermittent networks still cause bad customer experience.
+
+## Diagnostic flow
+
+<Frame caption="Network troubleshooting">
+  ![Network](/images/troubleshooting/network.png)
+</Frame>
+
+<Note>
+  DishInk indicates connectivity mode in the status bar: Cloud, LAN, or Local. During Local mode, orders queue for sync.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Use a business-grade dual-band router with QoS enabled. Consumer-grade routers fail under 30\+ concurrent devices.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not put POS terminals on guest WiFi. Signal contention causes stuttering and dropped orders.
+</Warning>
+
+## Related pages
+
+- [System Requirements](/getting-started/system-requirements)
+- [Support](/support/contact-support)

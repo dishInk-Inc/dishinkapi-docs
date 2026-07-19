@@ -1,0 +1,143 @@
+---
+title: "Editing Orders"
+sidebarTitle: "Editing Orders"
+description: "Modify or void sent items — quantity corrections and full voids gated by Manager PIN, with reason logging and offline queueing."
+---
+
+Once an order is sent to the kitchen, you can still fix mistakes — quantity corrections and item voids are supported, but both require a **Manager PIN** and a **reason**.
+
+## Overview
+
+DishInk treats sent items as **fiscally significant** — they've been counted for kitchen prep and (in some cases) already fiscally submitted to ZRA. So corrections leave an audit trail:
+
+- Every void or quantity correction requires a **manager PIN**.
+- Every correction records a **reason** (freeform text).
+- The change is optimistically applied on your device and syncs on reconnect if offline.
+- All corrections are visible in the shift report and manager audit log.
+
+For pre-send editing (still in cart), see [Taking Orders](/waiter/taking-orders#editing-a-cart-item) — no PIN needed.
+
+## Open the void / correct dialog
+
+1. Open the table's **Manage** view.
+2. Scroll to **Bill Summary**.
+3. Beside any item, tap the small **Void** link (red, at the price).
+
+<Frame caption="Bill Summary with per-line Void button">
+  ![Void action](/images/waiter/editing-orders.png)
+</Frame>
+
+## Step 1 — Pick the correction
+
+The **Void / Correct Item** sheet opens:
+
+<Frame caption="Correct Quantity or Void — 0 = full void">
+  ![Correct quantity](/images/waiter/void-step1.png)
+</Frame>
+
+You'll see:
+
+- **Item name** (e.g. `Grilled Chicken`).
+- **Correct Quantity** stepper. Range: `0` to originally punched quantity.
+  - `0` = **void the entire item**.
+  - Any lower number = **quantity correction** (e.g. punched 3, correct to 2).
+  - Range max is enforced by the UI.
+- **Reason** input. Placeholder changes based on quantity:
+  - `0`: _"e.g. Wrong item punched"_
+  - Positive: _"e.g. Punched 3 instead of 2"_
+- **Cancel** and **Void Item →** (or **Correct Quantity →**) actions.
+
+Set the new quantity, type a reason, and tap the primary action.
+
+## Step 2 — Manager PIN
+
+The **PIN Verify** modal opens with the title matching your action:
+
+- `Void Grilled Chicken`
+- `Correct Grilled Chicken to 2`
+
+Enter the manager's PIN and tap **Verify**.
+
+<Frame caption="Manager PIN gate for corrections">
+  ![PIN verify](/images/waiter/pin-verify.png)
+</Frame>
+
+- **Wrong PIN**: the modal shakes and stays open. Try again.
+- **Correct PIN**: the correction commits, the Bill Summary updates, and both modals close.
+
+The PIN is verified server-side by the `waiter-operations / void_item` edge function — it also runs the atomic quantity/void update in one transaction, so partial states can't happen.
+
+## Full void vs quantity correction — what actually changes
+
+| Action | Item stays visible? | Total updates? | KDS status? |
+| --- | --- | --- | --- |
+| **Void (quantity 0)** | Yes but greyed with `Cancelled` badge, no strike | Removed from bill total | `cancelled` |
+| **Quantity correction** | Yes with new quantity and new total | Total = unit price × new qty | Unchanged (kitchen still preparing what's left) |
+
+Voids are never physically deleted. They stay on the record with the reason, for auditing.
+
+## Offline corrections
+
+If the network is down when you tap through the PIN screen, DishInk doesn't reject — it queues the correction with the PIN travelling as part of the payload:
+
+1. The PIN is included in the queued operation so the server verifies it whenever the queue processes.
+2. The optimistic update applies to your Bill Summary immediately.
+3. The offline banner shows one more pending operation.
+4. On reconnect, the queue replays and the server-side change matches your local state.
+
+<Note>
+  A queued correction is not "committed" until the server verifies the PIN. If the PIN was wrong (typed by a non-manager passing off as one), the queue reports the failure on reconnect and the local state is rolled back.
+</Note>
+
+## Common reasons
+
+Fast, honest reason texts help the manager audit:
+
+- `Wrong item punched`
+- `Punched 3 instead of 2`
+- `Guest changed mind`
+- `Kitchen made wrong dish` (with **New item** added separately)
+- `Comp — kitchen delay`
+- `Allergy — replacement ordered`
+
+## Voiding after payment
+
+Once an item is on a paid, closed session, voiding it becomes a **refund** — handled from POS Transaction History, not the Waiter Module. See [Refunds](/pos/refunds).
+
+## Split-locked items
+
+If the table has an active split payment, the Void button is still available, but the correction will only apply after the split is cancelled — DishInk shows the block message. This prevents silently changing an already-agreed split total.
+
+## Tips & best practices
+
+<Tip>
+  **Correct quantities instead of full voids** where possible. A quantity correction is less alarming in the audit log than a void.
+</Tip>
+
+<Tip>
+  Have the manager standing beside the tablet when you know a void is needed — it turns a two-minute conversation into a 5-second tap.
+</Tip>
+
+<Tip>
+  Write the reason clearly. A month later, `wrong` is unhelpful; `Guest asked for medium, kitchen served well-done — comped` is auditable.
+</Tip>
+
+<Tip>
+  Voids are visible in **Shift Reports** and **Staff Performance** analytics. High void rates against one staff member are a training signal.
+</Tip>
+
+## Common mistakes
+
+- **Voiding to fix table assignment.** Use [Moving Items](/waiter/moving-items) — cheaper, no audit noise.
+- **Skipping the reason field.** DishInk fills a default (`Incorrect item` / `Quantity corrected`) if blank, but a real reason is much more useful.
+- **Assuming void = refund.** Void is a _pre-payment_ correction. Refund is _post-payment_. See [Refunds](/pos/refunds).
+- **Blaming the wrong staff member.** Voids record the _manager_ who authorised and the _waiter_ who initiated. Both are visible in reports.
+
+## Related pages
+
+- [Taking Orders](/waiter/taking-orders)
+- [Sending Orders to Kitchen](/waiter/sending-orders)
+- [Moving Items Between Tables](/waiter/moving-items)
+- [Voids (POS)](/pos/voids)
+- [Refunds](/pos/refunds)
+- [Staff Performance](/reports/staff-performance)

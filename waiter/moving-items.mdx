@@ -1,0 +1,101 @@
+---
+title: "Moving Items Between Tables"
+sidebarTitle: "Moving Items"
+description: "Transfer individual items from one table's bill to another — for guest moves, wrong-table punches, and split-off orders."
+---
+
+Moving items lets you shift specific lines from one open session to another **without voiding and re-punching**. This preserves KDS state, timestamps, and any modifiers already prepared.
+
+## Overview
+
+Use item moves when:
+
+- A guest moves from Table 3 to Table 7 mid-meal.
+- Someone punched a drink on the wrong table.
+- A shared order is being split across two separated groups.
+- One person from a group wants to pay separately for just their food.
+
+Full table moves (all items from one table to another empty table) use [Table Transfers](/tables/table-transfers) instead. Item moves are the finer-grained tool.
+
+## Move items from Bill Summary
+
+1. Open the source table's **Manage** view.
+2. Scroll to **Bill Summary**.
+3. Tap the **⋯** (more) icon on the item, then **Move to another table**.
+
+<Frame caption="Move item action on Bill Summary">
+  ![Move item](/images/waiter/moving-items.png)
+</Frame>
+
+4. In the **Move Items** modal:
+   - Select the destination table from the list of open sessions.
+   - Choose the quantity (default: all of that line).
+5. Tap **Move**.
+
+The item disappears from the source's bill and appears on the destination's bill instantly. If the destination is closed or paid, it's not offered.
+
+## What moves with the item
+
+- Modifiers and extras (with their price impact).
+- Special request notes.
+- KDS status (Waiting / Cooking / Ready).
+- Time punched.
+- The original staff member who punched it.
+
+<Note>
+  The item does **not** re-enter the kitchen queue. If it's already preparing, it stays preparing under the destination table's row on the KDS. If it's ready, it's still ready.
+</Note>
+
+## Item transfers are covered here too
+
+The [Item Transfers](/tables/item-transfers) page in Table Management covers manager-side item transfers, cross-branch scenarios, and the underlying data model. If you're just doing routine floor moves, this page is enough.
+
+## Moving with split bills
+
+If either the source or destination has an **active split**, item moves are blocked:
+
+- Source has split: cancel the split first (POS → split panel → Manager PIN).
+- Destination has split: the destination won't appear in the move list.
+
+## Manager PIN for large moves
+
+By default, waiters can move items freely. Some restaurants configure moves above a threshold (e.g. move quantity \> 5, or bill total impact \> K 200) to require a Manager PIN — same PIN flow as [Editing Orders](/waiter/editing-orders). This is set in **Staff Management → Permissions**.
+
+## Offline moves
+
+Moves queue offline like every other waiter action:
+
+- Optimistic patch — items appear on the destination immediately.
+- Source bill total drops immediately.
+- Queue replays on reconnect.
+
+If the destination's session ends up not existing on the server (rare — someone closed it while you were offline), the move fails on reconnect and rolls back on your device with a toast.
+
+## Tips & best practices
+
+<Tip>
+  **Move whole rounds** where you can — one move of `2 × Coke` beats two moves of `1 × Coke`.
+</Tip>
+
+<Tip>
+  Announce moves to the kitchen if items are already preparing — the KDS reflects the new table name, but a quick heads-up saves confusion.
+</Tip>
+
+<Tip>
+  Use moves for **guest-splits** (one guest pays separately) rather than voiding items on one bill and re-punching on another.
+</Tip>
+
+## Common mistakes
+
+- **Moving a sent item to a walk-in that's paying now.** The item follows to the destination bill — but if that bill is halfway through payment, the total updates mid-transaction. Better: move first, then start payment.
+- **Trying to move to a closed session.** Not offered in the destination list.
+- **Confusing move with transfer.** Move = per-item. [Transfer](/tables/table-transfers) = whole bill.
+- **Moving to fix a wrong-table order after payment.** Not possible. Handle via [Refunds](/pos/refunds) instead.
+
+## Related pages
+
+- [Item Transfers](/tables/item-transfers)
+- [Table Transfers](/tables/table-transfers)
+- [Editing Orders](/waiter/editing-orders)
+- [Split Bills](/pos/split-bills)
+- [Requesting Bills](/waiter/requesting-bills)

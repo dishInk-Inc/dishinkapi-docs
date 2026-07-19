@@ -1,0 +1,120 @@
+---
+title: "Shift"
+sidebarTitle: "Shift"
+description: "The Shift tab — the live log of every transaction, refund, void, and payment on this terminal today."
+---
+
+## Overview
+
+The **Shift** tab (third tab on the POS) is your live log of every fiscal event for the current shift or day. Cashiers use it to reprint receipts, refund, void, and answer questions like _"Was that Table 4's or Table 6's coffee?"_ — quickly.
+
+Unlike the Batch Invoice Cash Out (which is the end-of-shift report), the Shift tab is optimised for **real-time lookups** while the shift is still running.
+
+## Layout
+
+The tab has three components:
+
+1. **Filter bar** at the top — date, staff (managers only), payment method, status, and a search field (receipt number, table, customer tag, or amount).
+2. **Transactions table** in the middle — chronological rows, newest first.
+3. **Detail panel** on the right — opens when you tap a transaction.
+
+### Columns
+
+| Column | Notes |
+| --- | --- |
+| Time | HH:MM |
+| Receipt No | Sequential fiscal number |
+| Table / Tag | Table label or Quick Sale tag |
+| Staff | Who charged it |
+| Items | Item count (hover for detail) |
+| Total | Grand total incl. tax \+ tip |
+| Method | Cash / MoMo / Card / Split |
+| Status | Paid · Refunded · Voided · ⚠ Pending ZRA |
+
+Tap any column header to sort.
+
+## The Detail Panel
+
+Selecting a transaction shows:
+
+- **Full line-item breakdown** (with modifiers and notes)
+- Discounts, tax, tips
+- Payment method(s) with any mobile-money or card reference
+- ZRA **Smart Invoice number** and QR code
+- **Actions**: Reprint · Refund · Void (same-day only)
+
+## Filters
+
+- **Date** — defaults to today. Managers can widen to a range.
+- **Staff** — locked to self for waiters/cashiers; unlimited for managers.
+- **Method** — All / Cash / MoMo / Card / Split.
+- **Status** — All / Paid / Refunded / Voided / Pending ZRA.
+- **Search** — full-text across receipt no, table, tag, and amount.
+
+## Pending ZRA Rows
+
+Any transaction where the Smart Invoice hasn't been acknowledged yet shows **⚠ Pending ZRA** in amber. Reasons:
+
+- The terminal was offline at charge time (queued locally).
+- ZRA API is slow / throttling.
+- A transient network error occurred.
+
+The queue auto-retries every 60 seconds. Managers can force a retry from **Smart Invoice → Fiscal Compliance**. See [Fiscal Compliance](/smart-invoice/fiscal-compliance).
+
+## Step by Step (Reprint a Receipt)
+
+<Steps>
+  <Step title="Open Shift tab">
+    Third top tab.
+  </Step>
+  <Step title="Search">
+    Type receipt number, table, or amount into the search field.
+  </Step>
+  <Step title="Tap the transaction">
+    Detail panel opens.
+  </Step>
+  <Step title="Tap Reprint">
+    A duplicate prints, watermarked **COPY**. See [Reprinting Receipts](/pos/reprinting-receipts).
+  </Step>
+</Steps>
+
+## Step by Step (Look Up a Disputed Payment)
+
+<Steps>
+  <Step title="Filter to today, method = Mobile Money">
+    Managers can widen to yesterday if needed.
+  </Step>
+  <Step title="Sort by Total descending">
+    Or search the exact amount if the customer told you.
+  </Step>
+  <Step title="Tap the candidate row">
+    Cross-check the customer's phone reference against the MoMo Transaction Ref field.
+  </Step>
+  <Step title="Confirm or refund">
+    If the customer double-paid → **Refund** with ZRA code **01 – Reversal**. See [Refunds](/pos/refunds).
+  </Step>
+</Steps>
+
+<Frame caption="Shift tab with filters and the detail panel open on a paid transaction.">
+  ![Shift placeholder](/images/pos/shift-tab.png)
+</Frame>
+
+## Tips & Best Practices
+
+- Train cashiers to search by **amount** — customers rarely remember receipt numbers but almost always remember what they paid.
+- Set **Auto-refresh** to 30s so incoming transactions from other terminals appear live during peak service.
+- The **⚠ Pending ZRA** flag is a leading indicator of network issues — if it's showing on more than 10% of the last hour's rows, check the connection.
+
+## Common Mistakes
+
+- **Searching the wrong date.** The filter defaults to today; yesterday's disputed payment won't appear until you widen.
+- **Trying to void yesterday's transaction.** Voids are same-day only. Use Refund.
+- **Assuming Pending ZRA means the customer's payment didn't go through.** It only means the _fiscal invoice_ hasn't been acknowledged. The customer's money is safely captured — the receipt just prints the fiscal number a few seconds later.
+
+## Related Pages
+
+- [Reprinting Receipts](/pos/reprinting-receipts)
+- [Refunds](/pos/refunds)
+- [Voids](/pos/voids)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)
+- [Fiscal Compliance](/smart-invoice/fiscal-compliance)

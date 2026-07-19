@@ -1,0 +1,44 @@
+---
+title: "Inventory Adjustments"
+sidebarTitle: "Adjustments"
+description: "Correct physical vs system stock discrepancies with reason codes and audit trail."
+---
+
+Inventory Adjustments correct discrepancies between physical stock and system stock. Common reasons: spillage, breakage, expiry, theft, staff meals, or count errors.
+
+## Overview
+
+Every adjustment records:
+
+- Ingredient and quantity delta (positive or negative)
+- Reason code (spillage, expiry, correction, staff meal, theft)
+- Staff member and timestamp
+- Optional note
+
+## Record an adjustment
+
+<Frame caption="Inventory adjustment">
+  ![Adjustment](/images/inventory/adjustments.png)
+</Frame>
+
+<Note>
+  Adjustments require **Manager** or higher role. All adjustments feed the shrinkage report.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Log spillage and breakage the moment it happens. End-of-day batch adjustments hide operational issues.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not use adjustments to "fix" purchase records. Use [Purchase Tracking](/inventory/purchase-tracking) instead — adjustments are for actual variance.
+</Warning>
+
+## Related pages
+
+- [Stock Levels](/inventory/stock-levels)
+- [Purchase Tracking](/inventory/purchase-tracking)
+- [Low Stock Alerts](/inventory/low-stock)

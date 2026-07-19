@@ -1,0 +1,216 @@
+---
+title: "Batch Invoice Cash Out"
+sidebarTitle: "Batch Cash-Out"
+description: "The end-of-shift and end-of-day fiscal report — reconcile cash, methods, staff, refunds, voids, and manager overrides in one place."
+---
+
+## Overview
+
+The **Batch Invoice Cash Out** is DishInk's end-of-shift and end-of-day report. It's the single source of truth for reconciling:
+
+- Total revenue by **payment method** (Cash / MoMo / Card / Split)
+- **Staff performance** (transactions, revenue, tips, overrides)
+- **Refunds** and **Voided transactions**
+- **Voided / corrected line items** (partial-void deltas)
+- Every **manager override** for the period (discounts above ceiling, close-without-payment, comps)
+
+It's designed to be printed at the end of a shift, cashed out against the physical till, and filed for the accountants — while also being detailed enough for a ZRA audit.
+
+The Batch Invoice lives in the **Batch Invoice** tab of the POS (fourth tab, after Table / Quick Sale Checkout, Quick Sale, and Shift).
+
+## Manager View vs Staff View
+
+The report shows two very different faces depending on who's logged in.
+
+### Manager View
+
+Full visibility across all staff and every export.
+
+- **Summary / Detailed** toggle
+- **Voided** checkbox — include voided transactions in the numbers
+- **Staff filter** — all staff or one specific waiter/cashier
+- **Date presets** — This Week · Last Week · This Month · Last Month · **Custom** (with optional start/end time on custom mode)
+- **4 CSV exports**:
+  - Transactions
+  - Staff Summary
+  - Staff Items
+  - Manager Overrides
+
+### Staff View (Waiter / Cashier)
+
+Locked to their own numbers, simplified for cash-up.
+
+- **Detailed** view forced (no toggle)
+- **Voided** auto-included
+- Staff filter locked to self
+- Date range locked to **today** (or their current shift if shift-mode enabled)
+- Single **🖨 Generate & Print** button — no CSV exports
+
+<Note>
+  This is the shape of accountability in DishInk: staff see enough to cash out honestly, managers see enough to catch anomalies.
+</Note>
+
+## Summary Cards
+
+The top of the report shows nine live summary cards:
+
+| Card | What it shows |
+| --- | --- |
+| **Net** | Gross − Tax − Discounts − Refunds. The number you can actually bank. |
+| **Tax** | Total VAT collected for ZRA. |
+| **Discounts** | Sum of all discounts applied. |
+| **Gross** | Sum of every line item's list price before adjustments. |
+| **Tips** | Total tips (routed to pool or waiter — see [Tips](/pos/tips)). |
+| **Refunds** | Money returned to customers in this period. |
+| **Voided (Transactions)** | Whole-sale voids. |
+| **Voided/Corrected (Items)** | Partial-void deltas only — not the full item value. |
+| **Transactions** | Total transaction count. |
+
+## Sections
+
+The Detailed view expands into a full report:
+
+### 1. By Payment Method
+
+Cash · MTN MoMo · Airtel Money · Zamtel Kwacha · Card · Split. Each row shows count, gross, refunds, and net.
+
+### 2. By Staff
+
+Every staff member's transactions, revenue, tips, refunds initiated, and overrides used.
+
+### 3. Daily Breakdown
+
+Chronological per-day rows for multi-day ranges — quick sanity check for weekend spikes or slow Mondays.
+
+### 4. Individual Transactions
+
+The transaction list has **13 columns**: Date/Time, Receipt No, Table/Tag, Staff, Items, Gross, Discount, Tax, Tip, Refund, Net, Payment Method, Status.
+
+Sortable and filterable. Every row is clickable to open the full transaction.
+
+### 5. Refunds
+
+Every refund in the period with staff, ZRA credit-note code, reason, and amount.
+
+### 6. Voided Transactions
+
+Whole-sale voids: staff, reason, amount, and timestamp.
+
+### 7. Voided / Corrected Items
+
+Line-level voids and quantity corrections. Delta amounts only.
+
+### 8. Manager Overrides (expandable)
+
+Every time a manager PIN was used. Categories:
+
+- Discount above staff ceiling
+- Refund authorised
+- Close-without-payment
+- Compliment (comp)
+- Void (partial or full)
+- Inventory override (sold-out item forced on)
+
+### 9. Staff Performance Breakdown
+
+Per-staff detail: their transactions, items, tips, and — critically — the **Handoff vs Shared** breakdown:
+
+- **Shared** — multiple waiters added items to one session. Revenue splits proportionally by dollar contribution; the transaction count goes to whoever contributed the biggest share.
+- **Handoff** — payment was processed by someone who never punched a single item on that table. This is often a cashier closing a bill for a waiter, and it's flagged so tips and revenue attribute correctly.
+
+<Note>
+  Handoff vs Shared is unique to DishInk. Traditional POS systems either lump these together as "the closer keeps everything" or drop them entirely — both mis-report performance. See [Staff Performance Report](/reports/staff-performance) for the analytics counterpart.
+</Note>
+
+## Requires Internet
+
+The Batch Invoice must be generated online — it reads directly from the server to prevent drift between the local cache and the ZRA-submitted totals. Offline devices see a _"Connect to internet to run cash-out"_ placeholder.
+
+## Print Methods (7 supported)
+
+DishInk auto-selects the best print path available:
+
+1. **QZ Tray** (desktop native driver — best fidelity)
+2. **Bluetooth** (thermal / mobile printers)
+3. **Network** (LAN thermal printers)
+4. **USB Bridge** (Android POS Steward companion app)
+5. **POS Steward** (proprietary Android bridge)
+6. **RawBT** (Android universal driver)
+7. **Browser A4** (fallback — opens a print preview in the browser)
+
+If the primary method fails, DishInk retries in order and falls back to Browser A4 as a last resort. See [Printing](/printing/usb-printers).
+
+## Step by Step (Manager Daily Cash-Out)
+
+<Steps>
+  <Step title="Open Batch Invoice tab">
+    POS → **Batch Invoice** (top tabs, rightmost).
+  </Step>
+  <Step title="Pick a date range">
+    **Today** for daily cash-out, or Last Week / This Month for period reports. Add a time window for shift-level views.
+  </Step>
+  <Step title="Filter by staff (optional)">
+    Leave _All Staff_ for the full picture, or pick one for a per-cashier reconciliation.
+  </Step>
+  <Step title="Toggle Voided ON">
+    Tick **Include Voided** so voided transactions show — you'll want them for the audit trail.
+  </Step>
+  <Step title="Switch to Detailed">
+    Toggle Summary → Detailed. Every section loads.
+  </Step>
+  <Step title="Reconcile against physical cash">
+    Compare _Cash_ under **By Payment Method** to the physical cash count. Investigate any variance.
+  </Step>
+  <Step title="Check overrides">
+    Expand **Manager Overrides**. Any surprises? Any unexplained comps? Follow up now, not tomorrow.
+  </Step>
+  <Step title="Print / Export">
+    - Print the full report for the accountants.
+    - Export the 4 CSVs (Transactions, Staff Summary, Staff Items, Overrides) to email or archive.
+  </Step>
+</Steps>
+
+## Step by Step (Waiter End-of-Shift)
+
+<Steps>
+  <Step title="Tap Batch Invoice tab">
+    Only your own numbers show, Voided already included.
+  </Step>
+  <Step title="Confirm shift dates">
+    Locked to your current shift or today.
+  </Step>
+  <Step title="Tap 🖨 Generate & Print">
+    Report prints. Cash the till out against the printed report and hand both to the manager.
+  </Step>
+</Steps>
+
+<Frame caption="Batch Invoice Manager View showing all sections.">
+  ![Batch invoice placeholder](/images/pos/batch-cash-out.png)
+</Frame>
+
+## Tips & Best Practices
+
+- **Cash out at the same time every day** — usually just before closing. Consistency makes anomalies visible.
+- Export the **Manager Overrides CSV** weekly and skim it. Patterns emerge (e.g. same waiter, same reason, same amount).
+- Use **Custom \+ time window** to reconcile lunch vs dinner shifts on the same day.
+- For accountants — the **Transactions CSV** imports cleanly into QuickBooks / Xero. Keep column headers consistent by exporting from the same range/filters each week.
+
+## Common Mistakes
+
+- **Not toggling Voided ON.** Without it, the total transaction count looks lower than the till suggests.
+- **Reconciling against the wrong day.** Set the date filter first. DishInk defaults to today, but a manager returning after the weekend may need Last Week.
+- **Assuming Handoff = tip theft.** It's not — it's just that a cashier closed a waiter's table. Look at tip attribution instead of transaction count.
+- **Printing before scrolling through the report.** The paper trail is only useful if you've read it first. Anomalies caught before printing save re-prints.
+- **Losing the CSV exports.** Set up **Reports → Auto-email** so the manager gets them daily by email. See [Reports & Analytics](/reports/revenue-reports).
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Refunds](/pos/refunds)
+- [Voids](/pos/voids)
+- [Transaction History (Shift)](/pos/shift)
+- [Tips](/pos/tips)
+- [Roles & Permissions](/getting-started/roles-permissions)
+- [Staff Performance Report](/reports/staff-performance)
+- [Revenue Reports](/reports/revenue-reports)
+- [Printing](/printing/usb-printers)

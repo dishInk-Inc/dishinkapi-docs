@@ -1,0 +1,129 @@
+---
+title: "Assigned Tables"
+sidebarTitle: "Assigned Tables"
+description: "Your personal floor view — the tables you're responsible for, with live status pills, filters, search, and the Mine indicator."
+---
+
+The Waiter Module opens on the **Floor** view — a personal, filtered version of the restaurant's floor plan showing only the tables you're covering.
+
+## Overview
+
+When you sign in as a waiter, DishInk automatically:
+
+- Fetches your assignments from `waiter_table_assignments`.
+- Filters the floor so you see **only your tables** by default.
+- Splits the grid into **Floor** and **Walk-in / POS** sections (configurable).
+- Shows live KDS counts, unsent-cart badges, and split-bill markers on each card.
+
+Managers see the same page but with the extra ability to toggle to **All Tables**.
+
+<Frame caption="The Waiter Floor view with filter pill, search, and grouped cards">
+  ![Waiter floor](/images/waiter/assigned-tables.png)
+</Frame>
+
+## Reading the top bar
+
+Across the top of the Floor view you'll find:
+
+| Control | Purpose |
+| --- | --- |
+| **Filter pill** (e.g. `My · Ordering · 3`) | Shows the active filter, its count, and expands the filter grid on tap. |
+| **X clear** | Appears when a status filter is active. Clears back to `My Tables` or `All Tables`. |
+| **Search box** | Type any part of a table name — the grid filters live. `Esc` clears. |
+| **\+ Add Table** (emerald) | Creates a temporary table (see [Temporary Tables](/waiter/temporary-tables)). |
+| **Walk-in toggle** | Choose **Show separately** or **Hide completely**. Preference saved to this device (`waiter_walkin_pref`). |
+| **Table counter** | `12 tables` — reflects your current filter \+ search. |
+
+## Filter options
+
+Tap the filter pill to expand the grid. Options:
+
+- **All Tables** _(managers only)_ — every table in the branch.
+- **My Tables** — your assignments (default for waiters).
+- **Free**, **Occupied**, **Ordering**, **Served**, **Billing**, **Reserved** — status filters.
+- **Unsent Orders** — tables where you've added items to the cart but not sent them.
+- **Split Active** — tables with an active split payment.
+
+Each option shows a live **count**. Non-managers don't see the **All Tables** option — they're always scoped to their assignments.
+
+<Note>
+  Managers who pick **All Tables** stay on that scope even when they switch to a status filter (e.g. `All · Billing`). Switching back to **My Tables** rescopes them.
+</Note>
+
+## Reading a table card
+
+Every card packs a lot of live signal:
+
+- **Coloured border** — encodes the status. If multiple states apply (e.g. Ordering \+ Preparing \+ Split), the border shows 2 or 4 colours (see [Table Statuses](/tables/table-statuses)).
+- **Merged badge** (indigo) — this table's bill lives on another table; tap for details.
+- **Temp badge** (purple) — [temporary table](/waiter/temporary-tables).
+- **Unsent cart badge** (red, top-right) — your saved cart items not yet sent to kitchen, with count.
+- **Split badge** (orange) — active split payment; the number is the payer count.
+- **Split-syncing badge** (amber, pulsing) — a split request queued while offline; syncs on reconnect.
+- **Preparing / Waiting dots** (blue / amber, pulsing) — live counts from the Kitchen Display.
+- **Overdue dot** (red, animated) — an item has exceeded its target prep time.
+- **Waiter first name** (red) — who is assigned. On your own tables this matches your name.
+- **Bill amount** (emerald) — running total for the session.
+
+<Frame caption="Table card variations — busy, merged, temporary, and split states">
+  ![Table cards](/images/waiter/table-cards.png)
+</Frame>
+
+## Walk-in / POS section
+
+Tables in the special `Walk-in` section (created from POS quick sales or as temporary walk-ins) can either:
+
+- **Show separately** — appear in their own labelled group below the main floor.
+- **Hide completely** — vanish from the waiter view entirely.
+
+The toggle sits in the top bar. Your choice persists on the device.
+
+## Search
+
+Type any part of a table name (`Patio`, `12`, `Bar`). The grid narrows in real time across both the main floor and the walk-in section. Press `Esc` or tap the ✕ to clear.
+
+## Empty states
+
+If the current filter yields nothing, you'll see:
+
+> _No ordering found — 24 total tables on the floor._ _\[Show all tables →\]_
+
+Tap the link to jump back to the default view for your role.
+
+## Cached data & offline
+
+If the device loses connectivity or you open the page from cache, DishInk continues to work:
+
+- Your assignments and last-known statuses are shown from cache.
+- The **offline banner** displays cache age and any pending sync operations.
+- KDS dot counts freeze at their last observed values until reconnection.
+
+See [Sending Orders to Kitchen](/waiter/sending-orders) for how offline order sending is queued.
+
+## Tips & best practices
+
+<Tip>
+  Start every shift with a **filter sweep**: My Tables → Ordering → Served. It's the fastest way to see who needs attention.
+</Tip>
+
+<Tip>
+  Use **Unsent Orders** as your safety net. If the count is non-zero at end of shift, you have carts that were never sent to the kitchen.
+</Tip>
+
+<Tip>
+  Managers: leave the scope on **My Tables** during service unless you're actively covering a section. It matches what your waiters see and keeps the KDS realtime queries light.
+</Tip>
+
+## Common mistakes
+
+- **"My tables are missing."** You're probably not assigned. Ask a manager to open [Waiter Assignments](/tables/waiter-assignments).
+- **Filter stuck on a status.** Tap the ✕ next to the filter pill to reset.
+- **Searching for a table that's hidden.** Walk-in preference set to **Hide completely** removes those tables from search too.
+
+## Related pages
+
+- [Waiter Assignments](/tables/waiter-assignments)
+- [Opening Tables](/waiter/opening-tables)
+- [Taking Orders](/waiter/taking-orders)
+- [Floor Plan](/tables/floor-plan)
+- [Table Statuses](/tables/table-statuses)

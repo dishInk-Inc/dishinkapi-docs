@@ -1,0 +1,113 @@
+---
+title: "Split Bills"
+sidebarTitle: "Split Bills"
+description: "Split a table's bill three ways: equal shares, by items, or custom amounts — with cross-device locking."
+---
+
+## Overview
+
+Splitting is done from the **Bill View** (middle column of the Table / Quick Sale Checkout tab). Tap **Split** — the _Split Configure_ panel opens and takes over the table until the split is committed or cancelled.
+
+DishInk supports three split modes:
+
+| Mode | When to use it | How it works |
+| --- | --- | --- |
+| **Equal** | Group agrees to divide the bill evenly. | Enter number of guests → DishInk divides Net \+ Tax \+ Service into equal parts (last part absorbs any rounding kwacha). |
+| **By Items** | Everyone pays for what they had. | Assign each line item (with its share of tax and modifiers) to a guest bucket. |
+| **Custom** | Someone offered to cover more than their share. | Type each guest's amount manually. Must add up to the bill total (a live tally shows overshoot/undershoot in red). |
+
+## The Split Lock
+
+The moment a Split is opened, the session is marked **split-active** on the server. Every other device viewing that table gets a live toast: _"Split in progress on Terminal X"_ and their **Split** and **Charge** buttons grey out.
+
+This prevents two cashiers on two terminals from taking overlapping partial payments and blowing the total. The lock clears automatically when:
+
+- The last split part is charged, or
+- The cashier taps **Cancel Split**, or
+- The session is transferred to another terminal (manager override).
+
+<Note>
+  If a device loses network mid-split, the lock persists for 5 minutes on the server, then auto-releases. This is a safety net — the recommended flow is to always tap **Cancel Split** if you need to abandon.
+</Note>
+
+## The Split Panel
+
+Once **Split** is tapped, the Bill View is replaced with the Split Configure panel:
+
+- **Mode toggle** at the top: Equal · By Items · Custom
+- **Guest cards** below (Guest 1, Guest 2, …) with editable names
+- **Live per-guest totals** — Net, Tax, Discount, Grand Total
+- **\+ Add Guest** and **× Remove** buttons
+- **Overall tally** at the bottom: Sum of Splits vs Bill Total, with a delta indicator (green when balanced, red when off).
+
+## Charging Each Split
+
+When splits are configured, the panel switches to **Charge** mode. Each guest card shows:
+
+- Their share
+- A **Charge** button that opens the standard Charge Modal (Cash / Mobile Money / Card / Split Bill — see [Creating Sales — Payment Method Flows](/pos/creating-sales#payment-method-flows))
+- A **Paid ✓** badge once their part is settled
+
+You can charge in any order — Guest 3 can pay first, then Guest 1, then Guest 2. The receipt for each part prints immediately after its charge.
+
+Once every guest is Paid, the session closes automatically and the ZRA Smart Invoice is submitted per split part (each split gets its own fiscal invoice number).
+
+## Step by Step
+
+<Steps>
+  <Step title="Open the Bill">
+    From **Table / Quick Sale Checkout**, pick the table in Active Tables. The Bill View shows in the middle column.
+  </Step>
+  <Step title="Tap Split">
+    The **Split Configure** panel opens. Other terminals now see the _Split in progress_ toast.
+  </Step>
+  <Step title="Choose a mode">
+    Equal, By Items, or Custom. Add guests (default 2) using **\+ Add Guest**.
+  </Step>
+  <Step title="Assign or enter amounts">
+    - Equal → set guest count.
+    - By Items → drag or tap items into guest cards.
+    - Custom → type each guest's amount. Watch the tally at the bottom.
+  </Step>
+  <Step title="Commit the split">
+    Tap **Continue to Charge**. The panel switches to per-guest Charge buttons.
+  </Step>
+  <Step title="Charge each guest">
+    Tap **Charge** on any guest card → pick payment method → confirm. Repeat for every guest.
+  </Step>
+  <Step title="Session closes">
+    When the last guest is Paid, the session auto-closes and the table returns to Available.
+  </Step>
+</Steps>
+
+<Frame caption="Split Configure panel showing three guest cards with a live balance tally.">
+  ![Split bills placeholder](/images/pos/split-bills.png)
+</Frame>
+
+## Cancelling a Split
+
+Tap **Cancel Split** at the top of the panel. Any splits already charged **remain charged and receipted**; the remaining balance rolls back into the main bill for a normal single-payer charge.
+
+If nothing was charged yet, cancelling is a clean reset — the session returns to normal.
+
+## Tips & Best Practices
+
+- Ask the group up front: "Same card, or splitting?" — saves punching items into guest buckets after the fact.
+- For **By Items**, use short guest names ("John", "Mum", "Boss") — they show on the printed receipt so guests can verify.
+- **Custom** mode is the easiest when a corporate client says _"Bill everything but the wine to the company card."_ Assign the wine to Guest 1 (personal), everything else to Guest 2 (company).
+- Always finalise splits at one terminal. If you need to move devices, cancel first.
+
+## Common Mistakes
+
+- **Charging the main bill mid-split.** You can't — the Charge button is greyed out. Cancel the split first.
+- **Custom split doesn't balance.** The panel highlights the delta in red. Fix the amounts until the tally shows green.
+- **Forgetting to charge the last guest.** The session stays in _Billing_ — check the Bill View for any unpaid split rows.
+- **Splitting after applying a full-bill discount.** The discount is preserved and split proportionally; if you wanted it on only one guest, cancel the split, remove the discount, split, then re-apply per line via **By Items**.
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Partial Payments](/pos/partial-payments)
+- [Discounts](/pos/discounts)
+- [Terminal Setup](/pos/terminal-setup)
+- [Refunds](/pos/refunds)

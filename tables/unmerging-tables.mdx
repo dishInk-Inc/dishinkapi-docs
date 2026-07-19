@@ -1,0 +1,82 @@
+---
+title: "Unmerging Tables"
+sidebarTitle: "Unmerging Tables"
+description: "Break a merged group apart — per-row Unmerge from the Merged Tables panel, what happens to the bill, and offline safety."
+---
+
+Unmerging separates a table from a merged group. The bill stays with the primary; the unmerged table returns to its own state.
+
+## Overview
+
+Unmerge is the inverse of [Merge](/tables/merging-tables), but it is **not** symmetric:
+
+- The **primary table** keeps the merged bill and all its items.
+- The **unmerged (secondary) table** returns to the floor plan as an **empty active session** — an open table with no items.
+- If the unmerged table had a session before the merge, that session is **not** restored. Merging is a one-way absorption; unmerging just detaches.
+
+## Unmerge a table
+
+1. Tap any table in the merged group. The Table Session modal opens.
+2. Scroll to the **Merged Tables** panel.
+3. Beside each secondary table, tap **Unmerge**.
+
+<Frame caption="Merged Tables panel with per-row Unmerge button">
+  ![Unmerge from panel](/images/tables/unmerging-tables.png)
+</Frame>
+
+4. The table detaches immediately. The Merged badge disappears on both cards. The floor plan updates.
+
+## What happens to the bill
+
+Everything on the merged bill stays with the **primary**. Items that originally came from the unmerged table are **not** moved back automatically.
+
+If you need to split items back onto the unmerged table:
+
+1. Unmerge first (this frees the target table).
+2. Use [Item Transfers](/tables/item-transfers) to move specific items from the primary to the now-detached table.
+
+<Warning>
+  **Item transfer targets** must be **active, unsplit, and unmerged.** If you want to move items to a table that was just unmerged, do it immediately — before that table is closed or someone else opens it.
+</Warning>
+
+## Offline safety — the auto-cleanup rule
+
+When a device is offline and merges/unmerges happen on other terminals, the local cache can drift out of sync. DishInk handles this automatically:
+
+- On the next **`online`** event (the browser detecting network is back), the app re-fetches merge state and **auto-cleans stale merges** from the local cache.
+- If a table you thought was merged is actually detached on the server, it silently un-merges locally with no action needed.
+
+<Note>
+  You may briefly see a table with a **Merged** badge that isn't actually merged anymore. This resolves within a second or two of reconnection. Don't force-refresh — let the cleanup run.
+</Note>
+
+## Unmerging the last table
+
+If a group of 3 tables (A primary, B and C secondary) is unmerged one by one — first C, then B — the group dissolves. A becomes a normal active table with all the accumulated items. Its Merged badge disappears.
+
+## Split lock and unmerge
+
+Unlike merge, **unmerge is not blocked by an active split**. You can detach a table even while the merged bill has a split payment configured — the split stays with the primary.
+
+## Tips & best practices
+
+<Tip>
+  Unmerge as soon as groups decide to pay separately. This is faster than trying to configure a complex split across a merged bill.
+</Tip>
+
+<Tip>
+  If a table was accidentally merged, **unmerge and use [Item Transfers](/tables/item-transfers)** to send its items back rather than re-merging in reverse.
+</Tip>
+
+## Common mistakes
+
+- **Assuming items follow the unmerge.** They don't. Use Item Transfer.
+- **Panicking when a stale Merged badge appears offline.** Wait for reconnection — it auto-cleans.
+- **Unmerging the primary.** You unmerge secondaries _from_ the primary. To dissolve the whole group, unmerge each secondary one at a time.
+
+## Related pages
+
+- [Merging Tables](/tables/merging-tables)
+- [Item Transfers](/tables/item-transfers)
+- [Table Transfers](/tables/table-transfers)
+- [Floor Plan](/tables/floor-plan)

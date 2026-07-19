@@ -1,0 +1,169 @@
+---
+title: "Kitchen Statuses"
+sidebarTitle: "Kitchen Statuses"
+description: "The full ticket lifecycle on the KDS with colour coding and status meanings."
+---
+
+Every item on the KDS moves through a defined lifecycle from the moment it's added to a cart until it's paid for and archived. Understanding each status is essential for kitchen throughput, waiter coordination, and honest analytics.
+
+## The full lifecycle
+
+DishInk uses seven KDS statuses, stored on `table_order_items.kds_status`:
+
+| # | Status | Meaning | Set by |
+| --- | --- | --- | --- |
+| 1 | **pending** | In the waiter's cart, not yet sent. | Waiter (Taking Orders) |
+| 2 | **sent\_to\_kitchen** | Fired, waiting to be claimed. | Waiter / POS on Send |
+| 3 | **preparing** | Timer running, kitchen is cooking. | Kitchen tap **Prepare** |
+| 4 | **ready** | Plated on the pass, awaiting collection. | Kitchen tap **Ready** |
+| 5 | **printed** | Paper ticket dispatched (kitchen without KDS). | Print pipeline |
+| 6 | **served** | Delivered to the table. | Kitchen or waiter |
+| 7 | **cancelled** | Voided before completion. | Waiter or POS with manager PIN |
+
+`printed` is a **peer** of `sent_to_kitchen`, not a successor — it's the path for kitchens that print rather than run a KDS screen. `served` follows either `ready` (KDS mode) or `printed` (paper mode).
+
+## Where each status appears
+
+Each status has a distinct visual treatment across DishInk surfaces:
+
+### KDS ticket board
+
+| Status | Card treatment |
+| --- | --- |
+| `sent_to_kitchen` | Green, chime plays on arrival. |
+| `preparing` | Amber, prep timer counts up; overdue tickets flip red. |
+| `ready` | Solid green with **Ready** badge; pulses subtly to attract waiter attention. |
+| `served` | Removed from active board. |
+| `cancelled` | Removed from active board; a small void-count badge shows on the ticket header. |
+
+### Waiter Bill Summary
+
+| Status | Label | Colour |
+| --- | --- | --- |
+| `pending` | Pending | Grey |
+| `sent_to_kitchen` | In Queue | Blue |
+| `preparing` | Preparing | Amber |
+| `ready` | Ready | Green |
+| `printed` | Printed | Orange |
+| `served` | Served | Grey check |
+| `cancelled` | Cancelled | Grey strike-through |
+
+### Floor plan card border
+
+The floor card border encodes the mix of statuses on the table's active items:
+
+| Composition | Border |
+| --- | --- |
+| All same status | Uniform colour (matches the status). |
+| Two statuses | Diagonal split (top\+left = first status, bottom\+right = second). |
+| Three or more statuses | One colour per side (top / right / bottom / left). |
+| Merged tables | Always indigo `#6366f1`, regardless of item status. |
+
+This lets a waiter see at a glance whether a table is "all preparing" (uniform amber) vs "some ready, some still cooking" (green/amber split).
+
+## Colour coding — the traffic-light rule
+
+Prep timers use a three-band traffic light against each item's `prep_time_target_minutes`:
+
+| Band | Colour | Meaning |
+| --- | --- | --- |
+| `elapsed < 60% of target` | **Green** | Fresh, on-track. |
+| `60% – 100% of target` | **Amber** | Approaching target — attention needed. |
+| `elapsed > target` | **Red — Overdue** | Past target. Kitchen Analytics logs the miss. |
+
+Overdue detection is driven by `prep_started_at + prep_time_target_minutes` — the item must be `preparing` for the timer to run. Items sitting in `sent_to_kitchen` don't count against the prep target, but they do count against the **station queue alert** (`alert_after_minutes`).
+
+<Frame caption="Kitchen statuses">
+  ![Kitchen statuses](/images/kds/kitchen-statuses.png)
+</Frame>
+
+## Legal transitions
+
+Not every status can follow every other status. The valid transitions are:
+
+```text
+pending → sent_to_kitchen → preparing → ready → served
+                       ↘ printed ────────────→ served
+   (any) → cancelled
+```
+
+- `pending → sent_to_kitchen` — the waiter taps **Send to Kitchen**.
+- `sent_to_kitchen → preparing` — the kitchen taps **Prepare** (per item or bulk).
+- `preparing → ready` — the kitchen taps **Ready**.
+- `ready → served` — the kitchen taps **Served**, or the waiter serves it.
+- `sent_to_kitchen → printed` — for stations with `thermal_print_enabled`, the item skips the KDS screen and goes to the printer.
+- `printed → served` — the waiter ticks the served checkbox on the Bill Summary as food lands.
+- **Any → cancelled** — a void by the waiter (with manager PIN) or POS.
+
+<Warning>
+  Status changes travel two ways: server realtime and LAN broadcast. If you see a status change back-track (e.g. `ready` → `preparing`), it's almost always an offline device catching up. Wait a beat before overriding.
+</Warning>
+
+## Sync fabric — how a status change reaches every screen
+
+Every tap on the KDS goes through the same three-layer sync:
+
+1. **Optimistic local write** — the UI updates immediately.
+2. **Supabase realtime** — the update fans out to every subscribed KDS, POS, and Waiter device via the `waiter_kds_${restaurantId}` channel.
+3. **LAN side-car broadcast** — in parallel, a broadcast fires over the local Wi-Fi so on-network devices update even when the cloud is slow.
+
+If both fail (fully offline), the change queues locally and syncs on reconnect. The **X QUEUED** badge on the KDS header shows the pending count.
+
+## Automatic session transitions
+
+Item statuses drive **session statuses** on the table:
+
+| When... | The session becomes... |
+| --- | --- |
+| First item goes `sent_to_kitchen` | `ordering` → `sent` |
+| Any item goes `preparing` | `cooking` |
+| Every non-cancelled item is `served` | `served` (ready for payment) |
+| Waiter requests bill | `billing` |
+| Payment completes | `paid` → session closes, table returns to `free` |
+
+See [Table Statuses](/tables/table-statuses) for the parallel table-level lifecycle.
+
+## Voids and cancellations
+
+A `cancelled` item is **not deleted** — the record is kept for audit and fiscal purposes. It shows on the Bill Summary with a strike-through and does not count toward the "every item served" transition. See [Editing Orders](/waiter/editing-orders) for the void workflow.
+
+<Note>
+  Cancelled items with a `cancel_reason` land in the shift report so managers can see what got voided and why.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Train the kitchen to update statuses **in real time**, not in batches. A single tap per item at the right moment gives clean analytics and instant floor visibility. A batch of taps at the end of the rush destroys both.
+</Tip>
+
+<Tip>
+  Read the border colour on the floor plan before walking to a table. A diagonal split means the food is arriving in stages — don't promise the guest a single arrival.
+</Tip>
+
+<Tip>
+  Set a **queue alert** on every station. Even a 20-minute threshold is better than none — it catches abandoned tickets before the guest catches you.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not use one status for two purposes. "Ready" means plated and hot — not "almost done" and not "the waiter's on the way".
+</Warning>
+
+<Warning>
+  Do not skip `preparing`. Jumping straight from `sent_to_kitchen` to `ready` breaks every prep-time metric and hides slow starts.
+</Warning>
+
+<Warning>
+  Do not treat `cancelled` as reversible. Once an item is voided, the fiscal record excludes it — if the guest changes their mind, add a fresh line rather than trying to un-void.
+</Warning>
+
+## Related pages
+
+- [Receiving Orders](/kds/receiving-orders)
+- [Preparing Orders](/kds/preparing-orders)
+- [Completing Orders](/kds/completing-orders)
+- [Table Statuses](/tables/table-statuses)
+- [Waiter: Editing Orders](/waiter/editing-orders)
+- [Kitchen Analytics](/reports/kitchen-analytics)

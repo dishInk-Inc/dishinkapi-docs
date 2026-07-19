@@ -1,0 +1,95 @@
+---
+title: "Item Transfers"
+sidebarTitle: "Item Transfers"
+description: "Move individual items between tables using Move Items mode — surgical corrections without touching the rest of the bill."
+---
+
+Item Transfer moves **specific line items** from one table to another. Use it when a whole-table transfer is too heavy — you just need to shift a coffee, a pizza, or a wrong order to the right group.
+
+## Overview
+
+Item Transfer is enabled from the Table Session modal's **Move Items** mode. You select items on the source table, then pick a target table, and only those items move.
+
+Everything else — the rest of the bill, the discounts, the waiter, the guest count — stays where it is.
+
+## Enter Move Items mode
+
+1. Open the source table.
+2. In the Table Session modal, tap **Move Items**.
+3. The item list becomes selectable. Checkboxes appear beside each line.
+
+<Frame caption="Move Items mode — pick items, then choose a target">
+  ![Item transfer](/images/tables/item-transfers.png)
+</Frame>
+
+4. Tap the items you want to move. Tap them again to deselect.
+5. Tap **Choose target**. A picker shows valid target tables.
+6. Pick the target. Confirm.
+
+The items disappear from the source bill and appear on the target bill immediately.
+
+## What can be moved
+
+- **Un-sent items** in the cart: moved cleanly.
+- **Sent items** already on KDS: moved on the bill, and the KDS ticket is updated to show the new table name.
+- **Discounted items**: the discount travels with the item.
+- **Voided items**: cannot be transferred — voids are terminal.
+
+## Valid target rules
+
+Item Transfer is stricter than table transfer. A target must be:
+
+- **Active** — must already have an open session. You can't transfer items to a free table (open it first, or use a table transfer).
+- **Not split** — the split lock blocks item transfers, just like it blocks merges.
+- **Not merged** — merged secondaries are not selectable. If you need to move into a merged group, target the **primary**.
+
+<Warning>
+  If the target you want isn't listed, check its state on the floor plan. Split, merged, or free tables are hidden from the item-transfer picker.
+</Warning>
+
+## Split lock and item transfers
+
+If the source **or** target has an active split, item transfer is blocked. The split references specific line items; letting them move would silently break the split logic.
+
+Resolve the split first (pay it, or clear it), then transfer.
+
+## Kitchen implications
+
+When you move a **sent** item:
+
+- The KDS ticket for that item retags to the new table.
+- If the item is already being prepared, the kitchen sees the retag in real time.
+- If the item is already completed, the runner needs to know verbally where to deliver it now.
+
+<Note>
+  Item transfers are audit-logged. Managers can see who moved what, when, and between which tables in the shift report and manager audit log.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Item Transfer is the **surgical tool** for "wrong table, right table" mistakes. Use it instead of voiding and re-adding — voids stay on the audit report and clutter shift analytics.
+</Tip>
+
+<Tip>
+  When two tables split a shared platter, transfer half the platter's charge (or a proportional discount) to the other bill — cleaner than a split payment.
+</Tip>
+
+<Tip>
+  Selecting many items at once is faster on a tablet: long-press the first item to enter select mode, then tap the others.
+</Tip>
+
+## Common mistakes
+
+- **Trying to transfer to a free table.** Open the target first, or use a full [Table Transfer](/tables/table-transfers).
+- **Trying to move a voided item.** Voids are terminal. Add a new item on the target if needed.
+- **Item transfer with an active split.** Blocked. Clear the split first.
+- **Moving items after kitchen has plated.** Runner delivers to the old seat. Communicate verbally.
+
+## Related pages
+
+- [Table Transfers](/tables/table-transfers)
+- [Merging Tables](/tables/merging-tables)
+- [Moving Items Between Tables](/waiter/moving-items)
+- [Voids](/pos/voids)
+- [Split Bills](/pos/split-bills)

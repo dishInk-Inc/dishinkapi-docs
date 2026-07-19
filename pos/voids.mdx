@@ -1,0 +1,102 @@
+---
+title: "Voids"
+sidebarTitle: "Voids"
+description: "Cancel a sale or line item on the same day, before it becomes a fiscal credit note."
+---
+
+## Overview
+
+A **void** cancels a sale or a single line item as if it never happened — no money changes hands, no ZRA credit note is issued. Voids are only allowed:
+
+- **On the same day** (before the daily Z-report / batch cash-out)
+- **While online** (needs the ZRA API to acknowledge the reversal on the pending Smart Invoice)
+- **With a manager PIN**
+
+Once a sale has crossed midnight or the Batch Invoice has been cashed out, voids are locked and you must issue a [**Refund**](/pos/refunds) instead.
+
+## Void vs Refund vs Correction
+
+| Situation | Use |
+| --- | --- |
+| Cashier punched the wrong item, hasn't taken money yet | **Void line item** |
+| Whole sale was rung up on the wrong table, no money taken | **Void sale** |
+| Customer paid, then returned an item | **Refund** (with ZRA credit note) |
+| Item was cooked and served but not eaten (compliments of the house) | **Void with reason: _Compliment_** — logged as a manager comp |
+| Kitchen error on already-fired ticket | **Void with reason: _Kitchen error_** — flags the item for the KDS void ticker |
+
+## The Void Modal
+
+Void the whole sale or tick specific lines first, then:
+
+| Field | Notes |
+| --- | --- |
+| **Manager PIN** | Required. |
+| **Reason** | Required. Free text plus quick chips: _Kitchen error_, _Wrong item_, _Wrong quantity_, _Compliment_, _Test print_, _Other_. |
+| **Notify kitchen** | Auto-ticked for items already sent to KDS/printer. Sends a _VOIDED_ alert to the KDS. See [Kitchen Statuses](/kds/kitchen-statuses). |
+
+## Offline Behaviour
+
+While offline, the **Void** button is greyed out and shows a tooltip: _"Voids require internet. Try again when online, or issue a Refund."_
+
+This is deliberate — DishInk needs to reverse the pending Smart Invoice in real time. If you truly need to reverse offline, refund the transaction once online and use ZRA code **01 — Reversal**.
+
+## Full-Void vs Partial-Void Math
+
+- **Full line void** — deducts the entire item value from the bill, kitchen instructed to bin.
+- **Partial correction** (edit quantity 3 → 2 after firing) — only the difference is voided. On the Batch Invoice this shows as _Voided/Corrected Items_ with the delta amount, not the full value.
+
+The Batch Invoice separates these clearly. See [Batch Invoice Cash Out](/pos/batch-cash-out).
+
+## Step by Step
+
+<Steps>
+  <Step title="Open the bill or transaction">
+    - For a session still open → Bill View → tap the line → **Void**.
+    - For a paid sale → **Shift** tab → tap the transaction → **Void**.
+  </Step>
+  <Step title="Tick lines to void (partial) OR leave all ticked (full void)">
+    The Void Modal previews the exact amount reversing.
+  </Step>
+  <Step title="Enter manager PIN">
+    Any manager-level PIN. Voids without PIN aren't allowed.
+  </Step>
+  <Step title="Pick a reason">
+    Quick chip or free text (min 3 chars). The reason prints on the void slip and on the Batch Invoice.
+  </Step>
+  <Step title="Confirm">
+    A short _VOID SLIP_ prints for the audit file, kitchen is notified if applicable, and the item/sale is marked _Voided_ in the Bill View.
+  </Step>
+</Steps>
+
+<Frame caption="Void Modal with reason chips and Manager PIN.">
+  ![Void modal placeholder](/images/pos/void-modal.png)
+</Frame>
+
+## What Voids Look Like Downstream
+
+- **Bill View** — voided lines struck-through with a red _Voided_ badge.
+- **Kitchen Display** — the item flashes red, then greys out with a _VOIDED_ stamp (see [Kitchen Statuses](/kds/kitchen-statuses)).
+- **Batch Invoice Cash Out** — Voided Transactions and Voided/Corrected Items sections list every void with staff, reason, and delta.
+- **ZRA** — no credit note is filed; the item is silently removed from the pending Smart Invoice.
+
+## Tips & Best Practices
+
+- Void **before** firing to the kitchen whenever possible. It's cheaper than binning food.
+- Train staff that "the customer changed their mind" is a valid **Compliment** reason only if a manager approves. Otherwise it's _Wrong item_ or _Kitchen error_.
+- If voids are spiking on a specific waiter, coach — don't just approve. High void rates hide real issues.
+- Use **Test print** as the reason when you print a test ticket to check a printer — the accountants will thank you.
+
+## Common Mistakes
+
+- **Trying to void yesterday's sale.** The button is locked. Issue a Refund instead.
+- **Voiding offline.** Not allowed — the button greys out. Wait for internet or refund later.
+- **Voiding a line that was already served.** You can still void it, but the kitchen has already used the ingredients — reconcile stock manually. See [Inventory Adjustments](/inventory/inventory-adjustments).
+- **Assuming voids don't hit ZRA.** They do — DishInk quietly reverses the item on the pending Smart Invoice. It just doesn't need a credit note because the fiscal invoice hasn't been finalised yet.
+
+## Related Pages
+
+- [Refunds](/pos/refunds)
+- [Discounts](/pos/discounts)
+- [Kitchen Statuses](/kds/kitchen-statuses)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)
+- [Inventory Adjustments](/inventory/inventory-adjustments)

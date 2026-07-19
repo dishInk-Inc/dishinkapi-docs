@@ -1,0 +1,160 @@
+---
+title: "Completing Orders"
+sidebarTitle: "Completing Orders"
+description: "Mark tickets Ready and Completed to keep waiters, guests, and analytics in sync."
+---
+
+Completing an order is the second half of the KDS lifecycle. Once an item is cooked, it moves through two closing states — **Ready** (plated, waiting for pickup) and **Served** (collected and delivered). The KDS card clears once every non-cancelled item is served, keeping the board honest and analytics accurate.
+
+## Overview
+
+Two closing statuses:
+
+| Status | When to tap it | What it does |
+| --- | --- | --- |
+| **Ready** | The item is plated and sitting on the pass. | Broadcasts to the Waiter App so the waiter knows to collect. Bill Summary shows a green **Ready** label. |
+| **Served** | The waiter has picked it up (or, in thermal-print mode, the item has landed at the table). | Removes the item from the active KDS view. When every item is served, the ticket clears. |
+
+Both statuses are available **per-item** and **per-ticket (bulk)**:
+
+- **Mark Ready** on an item → single line.
+- **Mark All Ready** on the ticket header → every remaining `preparing` line on this station.
+- **Mark All Served** on the ticket header → every remaining `ready` line.
+
+## Marking Ready
+
+<Frame caption="Ready action — item plated, waiter alerted">
+  ![Complete](/images/kds/completing-orders.png)
+</Frame>
+
+<Steps>
+  <Step title="Plate the item">
+    Finish cooking, plate, garnish, and place on the pass.
+  </Step>
+  <Step title="Tap Ready">
+    The line turns green with a **Ready** badge and stamps `ready_at = now()`.
+  </Step>
+  <Step title="Wait for pickup">
+    The Waiter App sees the green **Ready** label on the Bill Summary. The floor plan card may pulse to draw attention.
+  </Step>
+</Steps>
+
+<Warning>
+  Do not mark Ready until the food is truly plated and hot on the pass. Premature Ready leads to cold food when the waiter arrives and skews the ready-to-served metric.
+</Warning>
+
+## Marking Served
+
+Once the waiter collects the food from the pass:
+
+- Tap **Served** on each item, **or**
+- Tap **Mark All Served** on the ticket header to clear the whole plate at once.
+
+The line stamps `served_at = now()`, disappears from the active board, and the ticket card is removed when every non-cancelled item has been served.
+
+### Thermal-print mode (kitchens without a KDS)
+
+If your kitchen prints paper tickets instead of using a KDS screen (`thermal_print_enabled` on the station):
+
+- The item lands on the Bill Summary as **Printed** (orange) rather than `sent_to_kitchen`.
+- **The waiter marks items served** by tapping the served checkbox next to each line on the Bill Summary as the food lands at the table. See [Requesting Bills](/waiter/requesting-bills).
+- No KDS action needed — the flow bypasses the screen.
+
+## Automatic session transitions
+
+Serving items drives the session state:
+
+- The first `served` item does nothing structural.
+- When **every non-cancelled item** in the session is `served`, DishInk automatically flips the session to `served` — the floor card turns grey-green ("ready for payment").
+- The waiter then triggers [Requesting Bills](/waiter/requesting-bills) and the POS takes payment.
+
+## Timing metrics
+
+Every state transition writes a timestamp:
+
+- `sent_at` — from POS/Waiter
+- `prep_started_at` — Prepare tapped
+- `ready_at` — Ready tapped
+- `served_at` — Served tapped
+
+<Frame caption="Complete order">
+  ![Complete](/images/kds/completing-orders.png)
+</Frame>
+
+<Note>
+  Timing metrics are captured at each stage — new-to-preparing, preparing-to-ready, ready-to-collected — for [Kitchen Analytics](/reports/kitchen-analytics).
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Do not mark tickets Ready until they are truly plated and hot on the pass. Premature Ready leads to cold food when the waiter arrives.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not batch-complete tickets at the end of a rush. Time-in-status data becomes meaningless and Kitchen Analytics loses accuracy.
+</Warning>
+
+## Related pages
+
+- [Preparing Orders](/kds/preparing-orders)
+- [Kitchen Statuses](/kds/kitchen-statuses)
+- [Waiter: Closing Tables](/waiter/closing-tables)
+
+These feed [Kitchen Analytics](/reports/kitchen-analytics):
+
+- **Queue time** = `prep_started_at − sent_at`
+- **Cook time** = `ready_at − prep_started_at`
+- **Handover time** = `served_at − ready_at`
+
+Accurate taps = accurate metrics. Sloppy taps make the whole dashboard useless.
+
+## Bulk completing at end of service
+
+At the end of a rush, it's tempting to hit **Mark All Served** on every remaining ticket to clear the board. **Don't.** The timing metrics land in Kitchen Analytics and skew every subsequent report.
+
+Instead:
+
+- Serve items as they actually land at the table.
+- If a ticket is stuck because the waiter forgot to serve, use per-item **Served** with a mental note — or a physical one — to correct the waiter's workflow.
+
+## Voids and completing
+
+A voided line (see [Editing Orders](/waiter/editing-orders)) is `cancelled` and is **not counted** in the "every item served" transition. You can safely ignore cancelled lines when working through the ticket.
+
+## Offline behaviour
+
+- **Ready** and **Served** taps still work offline; they update the local UI and queue the status change.
+- LAN broadcasts fire so on-network devices reflect the change immediately.
+- The **X QUEUED** badge shows pending syncs.
+- On reconnect, the queue drains automatically.
+
+<Warning>
+  If you go offline mid-service, the session cannot auto-transition to `served` until the queue drains — the "all items served" check runs server-side. The waiter can still request the bill; DishInk reconciles once online.
+</Warning>
+
+## Tips & best practices
+
+<Tip>
+  Tap **Ready** the moment the plate hits the pass, not when you finish cooking. The 30-second gap between finishing and plating matters — the waiter needs to know it is grab-and-go, not almost-ready.
+</Tip>
+
+<Tip>
+  Use **Mark All Served** for tickets where every item goes to the same guest at the same time. Use per-item **Served** for split service (starters delivered before mains are ready).
+</Tip>
+
+<Tip>
+  If a ticket sits with a mix of **Ready** and **Preparing** for more than a minute, either speed the slow item or send the Ready item as a first course — cold food kills the guest experience.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not batch-complete tickets at the end of a rush. Time-in-status data becomes meaningless and Kitchen Analytics loses accuracy for the whole shift.
+</Warning>
+
+<Warning>
+  Do not mark Served on food that has not left the pass. The waiter may miss the pickup and the guest waits with no visible progress.
+</Warning>

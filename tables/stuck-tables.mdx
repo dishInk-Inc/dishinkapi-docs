@@ -1,0 +1,90 @@
+---
+title: "Stuck Tables"
+sidebarTitle: "Stuck Tables"
+description: "Diagnose and force-reset tables that show busy on the floor but have no session on the server."
+---
+
+A **Stuck** table is one where the floor plan shows a busy status (Ordering, Preparing, etc.) but the Table Session modal can't find an actual session. It's rare, and always fixable.
+
+## Overview
+
+Stuck happens when a table's status was written to the server but the matching session record didn't land — usually because of a network drop mid-write, or a partial sync from an offline device.
+
+DishInk detects this state automatically and marks the card with a **Stuck** badge after a **600 ms delay** (to avoid flashing "Stuck" during normal loading).
+
+## How to spot a stuck table
+
+- Card shows a busy border colour (e.g. Ordering red) but the guest count and total show as blank.
+- **Stuck** badge appears at the bottom-right of the card.
+- Opening the Table Session modal shows: _"No session found for this table."_
+
+<Frame caption="Stuck table card with badge and empty session modal">
+  ![Stuck table](/images/tables/stuck-tables.png)
+</Frame>
+
+## Wait first, then act
+
+Before force-resetting, wait **10–30 seconds**. Most stuck states self-heal when:
+
+- An offline write completes syncing.
+- A different terminal finishes its transaction.
+- The tablet re-establishes its Supabase realtime channel.
+
+If the badge is still there after 30 seconds, proceed to reset.
+
+## Force-reset (Manager PIN)
+
+Only managers can force-reset a stuck table:
+
+1. Open the stuck table.
+2. In the _"No session found"_ body state, tap **Force Reset**.
+3. Enter your **Manager PIN**.
+4. Confirm.
+
+DishInk clears the table's server-side status back to **Free**. Any orphaned session records are marked resolved in the audit log.
+
+<Warning>
+  Force-reset is destructive to unrecovered data. If a session was mid-write and about to sync, force-reset will discard it. Wait first.
+</Warning>
+
+## Why stuck tables happen
+
+Common causes:
+
+- **Network drop mid-order.** A waiter added items on an unstable link; the status was queued locally, uploaded, but the session record was retried and dropped.
+- **Two terminals conflicting.** Cashier closed a session on Terminal A while Waiter was editing it on Terminal B — the loser's write lands but its session is gone.
+- **Server-side glitch during a spike.** Rare, but a partial write during peak load can leave a status without a session.
+- **Manual database intervention.** Support or engineering deleting a session for debugging.
+
+## Prevention
+
+- Keep tablets on stable Wi-Fi. See [Network Issues](/troubleshooting/network-issues).
+- Avoid closing tables from two terminals simultaneously. Whoever has the modal open should complete or cancel first.
+- Report repeat stuck patterns to [Support](/support/contact-support) so we can trace the root cause.
+
+## Tips & best practices
+
+<Tip>
+  Establish one rule: **wait 30 seconds, then force-reset.** No exceptions. This eliminates the temptation to reset during an ongoing sync.
+</Tip>
+
+<Tip>
+  Managers, keep a note if you force-reset. If it happens more than once per shift, escalate to Support.
+</Tip>
+
+<Tip>
+  Stuck badges on multiple tables at once usually mean a network issue, not a data problem. Check connectivity before resetting.
+</Tip>
+
+## Common mistakes
+
+- **Resetting immediately.** The session was probably about to sync. Wait.
+- **Non-manager staff attempting reset.** Blocked — they'll be prompted for a Manager PIN.
+- **Assuming stuck means "empty and safe."** It might have unsynced items. Waiting preserves them.
+
+## Related pages
+
+- [Table Statuses](/tables/table-statuses)
+- [Floor Plan](/tables/floor-plan)
+- [Network Issues](/troubleshooting/network-issues)
+- [Contact Support](/support/contact-support)

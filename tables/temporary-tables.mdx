@@ -1,0 +1,107 @@
+---
+title: "Temporary Tables"
+sidebarTitle: "Temporary Tables"
+description: "Walk-in and pop-up seating that auto-archives once paid — how staff and managers create, manage, and clean them up."
+---
+
+Temporary tables are the answer to "a group just walked in and we need a bill fast" — and to pop-up events where you need seating that vanishes when the night is over.
+
+## Overview
+
+A **temporary table** behaves exactly like a permanent one — it has a name, section, capacity, sessions, bills, KDS tickets — with one crucial difference:
+
+> Once its bill is paid and the session closes, the temporary table **automatically archives** from the floor plan.
+
+You never have to clean up. The card disappears, history stays.
+
+## Who can create them
+
+| Role | Can create | Can uncheck "Temporary"? |
+| --- | --- | --- |
+| Manager | Yes | Yes — they can create either kind |
+| Cashier | Yes | No — locked on |
+| Waiter | Yes | No — locked on |
+
+<Note>
+  This rule is enforced in the UI. When a non-manager opens the Add Table modal, the **Temporary table** checkbox is checked and greyed out, with the label: _"Staff-created tables are always temporary."_
+</Note>
+
+## Create a temporary table
+
+1. From the **Floor Plan**, tap **Add Table**.
+2. Enter a name — e.g. `Walk-in 1`, `Group of 6`, `Bar Stool`, or leave it as the auto-suggested `Walk-in #N`.
+3. Set capacity and section as normal. Many restaurants use a dedicated `Walk-in` section.
+4. Ensure **Temporary table** is checked. (For staff it's already locked on.)
+5. Tap **Add Table**.
+
+<Frame caption="Creating a temporary table for a walk-in group">
+  ![Temporary table](/images/tables/temporary-tables.png)
+</Frame>
+
+The card appears immediately on the floor plan with a small **Temp** badge in the corner.
+
+## Identifying temporary tables on the floor
+
+Temporary tables display a **Temp** badge on their card. Otherwise they look and behave like any other table:
+
+- They can be opened, ordered on, split, transferred, and merged.
+- KDS tickets show their name.
+- Waiter assignments work normally.
+
+## What happens when they close
+
+The moment **both** of these are true, the table auto-archives:
+
+1. The session is **closed** (via Close Table or Pay & Close).
+2. The bill is **fully settled** (payment total ≥ bill total).
+
+The card disappears from the floor plan on the next refresh. Historical data is preserved:
+
+- The bill remains in Transaction History / Shift.
+- ZRA Smart Invoice submissions keep the original table name.
+- Shift reports include revenue and item counts.
+
+<Warning>
+  If a bill is closed **without payment** (Manager PIN required — see [Table Statuses](/tables/table-statuses)), the table still archives, but the closure appears in the manager audit log with the reason.
+</Warning>
+
+## Bringing back an archived temporary table
+
+You can't un-archive from the floor plan. If you need it back:
+
+- Just **create a new one** with the same name. The old bill is preserved separately in history.
+- Or, ask a manager to **create it as permanent** if you find you're using the same walk-in slot every night.
+
+## Editing a temporary table
+
+Staff can rename, resection, or re-capacity a temporary table they created via the Edit Table modal — the same fields work.
+
+Staff can also **delete** their own temporary tables without a Manager PIN. This is useful if a group leaves before ordering.
+
+## Tips & best practices
+
+<Tip>
+  Create a **`Walk-in`** section. Set your walk-in preference on the Floor Plan to **Separate** so those tables cluster at the bottom of the grid and don't clutter your permanent layout.
+</Tip>
+
+<Tip>
+  Give temporary tables **descriptive names** during busy service: `Bar - group of 4`, `Patio spillover`, `Birthday party`. Kitchen staff appreciate the context on KDS tickets.
+</Tip>
+
+<Tip>
+  Managers: if a temporary table has been sitting **Ordering** for over an hour without KDS activity, it's probably a group that walked away without paying. Force-close it (Manager PIN) and follow up.
+</Tip>
+
+## Common mistakes
+
+- **Making walk-ins permanent.** They pile up. Use temporary.
+- **Forgetting to close a paid temporary table.** It won't auto-archive until you tap **Close** or **Pay & Close**. See [Closing Tables](/waiter/closing-tables).
+- **Renaming a temporary table across sessions.** Confusing. Close the current session first.
+- **Deleting a temporary table with an unpaid bill.** Blocked. Close the bill or force-close (Manager PIN).
+
+## Related pages
+
+- [Creating Tables](/tables/creating-tables)
+- [Floor Plan](/tables/floor-plan)
+- [Table Statuses](/tables/table-statuses)
+- [Closing Tables](/waiter/closing-tables)

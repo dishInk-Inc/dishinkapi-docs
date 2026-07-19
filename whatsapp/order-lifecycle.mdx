@@ -1,0 +1,45 @@
+---
+title: "Order Lifecycle"
+sidebarTitle: "Order Lifecycle"
+description: "The full status flow of an online order with automatic WhatsApp updates."
+---
+
+Every online order moves through a defined lifecycle. Customers receive WhatsApp updates at each stage automatically.
+
+## Overview
+
+| Status | Meaning | Customer notification |
+| --- | --- | --- |
+| **Received** | Order landed | Acknowledgement message |
+| **Accepted** | Restaurant confirmed with ETA | Confirmation with ETA |
+| **Preparing** | Kitchen started | Update message |
+| **Ready** | Awaiting pickup or dispatch | Pickup ready OR out for delivery |
+| **Out for Delivery** | Rider dispatched | Rider info \+ tracking |
+| **Completed** | Delivered/collected | Thank-you \+ review prompt |
+| **Rejected** | Cannot fulfil | Apology \+ refund (if paid) |
+
+<Frame caption="Order lifecycle">
+  ![Lifecycle](/images/whatsapp/lifecycle.png)
+</Frame>
+
+<Note>
+  Every status change is timestamped and appears in the order's audit trail.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Set realistic ETAs. Under-promising by 5 minutes is safer than missing an over-promised time.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not manually message customers with status updates. The auto-flow is already sending them — duplicates confuse.
+</Warning>
+
+## Related pages
+
+- [Order Management](/whatsapp/order-management)
+- [Delivery & Pickup](/whatsapp/delivery-pickup)
+- [Auto Replies](/whatsapp/auto-replies)

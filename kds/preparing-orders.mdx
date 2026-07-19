@@ -1,0 +1,139 @@
+---
+title: "Preparing Orders"
+sidebarTitle: "Preparing Orders"
+description: "Start prep timers, track item progress, and update every connected screen in real time."
+---
+
+Once a ticket lands on the KDS, the kitchen **claims** it by tapping **Prepare**. This stamps a `prep_started_at` timestamp on each item, starts the live prep timer, and pushes the status change to every device on the floor.
+
+## Overview
+
+Preparing an order is a two-scale action:
+
+- **Per item** — tap the item's status button to move just that line into `preparing`. Use this when your station only cooks part of the ticket (e.g. Grill takes the steak, Hot Kitchen takes the side).
+- **Per ticket (bulk)** — tap **Prepare All** on the ticket card header to move every item on this station into `preparing` at once.
+
+Either action:
+
+1. Writes `kds_status = preparing` and `prep_started_at = now()` to `table_order_items`.
+2. Broadcasts the change over LAN so the Waiter App and POS Bill Summary reflect it instantly.
+3. If offline, queues the status change and shows it in the header **X QUEUED** badge.
+
+## Claiming a ticket
+
+<Frame caption="Preparing an order — timer starts, ticket flips amber-ready">
+  ![Preparing](/images/kds/preparing-orders.png)
+</Frame>
+
+<Steps>
+  <Step title="Read the ticket">
+    Quantity, item name, modifiers (`+`), and notes (`!`) — top to bottom. Notes are bold for a reason: allergies, cook temps, and cut requests live there.
+  </Step>
+  <Step title="Tap Prepare">
+    Either the per-item button or **Prepare All** on the ticket header. The item turns amber and the timer starts counting up from `00:00`.
+  </Step>
+  <Step title="Cook">
+    The ticket stays on the board until you mark items **Ready**. See [Completing Orders](/kds/completing-orders).
+  </Step>
+</Steps>
+
+## The prep timer
+
+Every item carries a **prep-time target** (`prep_time_target_minutes`) configured per menu item. Once `preparing` is set, the timer starts and the colour shifts:
+
+| Timer state | Colour | Meaning |
+| --- | --- | --- |
+| `elapsed < 60% of target` | **Green** | On time — no attention needed. |
+| `60% – 100% of target` | **Amber** | Approaching target — cook needs to focus here. |
+| `elapsed > target` | **Red — Overdue** | Past target. Item is flagged and may trigger a station queue alert. |
+
+<Note>
+  Prep-time targets live in [Menu Items](/menu/menu-items). If a target is missing, the timer still runs but does not colour-shift. Set realistic targets — a Wagyu steak is not a 4-minute cook.
+</Note>
+
+## Station queue alerts
+
+Each kitchen station can define an **alert\_after\_minutes** threshold (configured in the Kitchen Stations settings panel). If any item at that station sits in the queue **without anyone tapping Prepare** for longer than the threshold:
+
+- The station chip on the filter bar flashes amber.
+- The item card pulses a warning border.
+- A subtle audible tick fires (distinct from the new-ticket chime).
+
+This catches the case where a ticket lands but nobody notices — the earliest signal a shift is falling behind.
+
+<Tip>
+  Set the alert to 10–15 minutes on your busiest station. Any longer and the guest is already tapping the table.
+</Tip>
+
+## Per-item vs bulk prepare
+
+**Use per-item** when:
+
+- The ticket contains items from mixed stations and only some are yours.
+- The guest asked for staggered service (starters now, mains later).
+- One item on the ticket is a "when ready" line and the rest must fire first.
+
+**Use Prepare All** when:
+
+- Every item is at your station and will fire together.
+- A ticket has been sitting green too long and needs a batch claim to get the timer honest.
+
+## Editing while preparing
+
+If the waiter [voids or corrects an item](/waiter/editing-orders) while you're mid-prep:
+
+- A **realtime patch** arrives on the KDS.
+- The line flips to `cancelled` (full void) or updates its quantity (partial correction).
+- A short highlight animates the change so you notice.
+- **Stop cooking the affected item immediately.** If you've already plated it, discard it — the fiscal record no longer includes it.
+
+<Warning>
+  A voided line does not stop the timer on the remaining items. Keep working the rest of the ticket.
+</Warning>
+
+## Offline behaviour
+
+When the KDS is offline:
+
+- **Prepare** taps still work — they update the local UI and queue the status change.
+- The **X QUEUED** header badge shows the number of pending status changes.
+- Timers continue running on-screen (they read from `prep_started_at`, which was stamped locally).
+- LAN broadcasts still fire — other devices on the same Wi-Fi see the update.
+- On reconnect, the queue drains automatically. Any conflicts (e.g. the item was voided remotely while offline) reconcile server-side.
+
+## Tips & best practices
+
+<Tip>
+  **Watch the amber threshold.** Any item sitting amber for more than 60 seconds without progress needs supervisor intervention — either a hand on the pan or a heads-up to the waiter that food is delayed.
+</Tip>
+
+<Tip>
+  **Tap Prepare when you actually start the item.** Not when the ticket lands, not "when I have a moment" — the timer only means something if `prep_started_at` matches reality. Kitchen Analytics uses it.
+</Tip>
+
+<Tip>
+  **Use Station View** during service. `All` is fine on quiet shifts; the moment tickets stack, filter to your station so the noise disappears.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not tap Prepare on tickets you have not started. Timers become meaningless and staff performance reports skew wrong.
+</Warning>
+
+<Warning>
+  Do not batch-prepare across stations you don't run. Only claim items at **your** station — otherwise the cook at the other station sees no ticket movement and loses their signal.
+</Warning>
+
+<Warning>
+  Do not ignore station queue alerts. They exist because a ticket has already been waiting too long — the guest is close behind.
+</Warning>
+
+## Related pages
+
+- [Receiving Orders](/kds/receiving-orders)
+- [Completing Orders](/kds/completing-orders)
+- [Kitchen Statuses](/kds/kitchen-statuses)
+- [Menu Items — prep time targets](/menu/menu-items)
+- [Waiter: Editing Orders](/waiter/editing-orders)
+- [Kitchen Analytics](/reports/kitchen-analytics)

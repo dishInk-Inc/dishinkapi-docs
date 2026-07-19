@@ -1,0 +1,125 @@
+---
+title: "Floor Plan"
+sidebarTitle: "Floor Plan"
+description: "Navigate the Tables screen — status pills, section filters, walk-in preference, edit mode, and the offline-safe action queue."
+---
+
+The **Floor Plan** is the home of dine-in service. Every table, session, bill, kitchen ticket, and waiter assignment starts here.
+
+## Overview
+
+Open **Tables** from the main navigation. You will see:
+
+- A **status pill bar** across the top (Free, Ordering, Preparing, Served, Billing, Reserved, Merged, Stuck) — tap one to filter.
+- An **Active Bills** pill showing the number of open sessions across the branch.
+- A **section filter** (Patio, Main, Bar, Rooftop, Walk-in — whatever you configured).
+- A **search box** for finding a table by name or section.
+- The **View menu** (list view vs grid) and **Edit** button (managers only).
+- A **Walk-in preference** toggle: _Separate_ (walk-ins live in their own section) or _Hidden_ (walk-ins fold into the main grid). Your choice is remembered on this device via `gp_walkin_pref`.
+- The **floor grid itself** — every table shown as a card with its live status, colour-coded border, and badges.
+
+<Frame caption="The Tables screen — status pills, section filter, and the live floor grid">
+  ![Floor plan](/images/tables/floor-plan.png)
+</Frame>
+
+## Reading a table card
+
+Each card encodes several signals at once:
+
+| Signal | Meaning |
+| --- | --- |
+| **Coloured border** | Current status. If a table has multiple states (e.g. Ordering \+ Split), the border is split — 1 state = uniform, 2 states = diagonal, 3\+ states = one colour per side. |
+| **Table name** | The label you gave it (e.g. `Table 7`, `Patio 3`, `Bar A`). |
+| **Section** | Shown under the name in uppercase. |
+| **Guest count / capacity** | Set when the session was opened; capacity is the default. |
+| **Badges** | Small pills at the bottom-right: **Temp**, **Stuck**, **Split**, **Preparing**, **Waiting**. |
+| **KDS counts** | Live count of preparing items and items waiting to be served, pulled from the Kitchen Display System via realtime. |
+
+<Note>
+  KDS counts are **offline-first**. When the network drops, the last known count is kept until connectivity returns. This means the number you see on a slow link is never blank — but it may lag by a few seconds behind the kitchen.
+</Note>
+
+## Filtering the floor
+
+### Status pills
+
+Tap any pill along the top to show only tables in that state. Tap it again (or the **All** pill) to clear.
+
+### Section filter
+
+Switch between sections to focus on one area of the restaurant — useful during shift handovers or when you want to see just the Patio.
+
+### Search
+
+Type a table name (`Table 12`) or a section name (`Patio`) into the search box. The grid narrows in real time.
+
+### Walk-in preference
+
+Open the **View** menu and choose:
+
+- **Separate walk-ins** — walk-in / quick-sale tables appear in their own section at the bottom.
+- **Hide walk-ins** — walk-in tables are removed from the grid entirely. Useful for a pure dine-in view during peak service.
+
+The preference is saved to this device only. Different tablets can have different views.
+
+## Edit mode (managers)
+
+Managers see an **Edit** button in the top-right. Tap it to enter edit mode, where you can:
+
+- **Bulk-select** tables by tapping them.
+- **Assign a section** to all selected tables at once.
+- **Set a capacity** for all selected tables.
+- **Delete** the selected tables (permanent tables require a Manager PIN if the acting user is not a manager).
+- **Rename** or edit individual tables by tapping the pencil icon.
+
+Tap **Done** to leave edit mode.
+
+<Warning>
+  Deletion is a soft operation — historical bills and sessions are preserved. The table simply disappears from the grid. See [Creating Tables](/tables/creating-tables) for restore.
+</Warning>
+
+## The action queue banner
+
+When the tablet is offline or a table action (open, close, reset) is still syncing to the server, a **banner** appears at the top of the screen:
+
+> _2 table actions queued — will sync when you're back online._
+
+Actions continue to work locally. Once connectivity returns, DishInk drains the queue in order. If a merged table is discovered to have been un-merged on the server side while offline, the local cache is auto-cleaned on the next `online` event.
+
+<Note>
+  Cached data banner: if the tablet is showing data from cache (e.g. after a reload with no network), a small **Cached** pill appears in the header. The floor is still fully usable — you just may not see other terminals' latest changes until reconnection.
+</Note>
+
+## Role-based views
+
+- **Managers and cashiers** see every table in the branch.
+- **Waiters** see only the tables assigned to them. Assignments are queried directly from `waiter_table_assignments`, so a newly assigned table appears within seconds. See [Waiter Assignments](/tables/waiter-assignments).
+- **Kitchen staff** do not use the floor plan — they work from the [Kitchen Display](/kitchen/receiving-orders).
+
+## Tips & best practices
+
+<Tip>
+  Group tables into **sections** early. Waiters can be assigned by section — much faster than per-table.
+</Tip>
+
+<Tip>
+  Use the **Active Bills** pill as a shift-health check. If it's climbing past your normal number, you probably have unpaid tables from earlier waves.
+</Tip>
+
+<Tip>
+  On busy nights, keep the walk-in preference on **Separate**. It's easier to spot free permanent tables when walk-ins aren't mixed in.
+</Tip>
+
+## Common mistakes
+
+- **Waiter says "my table is missing."** They are only shown assigned tables. Reassign the table from [Waiter Assignments](/tables/waiter-assignments) or ask a manager to open it for them.
+- **Duplicate temp tables.** Every walk-in creates a temporary table. If your grid fills with `Walk-in #14, #15, #16…`, close paid sessions promptly — temporary tables auto-archive on close.
+- **KDS count seems wrong.** It's cached. Pull-to-refresh, or open the table — the modal shows the authoritative session data.
+
+## Related pages
+
+- [Creating Tables](/tables/creating-tables)
+- [Table Statuses](/tables/table-statuses)
+- [Temporary Tables](/tables/temporary-tables)
+- [Stuck Tables](/tables/stuck-tables)
+- [Waiter Assignments](/tables/waiter-assignments)

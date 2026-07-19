@@ -1,0 +1,155 @@
+---
+title: "Taking Orders"
+sidebarTitle: "Taking Orders"
+description: "Browse the menu, customise items with modifiers and quick notes, and build the ticket in the per-table cart."
+---
+
+Once a session is open, DishInk switches to the **Menu** view. Tap items, customise them, and build the ticket. Every table has its own persistent cart — you can move between tables without losing what's in each one.
+
+## Overview
+
+The Waiter menu is the same catalogue used across POS and QR menus, but presented for fast tap-through service. You can:
+
+- Filter by category.
+- Search by item name.
+- See prices in Kwacha (K).
+- Add items with quantity, modifiers (extras, sides, sauces), and freeform notes.
+- Edit or remove items before sending to kitchen.
+
+Modifiers and menu items are **cached in local storage** — the menu works fully offline, including modifier options.
+
+<Frame caption="Waiter Menu view with categories and items">
+  ![Waiter menu](/images/waiter/taking-orders.png)
+</Frame>
+
+## Add an item
+
+1. Tap any menu item.
+2. The **Item Customizer** sheet opens.
+
+<Frame caption="Item customiser — quantity, modifiers, quick notes, special request">
+  ![Item customiser](/images/waiter/item-customiser.png)
+</Frame>
+
+The customiser contains:
+
+### Quantity
+
+The − / \+ stepper. Minimum 1, no upper limit.
+
+### Modifier groups
+
+Each group shows:
+
+- Its **name** (e.g. `Toppings`, `Cooking preference`).
+- **• Required** (red) or **• Optional** (grey).
+- A counter (`2/3`) for multi-select groups showing selected/max.
+- A grid of options with the price delta (e.g. `+K 5.00`).
+
+Selection rules:
+
+- **Single-select** (`max_selection: 1`) — tapping a new option replaces the current one.
+- **Multi-select** (`max_selection: N`) — tap to add up to N; disabled options grey out when max is reached.
+- **Required** groups block confirmation until minimum is met — you'll see _"⚠ Please choose at least 1 option."_
+
+### Quick notes
+
+Preset chips: `No Onions`, `Extra Spicy`, `Medium Rare`, `Well Done`, `No Salt`, `Allergies`, `Takeaway`, `Cut in Half`. Multi-select — tap to toggle.
+
+### Special request
+
+Freeform textarea for anything the presets don't cover: _"No pickles, swap for salad"_, _"Serve with kids' cutlery"_.
+
+### Price breakdown
+
+When modifiers add cost, a live breakdown appears in the footer: `Base K 45.00 · Extras +K 8.00 · × 2 · Total K 106.00`.
+
+3. Tap **Add to Ticket**. The item lands in the per-table cart.
+
+## Editing a cart item
+
+1. Tap the floating cart button (right side, red pill) or **Review Ticket** header.
+2. In the **Review Ticket** sheet, tap the pencil on any line.
+3. The customiser reopens in edit mode — same fields, prefilled.
+4. Tap **Update Item**.
+
+<Frame caption="Review Ticket sheet with edit and remove per line">
+  ![Review ticket](/images/waiter/review-ticket.png)
+</Frame>
+
+## Removing an item
+
+In **Review Ticket**, tap the ✕ on the line. Item is removed immediately. Removing the last item auto-closes the sheet.
+
+## Per-table cart persistence
+
+Every table has its own cart stored in `localStorage` under `waiter_carts`. This means:
+
+- You can switch to another table, add items, and return — your original cart is still there.
+- If you close and reopen the app, carts survive.
+- Carts persist per device — a cart on the tablet is not visible on the phone.
+
+The **Unsent Orders** filter on the Floor view shows every table where you have a non-empty cart.
+
+<Note>
+  Carts clear automatically when you [send them to the kitchen](/waiter/sending-orders). Manually clearing a cart requires either sending or removing every item.
+</Note>
+
+## Split bills block new items
+
+If the table has an **active split payment**, adding items is blocked:
+
+> _Split bill active — items can't be added until the split is cancelled (POS → split panel → manager PIN)._
+
+The customiser will not open. You'll see a toast explaining why. The reason: splits are a snapshot of item totals — silently adding items would under-bill the guests.
+
+See [Split Bills](/pos/split-bills) for the cancellation flow.
+
+## Merged tables block new items
+
+If the current table has been merged into another, the customiser blocks with:
+
+> _This table has been merged into another table — open that table to add items._
+
+Tap through to the primary and add items there. See [Merging Tables](/tables/merging-tables).
+
+## Category filter and search
+
+Above the menu grid:
+
+- **Category chips** — tap to filter. Categories reflect your Menu Management configuration.
+- **Search box** — type any part of an item name. Matches across all categories.
+
+## Tips & best practices
+
+<Tip>
+  **Batch orders per guest.** Adding all items for guest 1, then all for guest 2, makes kitchen tickets and split bills easier later.
+</Tip>
+
+<Tip>
+  Use **modifiers** for anything that changes price or requires kitchen action (extras, sauces, cooking level). Use **quick notes** for allergies or preferences that don't change price.
+</Tip>
+
+<Tip>
+  Menu items load from cache — even if the tablet is offline. If the menu looks stale, tap the refresh icon in the offline banner.
+</Tip>
+
+<Tip>
+  If a required modifier group is red-flagged, you can't confirm — this catches "no size selected" mistakes before they reach the kitchen.
+</Tip>
+
+## Common mistakes
+
+- **Skipping required modifiers.** The customiser blocks you — but if you tap Add and nothing happens, scroll up to see the red warning.
+- **Adding items to a merged or split table.** Blocked with a toast — resolve the merge or split first.
+- **Losing items by switching accounts mid-cart.** Carts are per device, not per user. Signing out on the same tablet preserves them; signing in on a different device does not.
+- **Forgetting to send.** Items sit in the cart forever until sent. The Floor view **Unsent Orders** filter is your safety net.
+
+## Related pages
+
+- [Sending Orders to Kitchen](/waiter/sending-orders)
+- [Editing Orders](/waiter/editing-orders)
+- [Assigned Tables](/waiter/assigned-tables)
+- [Opening Tables](/waiter/opening-tables)
+- [Menu Items](/menu/items)
+- [Split Bills](/pos/split-bills)

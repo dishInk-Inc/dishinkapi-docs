@@ -1,0 +1,133 @@
+---
+title: "Receiving Orders"
+sidebarTitle: "Receiving Orders"
+description: "The KDS receives orders instantly from the POS and Waiter App with station routing and prep timers."
+---
+
+The **Kitchen Display System (KDS)** is the digital pass. Every ticket that would have been shouted, hand-written, or printed on flimsy paper appears on the screen the moment a waiter or cashier sends it, sorted by station, colour-coded by urgency, and mirrored across every device on the network.
+
+## Overview
+
+Each ticket the KDS receives contains:
+
+- **Table name** or takeaway reference at the top
+- **Order number** (timestamp-based, e.g. `14:32`) and the sender's name
+- **Every item** with quantity, modifiers, and any special notes the waiter added
+- A **live prep timer** that starts on receipt and colour-shifts as it ages
+- The **station** the item belongs to (Hot Kitchen, Cold, Bar, Grill, etc.)
+
+Tickets are **grouped by table session** — a single table's items stay together on one card, even when the waiter fires additional courses later.
+
+## How orders reach the KDS
+
+DishInk uses a five-layer delivery chain so tickets get through even when the internet does not:
+
+<Steps>
+  <Step title="Waiter or cashier taps Send to Kitchen">
+    The order is written to the `table_order_items` table with `kds_status = sent_to_kitchen`.
+  </Step>
+  <Step title="Realtime push">
+    A Supabase realtime channel (`waiter_kds_${restaurantId}`) fans the change out to every subscribed KDS, POS, and Waiter device in milliseconds.
+  </Step>
+  <Step title="LAN side-car broadcast">
+    In parallel, the sender broadcasts the ticket over the local Wi-Fi network so devices on the same LAN see it even if the cloud is slow or down.
+  </Step>
+  <Step title="Kitchen print queue (optional)">
+    If a kitchen printer is configured for the item's station, a docket is queued to `kitchen_print_queue` and printed automatically.
+  </Step>
+  <Step title="Offline queue fallback">
+    If both cloud and LAN fail, the order is stored in the device's offline queue and syncs the moment connectivity returns.
+  </Step>
+</Steps>
+
+<Note>
+  The receiving KDS never has to poll. New tickets and status changes arrive by push. If a KDS ever gets out of sync, tap the refresh icon in the header — this calls `fetchItems()` directly.
+</Note>
+
+## Automatic station routing
+
+Every menu category can be assigned to one or more **kitchen stations** (see [Kitchen Statuses](/kds/kitchen-statuses) and the Kitchen Stations settings panel). When an item is sent:
+
+1. DishInk looks up the item's menu category.
+2. The category is matched to a station via the station's `category_ids` list.
+3. If a match is found, the item is stamped with `kds_station` = the station's display name.
+4. If no station is assigned, the item shows under its **category name** as a virtual station.
+5. If a category is assigned to multiple stations, the **first matching station wins**.
+
+Use the **station filter bar** at the top of the KDS to view one station at a time. `All` shows every ticket in the house; tapping a station chip narrows to just that section.
+
+<Frame caption="KDS ticket board — Hot Kitchen filter active">
+  ![Receive orders](/images/kds/receiving-orders.png)
+</Frame>
+
+## Reading a fresh ticket
+
+A new ticket lands with the `sent_to_kitchen` status. Read it from the top down:
+
+1. **Table** — where the food is going
+2. **Time** — when the ticket was fired (24-hour clock)
+3. **Waiter** — who to speak to about clarifications
+4. **Items** — quantity first, then item name in capitals so it is legible from a metre away
+5. **Modifiers** — indented with a `+` (e.g. `+ Extra Cheese`)
+6. **Notes** — indented with a `!` and bolded (e.g. `! No onions`, `! Allergy: nuts`, `! Cut in half`)
+
+<Note>
+  The kitchen ticket **never shows prices**. This is deliberate — the kitchen sees what to cook, not what it costs.
+</Note>
+
+## Alerts and sound
+
+- Every new ticket plays an audible **chime**. Use the **Volume** button in the KDS header to test the sound.
+- If a station has a **queue alert** configured (e.g. 15 minutes), the KDS flashes a warning when any item at that station sits in the queue for longer than the threshold without anyone tapping **Preparing**.
+- Tickets that pass their prep-time target (`prep_started_at + prep_time_target_minutes`) are flagged **Overdue** and shown in red.
+
+## Offline behaviour
+
+If the KDS loses internet:
+
+- The header pill switches from **Online** (emerald) to **Offline** (red, pulsing).
+- The **Connection Banner** appears just below the header explaining what will happen.
+- Existing tickets remain fully readable and interactive.
+- Any status changes you make are **queued locally**, shown as `X QUEUED` in the header, and synced when the internet returns.
+- LAN-connected devices continue to broadcast updates to each other over Wi-Fi.
+
+<Warning>
+  A KDS device that is fully powered off during an outage will not receive new tickets. Keep at least one screen powered and on the LAN.
+</Warning>
+
+## Tips and best practices
+
+<Tip>
+  Configure a **station** for every physical section of the kitchen — Hot, Cold, Grill, Bar, Prep — and assign the right menu categories to each. This turns the KDS from a single wall of tickets into a per-cook dashboard.
+</Tip>
+
+<Tip>
+  Set a **queue alert** of 10–15 minutes on your busiest station. The flashing warning is the earliest signal a shift is starting to fall behind.
+</Tip>
+
+<Tip>
+  In multi-location deployments, kitchen stations are **shared config** and follow the home restaurant. Order data (tickets) is scoped to the active branch. See [Multi-Location](/multi-location/managing-branches).
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not silence the chime permanently. A silent kitchen misses tickets during service — always leave sound on and acknowledge within 30 seconds of arrival.
+</Warning>
+
+<Warning>
+  Do not leave menu categories unassigned. Items with no station show under their category name and are easy to miss when a cook filters to their station.
+</Warning>
+
+<Warning>
+  Do not assign the same category to two stations unless you understand the routing rule — only the **first matching** station receives it.
+</Warning>
+
+## Related pages
+
+- [Preparing Orders](/kds/preparing-orders)
+- [Completing Orders](/kds/completing-orders)
+- [Kitchen Statuses](/kds/kitchen-statuses)
+- [Waiter: Sending Orders](/waiter/sending-orders)
+- [Kitchen Printers](/printing/kitchen-printers)
+- [Kitchen Analytics](/reports/kitchen-analytics)

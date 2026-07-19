@@ -1,0 +1,143 @@
+---
+title: "Sending Orders to Kitchen"
+sidebarTitle: "Sending to Kitchen"
+description: "Send the cart to the kitchen — KDS-first, thermal ticket fallback, LAN broadcast, and offline queueing."
+---
+
+Once you've built the ticket, you send it to the kitchen. DishInk uses a **KDS-first** model with printer fallbacks and full offline resilience — the waiter experience is _instant_ regardless of network state.
+
+## Overview
+
+Sending orders is fire-and-forget from the waiter's perspective:
+
+- Tap **Send to Kitchen** in Review Ticket.
+- The cart clears **immediately**, the view switches to **Manage**, and a toast confirms.
+- Behind the scenes, DishInk delivers the order via the best available channel: Supabase (online), LAN broadcast (same Wi-Fi), and offline queue (queued for later).
+- If a **kitchen printer** is configured, a paper ticket also queues automatically.
+
+## Send from Review Ticket
+
+1. Tap the floating cart button or open **Review Ticket**.
+2. Confirm the items and total.
+3. Tap **Send to Kitchen** (or **Print Ticket** — see below).
+
+<Frame caption="Review Ticket with Send and (optionally) Print Ticket buttons">
+  ![Send to kitchen](/images/waiter/sending-orders.png)
+</Frame>
+
+4. The sheet closes optimistically. You'll see:
+   - Cart cleared for this table.
+   - View switches to **Manage** to show live kitchen status.
+   - A toast: **Sent to kitchen · Table 7** (green) — or **Saved offline · Table 7** (amber) if the network is down.
+
+## The send pipeline
+
+DishInk delivers the order through a **layered fallback chain**:
+
+| Layer | Trigger | Outcome |
+| --- | --- | --- |
+| 1. Supabase `waiter-operations / send_order_to_kitchen` | Online, healthy connection | Order lands on KDS in real time. |
+| 2. Kitchen printer queue (`kitchen_print_queue`) | `kitchenEnabled` in Hardware Settings \+ `thermal_print_enabled` feature | Paper ticket queued for the print station to pick up. |
+| 3. LAN broadcast (`useLANWaiter.broadcastOrderSent`) | Any state — always fires | KDS and POS devices on the same Wi-Fi see the order immediately, even if Supabase is unreachable. |
+| 4. Offline queue (`offlineQueueManager`) | Supabase failed or offline | Order queued with `_action: 'send_order_to_kitchen'`; replays on reconnect. |
+| 5. Direct print (last resort) | Supabase queue failed but printer is local | Prints directly via `printKitchen()`. |
+
+The waiter sees **one** toast. All layers run in the background.
+
+## Kitchen ticket printing
+
+When `thermal_print_enabled` is on and a kitchen printer is configured, the Review Ticket sheet shows **two** action buttons instead of one:
+
+- **Print Ticket** (primary red) — sends to KDS **and** queues a printed ticket.
+- **Send** (secondary, ghost) — sends to KDS only.
+
+<Frame caption="Two-button footer when thermal print is enabled">
+  ![Print ticket](/images/waiter/print-and-send.png)
+</Frame>
+
+Both buttons clear the cart and switch to Manage identically. The only difference is whether a paper ticket queues.
+
+Paper tickets include:
+
+- Table name and order number (time-based).
+- Staff name and role.
+- Every item with quantity, modifiers, and notes.
+- Paper width auto-selects 58 mm or 80 mm from the printer config.
+- Device name: `Android · Kelvin` or `Waiter · Kelvin` for auditability.
+
+See [Kitchen Printers](/printing/kitchen-printers).
+
+## LAN broadcast — why orders arrive even when the internet drops
+
+DishInk devices on the same Wi-Fi network run a **LAN side-car** that broadcasts every meaningful event (order sent, bill requested, table opened). This means:
+
+- If Supabase is unreachable but the KDS tablet is on the same Wi-Fi, it still receives the order in real time.
+- If both the waiter and the POS are offline from the internet but on the same LAN, the POS still sees the new items on the bill preview.
+
+You don't need to configure anything — it "just works" when devices share a Wi-Fi network. See [Network Issues](/troubleshooting/network-issues) for edge cases.
+
+## Offline sending
+
+If the Supabase call fails or the device is offline:
+
+1. The cart still clears immediately (optimistic).
+2. The table status is optimistically patched to `ordering`.
+3. The order is queued as `edge_function / waiter-operations / send_order_to_kitchen` with your staff ID and the full item payload.
+4. The LAN broadcast still fires.
+5. Toast reads **Saved offline · Table 7**.
+
+On reconnect, the queue replays automatically. If it fails permanently (e.g. someone deleted the session), you'll see it in the offline banner's error state — tap to review.
+
+## Split-bill guard
+
+If the table has an active split payment, sending is **blocked** — the Send button disables and a warning shows in the footer:
+
+> _Split bill active — items can't be added until the split is cancelled (POS → split panel → manager PIN)._
+
+This is because the split totals are frozen; sending more items would silently under-bill. Cancel the split first.
+
+## Kitchen ticket for retroactive prints
+
+If the kitchen prints on paper only (no KDS), items you send show `Printed` status in the [Bill Preview](/waiter/requesting-bills). This tells you: _paper ticket queued, check with kitchen for prep state._
+
+The Bill Preview shows an orange banner:
+
+> _Kitchen ticket printed — 3 items sent via paper ticket. Tick each item below when it arrives at the table._
+
+You then use the checkboxes to mark items served as they land. See [Requesting Bills](/waiter/requesting-bills).
+
+## Tips & best practices
+
+<Tip>
+  **Send often.** Don't batch a whole guest's order to send at once — the kitchen prefers a steady drip.
+</Tip>
+
+<Tip>
+  Watch the toast colour. **Green** = server confirmed. **Amber** = queued (offline). Anything amber means the KDS won't see it until the network returns — check the [offline banner](/troubleshooting/network-issues) for the queued count.
+</Tip>
+
+<Tip>
+  For urgent items (kids' food, allergy meals), send them **separately** with a **Special request** note so the kitchen prioritises.
+</Tip>
+
+<Tip>
+  If your restaurant relies on paper tickets, always use **Print Ticket** rather than plain Send. The KDS is a nice-to-have but the paper is the source of truth.
+</Tip>
+
+## Common mistakes
+
+- **Waiting for a spinner.** There is none by design — the send is fire-and-forget. Toasts confirm state.
+- **Sending during a split.** Blocked. Cancel the split first.
+- **Assuming a queued (amber toast) order is on the KDS.** It isn't yet — it's in the offline queue.
+- **Ignoring the Unsent Orders filter.** If you see it climbing, you have carts sitting on the tablet that never got sent.
+- **Sending to the wrong table.** Once sent, use [Moving Items](/waiter/moving-items) to correct — don't void and re-punch.
+
+## Related pages
+
+- [Taking Orders](/waiter/taking-orders)
+- [Editing Orders](/waiter/editing-orders)
+- [Moving Items Between Tables](/waiter/moving-items)
+- [Requesting Bills](/waiter/requesting-bills)
+- [Kitchen Display / Receiving Orders](/kitchen/receiving-orders)
+- [Kitchen Printers](/printing/kitchen-printers)
+- [Split Bills](/pos/split-bills)

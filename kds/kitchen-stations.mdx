@@ -1,0 +1,161 @@
+---
+title: "Kitchen Stations"
+sidebarTitle: "Kitchen Stations"
+description: "Configure kitchen stations, assign categories, and control how order items route to each section of your kitchen on the KDS."
+---
+
+Kitchen stations turn one wall of tickets into a per-cook dashboard. Every section of your kitchen — Hot, Cold, Grill, Bar, Prep, Dessert — becomes a filterable lane on the KDS, and items are routed to the right lane automatically based on their menu category.
+
+## Overview
+
+A **station** in DishInk consists of:
+
+- A **name** (internal, e.g. `hot_kitchen`) and **display name** (what appears on the KDS, e.g. `Hot Kitchen`)
+- A **colour** — used for the station chip, ticket accents, and border colouring
+- An **alert threshold** in minutes — flashes a warning when items sit in the queue too long
+- A list of **assigned categories** — the menu categories that route to this station
+
+Stations are **shared config** across a multi-location deployment. Only order data (tickets) is scoped to the active branch — the stations themselves follow the home restaurant.
+
+## Auto-routing rules
+
+When a waiter sends an order, DishInk decides where each item shows up on the KDS using this exact logic:
+
+<Steps>
+  <Step title="Look up the item's category">
+    Every menu item belongs to a category (Starters, Mains, Drinks, Desserts, etc.).
+  </Step>
+  <Step title="Find a matching station">
+    Scan stations for the first one whose `category_ids` includes the item's category.
+  </Step>
+  <Step title="Stamp the station on the item">
+    The item is written with `kds_station = station.display_name` so every screen shows it under the correct lane.
+  </Step>
+  <Step title="Fall back to the category name">
+    If no station matches, the item shows under a **virtual station** named after its category. It is not lost — it just does not have a configured lane yet.
+  </Step>
+</Steps>
+
+<Note>
+  If a category is assigned to **multiple stations**, the first matching station wins. Assign each category to exactly one station to make routing predictable.
+</Note>
+
+## Open the Stations panel
+
+<Steps>
+  <Step title="Sign in as owner or manager">
+    Only roles with kitchen config permissions can create or edit stations.
+  </Step>
+  <Step title="Go to Settings → Kitchen Stations">
+    You will see the info banner explaining how routing works, a list of existing stations, and an **Add Station** button.
+  </Step>
+</Steps>
+
+## Create a station
+
+<Steps>
+  <Step title="Tap Add Station">
+    A form panel opens with New Station highlighted at the top.
+  </Step>
+  <Step title="Name and Display Name">
+    Enter an internal **name** (e.g. `hot_kitchen`) and a **display name** shown on the KDS (e.g. `Hot Kitchen`). If you leave display name blank, DishInk uses the name.
+  </Step>
+  <Step title="Pick a colour">
+    Choose from the 12 preset colours. This colour is used for the station chip, the ticket accent, and the border on cards filtered to this station.
+  </Step>
+  <Step title="Set a queue alert (optional)">
+    Enter the number of minutes an item can sit in the queue before the KDS flashes a warning. Typical values are 10–15 minutes. Leave blank to disable.
+  </Step>
+  <Step title="Assign categories">
+    Tap category chips to toggle them into the station. A checkmark appears on selected chips.
+  </Step>
+  <Step title="Tap Create Station">
+    The station is saved and appears in the list. The KDS picks it up on the next order.
+  </Step>
+</Steps>
+
+<Frame caption="Kitchen Stations panel">
+  ![Kitchen stations](/images/kds/kitchen-stations.png)
+</Frame>
+
+## Edit a station
+
+1. Tap the **pencil** icon on any station row.
+2. The row expands into the edit form pre-filled with current values.
+3. Change any field — name, colour, alert, categories.
+4. Tap **Save Changes**.
+
+Existing orders keep their original station stamp. Only orders sent **after** the change are routed with the new configuration.
+
+## Delete a station
+
+1. Tap the **trash** icon on any station row.
+2. Confirm the deletion.
+3. Orders that were already sent keep their station label — the KDS still groups them under that name as a virtual station.
+
+<Warning>
+  Deleting a station does not reassign historical items. Do this during a quiet period so you do not confuse the kitchen mid-service.
+</Warning>
+
+## Filter the KDS by station
+
+At the top of the KDS, tap a station chip to view only that station's items. Tap **All** to see everything again.
+
+- Real stations appear first, in `sort_order`, coloured with the station colour.
+- Virtual stations (items with no assigned station) appear after, in grey.
+- The active chip is highlighted.
+
+<Note>
+  Bulk actions like **Mark All Ready** respect the active station filter — they only affect items visible on the ticket for that station.
+</Note>
+
+## Recommended setup
+
+For a typical restaurant, we recommend starting with these stations:
+
+| Station | Colour | Typical categories | Queue alert |
+| --- | --- | --- | --- |
+| Hot Kitchen | Red | Mains, Grill, Pasta, Rice | 12 min |
+| Cold Kitchen | Green | Starters, Salads, Cold Sides | 8 min |
+| Bar | Blue | Beers, Wines, Spirits, Cocktails, Juices | 5 min |
+| Dessert | Purple | Desserts, Ice Cream | 10 min |
+| Prep | Amber | Bread Basket, Chips, Sides | 8 min |
+
+Adjust based on your physical layout and how your team already thinks about the kitchen.
+
+## Tips and best practices
+
+<Tip>
+  Match your station names to the words your team actually uses. "Grill", "Wok", "Wood Oven" — whatever is on the sign above the cook's head.
+</Tip>
+
+<Tip>
+  Use queue alerts as an operational lever. Start with 15 minutes, tighten to 10 or even 8 once your team is used to it, and watch acknowledgement time drop in Kitchen Analytics.
+</Tip>
+
+<Tip>
+  In multi-location deployments, get the station list right at the home location. Every branch inherits it.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not assign the same category to multiple stations unless you understand the first-match rule. It creates unpredictable routing.
+</Warning>
+
+<Warning>
+  Do not leave categories unassigned during rollout. Items land under a grey virtual station and can be missed if a cook has filtered to a real station.
+</Warning>
+
+<Warning>
+  Do not delete a station mid-service. Wait until the current tickets have cleared.
+</Warning>
+
+## Related pages
+
+- [Receiving Orders](/kds/receiving-orders)
+- [Preparing Orders](/kds/preparing-orders)
+- [Kitchen Statuses](/kds/kitchen-statuses)
+- [Menu Management: Categories](/menu/categories)
+- [Kitchen Analytics](/reports/kitchen-analytics)
+- [Multi-Location: Managing Branches](/multi-location/managing-branches)

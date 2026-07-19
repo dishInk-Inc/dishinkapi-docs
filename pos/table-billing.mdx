@@ -1,0 +1,123 @@
+---
+title: "Table Billing"
+sidebarTitle: "Table Billing"
+description: "How every dine-in order becomes a running bill locked to a table, a terminal, and a waiter."
+---
+
+## Overview
+
+DishInk uses **table sessions** as the container for every dine-in bill. A session opens when a waiter (or the POS) seats a party, collects orders as they're taken, and closes when the bill is paid.
+
+Every session is scoped to:
+
+- One **table** (or a merged group of tables — see [Merging Tables](/tables/merging-tables))
+- One **terminal** (the till that opened it — see [Terminal Setup](/pos/terminal-setup))
+- One **primary waiter**, plus any others who added items later (see [Assigned Tables](/waiter/assigned-tables))
+
+The session lives independently of any device — a waiter can add items from a phone, a cashier can preview it on the POS, and a manager can watch it from the dashboard, all at the same time.
+
+## Session Statuses
+
+Every session moves through a fixed lifecycle. Filter chips at the top of the Active Tables list show live counts per status.
+
+| Status | Meaning | Bill lockable? |
+| --- | --- | --- |
+| **Open** | Session created, no items yet. | No |
+| **Ordering** | Guests still adding items. | No |
+| **Served** | Food delivered, no bill request yet. | No |
+| **Billing** | Customer asked for the bill. | Yes |
+| **Pending Payment** | Cashier marked _Awaiting Payment_ on the receipt preview. | Yes |
+| **Paid** | Full payment received. Kitchen may still be preparing. | Closed |
+
+<Note>
+  The Charge button unlocks when every item is `ready`/`served` _or_ the session is in `billing` / `served` / `pending_payment`. This prevents charging for food that might still be voided in the kitchen. See [Creating Sales](/pos/creating-sales#the-bill-ready-gate).
+</Note>
+
+## Opening a Table
+
+Tables are opened by the waiter on the Waiter App. See [Opening Tables](/waiter/opening-tables).
+
+For **quick counter service that still needs a running tab** (e.g. a bar tab), the POS can open a temporary session directly — pick **New Session** in the Active Tables list.
+
+## The Terminal Lock
+
+Every session is locked to the terminal that opened it. This is enforced atomically in the database so two cashiers on two terminals can never charge the same bill.
+
+If a cashier on **Terminal B** tries to charge a session opened on **Terminal A**, DishInk shows the **Transfer** prompt. A manager confirms, the session unlocks from A, and instantly locks to B. See [Terminal Setup — Terminal Transfer](/pos/terminal-setup#terminal-transfer-session-handover).
+
+Managers with the _All Terminals_ permission bypass this lock and see every session live.
+
+## Waiter Restrictions
+
+Waiters see only tables they've been assigned to for this shift unless they have the _View All Tables_ permission (usually reserved for supervisors and hosts).
+
+Managers can override this per user via **Settings → Roles & Permissions** — see [Roles & Permissions](/getting-started/roles-permissions).
+
+## Adding Items After Payment (Reopening)
+
+You can't add items to a paid session. If a customer wants "one more coffee" after paying, either:
+
+- Open a **new session** for the same table (fastest, keeps the accounting clean), or
+- Void the existing sale and re-run the full bill (only if within the same day — see [Voids](/pos/voids)).
+
+## Merged Tables
+
+When two tables are merged, the session shows as `T2 (+ T1, T3)` in the bill list — the primary table first, then linked tables in parentheses. Every item taken on any of the linked tables is billed to the primary session. See [Merging Tables](/tables/merging-tables).
+
+## Multiple Waiters on One Session
+
+If a second waiter adds items to a table an existing waiter opened, DishInk credits both correctly:
+
+- **Item revenue** is split proportionally by who punched what (see the **Shared** notes in [Batch Invoice Cash Out](/pos/batch-cash-out)).
+- **Transaction count** stays with whoever contributed the biggest share of the bill.
+
+## Step by Step
+
+<Steps>
+  <Step title="Waiter opens the table">
+    On the Waiter App, tap the empty table → **Open**. See [Opening Tables](/waiter/opening-tables).
+  </Step>
+  <Step title="Take orders">
+    Add items, modifiers, and notes. Tap **Send to Kitchen** — the KDS lights up instantly and the session flips to **Ordering**.
+  </Step>
+  <Step title="Serve">
+    Kitchen marks items **Ready**. Waiter delivers and marks **Served** on the Waiter App.
+  </Step>
+  <Step title="Bill request">
+    Customer asks for the bill. Waiter taps **Request Bill** → the POS shows a Bill Request toast, session flips to **Billing**.
+  </Step>
+  <Step title="Charge">
+    Cashier picks the session on the POS and charges. See [Creating Sales](/pos/creating-sales).
+  </Step>
+  <Step title="Close">
+    Payment confirms, ZRA Smart Invoice submits, receipt prints, session closes. Waiter can now clear the table on the Waiter App. See [Closing Tables](/waiter/closing-tables).
+  </Step>
+</Steps>
+
+<Frame caption="A table session moving from Ordering → Served → Billing → Paid.">
+  ![Table session lifecycle placeholder](/images/pos/table-session-lifecycle.png)
+</Frame>
+
+## Tips & Best Practices
+
+- Encourage waiters to mark items **Served** — that flag is what triggers the _Served_ filter and lets managers see who's ready to pay.
+- Use the **Billing** filter at the cashier till during peak hours; leave the till on **All** off-peak.
+- If a customer walks out without paying, use **Close Without Payment** (manager PIN required) — the write-off shows on the Batch Invoice under **Manager Overrides**.
+- Merge tables _before_ taking orders when possible. Merging after items are taken works, but the merged-in table's items keep their original waiter attribution.
+
+## Common Mistakes
+
+- **Opening a new session for a party that already has one.** Always check the Active Tables list first. Duplicate sessions on the same table cause split kitchen tickets and confusing bills.
+- **Trying to charge from the wrong terminal.** You'll be prompted to transfer — this needs a manager and slows you down. Set clear terminal ownership per station.
+- **Charging with items still cooking.** The Charge button is locked. Wait for the kitchen or mark as _Awaiting Payment_.
+- **Deleting a merged-in table before the merge is undone.** Unmerge first, then delete. See [Unmerging Tables](/tables/unmerging-tables).
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Terminal Setup](/pos/terminal-setup)
+- [Split Bills](/pos/split-bills)
+- [Merging Tables](/tables/merging-tables)
+- [Opening Tables](/waiter/opening-tables)
+- [Requesting Bills](/waiter/requesting-bills)
+- [Table Statuses](/tables/table-statuses)

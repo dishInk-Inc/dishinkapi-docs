@@ -1,0 +1,107 @@
+---
+title: "Partial Payments"
+sidebarTitle: "Partial Payments"
+description: "Take a deposit, part-payment, or overpayment on a running bill without closing the session."
+---
+
+## Overview
+
+A **partial payment** is any charge that doesn't settle the full bill. DishInk supports two shapes of partial payment:
+
+1. **Deposits / part payments** — customer pays part now, rest later. Session stays **Billing** with a live balance.
+2. **Overpayment** → **Tip** — customer hands you K200 for a K180 bill. DishInk asks: Give Change or convert the K20 to a tip?
+
+Both flows live inside the standard Charge Modal — see [Creating Sales — Payment Method Flows](/pos/creating-sales#payment-method-flows).
+
+## Deposits & Part Payments
+
+When you charge less than the bill total, DishInk records the payment against the session and shows the **Remaining Balance** on the Bill View. The session stays **Billing** — items can still be added, and the remainder can be charged later using any payment method.
+
+### Step by Step
+
+<Steps>
+  <Step title="Open the bill">
+    Pick the session in Active Tables. Note the Grand Total.
+  </Step>
+  <Step title="Charge a part">
+    Tap **Charge**. Pick the payment method (Cash / Mobile Money / Card). Type an amount **less than** the total. Confirm.
+  </Step>
+  <Step title="Receipt prints">
+    A part-payment receipt prints showing:
+
+    - Amount paid
+    - Payment method
+    - **Balance Due: K…**
+  </Step>
+  <Step title="Return later">
+    Reopen the session — the Bill View now shows a running **Payments** list and the outstanding balance.
+  </Step>
+  <Step title="Charge the balance">
+    Tap **Charge** again. The Charge Modal pre-fills with the remaining amount.
+  </Step>
+</Steps>
+
+<Note>
+  Each part-payment is submitted to ZRA as a separate Smart Invoice line entry, linked to the session ID. The final invoice consolidates all parts. See [ZRA Integration](/smart-invoice/zra-integration).
+</Note>
+
+## Overpayment → Tip
+
+When the tendered amount is more than the bill:
+
+1. DishInk shows the overage in green: _"Overpayment: K20.00"_
+2. Two buttons appear: **Give Change** and **Tip · K20**
+3. Cashier picks one:
+   - **Give Change** — the till drawer suggestion prints on the receipt, session closes as normal.
+   - **Tip** — the K20 is booked to the waiter's tips ledger and shown on the receipt as _Tip: K20.00_.
+
+### Explicit Tip (before overpayment)
+
+You can also add a tip _before_ charging. Below the Amount field is a **Tip** collapsible section with:
+
+- **% chips**: 5% · 10% · 15% · 20%
+- **Fixed chips**: K10 · K20 · K30 · K50
+- **Custom** field
+
+The tip is added to the Grand Total _before_ the customer pays.
+
+<Note>
+  Tips can be pooled or waiter-attributed depending on your settings. See [Tips](/pos/tips).
+</Note>
+
+## Split-Payment Method (Split Bill on the Charge Modal)
+
+For customers who want to _split payment methods_ (K100 cash \+ K80 card) without splitting the bill by guest, use **Split Bill** inside the Charge Modal (only available if enabled by the manager). Enter each method's amount; the modal keeps a running balance until zero.
+
+For splitting the bill _between guests_, use the [Split Bills](/pos/split-bills) flow instead.
+
+## Cancelling a Partial
+
+You can't reverse a part-payment mid-session with a normal void — it's already been printed and (if online) submitted to ZRA. To reverse:
+
+- **Same day, online** — issue a Refund for the paid part using ZRA credit-note code **01 – Reversal**. See [Refunds](/pos/refunds).
+- **Offline / next day** — flag the session for manager review. The Batch Invoice Cash Out shows the discrepancy under **Manager Overrides**.
+
+<Frame caption="Charge Modal with an overpayment showing Give Change vs Tip.">
+  ![Overpayment placeholder](/images/pos/overpayment-tip.png)
+</Frame>
+
+## Tips & Best Practices
+
+- Print the part-payment receipt **and** hand it to the customer — it's their proof of deposit.
+- For deposits on future bookings, open a **Quick Sale** ticket named _"Deposit — Booking #123"_ and charge as a normal sale. Redeem it later as a manual discount on the actual bill.
+- When a customer overpays with cash, always read out both options: _"Would you like change, or shall I add it to the tip?"_ — cultural norms differ, don't assume.
+
+## Common Mistakes
+
+- **Typing the full total by mistake** — the Charge Modal treats it as a full payment and closes the session. Use the **Amount** field carefully; the on-screen NumPad shows the current amount clearly.
+- **Forgetting the balance is due** — trained staff should always check the Bill View for a **Balance Due** flag before letting the customer leave.
+- **Refunding a part-payment when you actually needed a Void** — voids are for same-day mistakes; refunds are for customer-driven reversals. See the difference: [Voids](/pos/voids) vs [Refunds](/pos/refunds).
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Split Bills](/pos/split-bills)
+- [Tips](/pos/tips)
+- [Refunds](/pos/refunds)
+- [Voids](/pos/voids)

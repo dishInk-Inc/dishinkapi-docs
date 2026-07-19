@@ -1,0 +1,115 @@
+---
+title: "Opening Tables"
+sidebarTitle: "Opening Tables"
+description: "Start a new session on a free table — guest count, offline-safe opening, and what happens if the table is merged."
+---
+
+Opening a table starts a **session** — a new bill container that will hold orders, discounts, splits, and payments until the guests leave.
+
+## Overview
+
+You open a table when:
+
+- A group is seated at a permanent table (reservation or walk-up).
+- A [temporary table](/waiter/temporary-tables) is created for a walk-in and needs its first session.
+- A previously closed table is being re-seated.
+
+You do **not** open a table if it's already active, merged, or reserved — see the exceptions below.
+
+## Open a free table
+
+1. Tap a **Free** card on the [Floor view](/waiter/assigned-tables).
+2. The **Open New Session** sheet slides up.
+
+<Frame caption="Open New Session sheet — set guest count and confirm">
+  ![Open session](/images/waiter/opening-tables.png)
+</Frame>
+
+3. Enter the **Guest Count** using the − / \+ stepper. Default is `2`. Minimum is `1`. There is no maximum — a 4-seat table can seat 6.
+4. Tap **Open Session**.
+
+The card immediately flips to **Occupied** on your floor plan and the modal transitions you to the **Menu** view so you can start [Taking Orders](/waiter/taking-orders).
+
+## What happens on open
+
+- A new row is inserted in `table_sessions` linked to your `staff_member_id`.
+- The table status flips from `free` → `occupied`.
+- A LAN broadcast fires so the POS terminal, other waiters, and the Kitchen Display all see the new session within a second.
+- Your device caches the optimistic session immediately.
+
+## Offline opening
+
+If your tablet is offline when you tap **Open Session**, DishInk does **not** fail — it goes through the offline-first path:
+
+1. An **optimistic session** is created locally (via `createOptimisticSession`).
+2. The table's local cache is patched to `occupied`.
+3. An `open_session` operation is enqueued in the offline queue with your staff ID.
+4. A LAN broadcast still fires so nearby devices on the same Wi-Fi see the change.
+5. A toast appears: _"Table opened offline · Table 7"_.
+6. When connectivity returns, the queued operation replays via the `table-management` edge function.
+
+You can add items, send them to the kitchen, and request the bill — all offline. Everything syncs when you're back online.
+
+<Note>
+  Optimistic sessions carry a temporary local ID. Once the real session is created on the server, DishInk seamlessly swaps the ID in the cache. You will not notice.
+</Note>
+
+## Special cases
+
+### Merged tables
+
+If you tap a table that has been **merged** into another, the **Merged Table Notice** modal appears:
+
+> _Table 5 has been merged. Its bill has been combined into **Table 4**. Orders and payment now happen from there._
+
+Tap **Go to Table 4** to jump straight to the primary table's session. See [Merging Tables](/tables/merging-tables).
+
+### Reserved tables
+
+Reserved tables cannot be opened by tapping them directly. Instead, tap **Open** in the Table Session modal — DishInk clears the reservation and creates the session in one step. See [Reservations](/tables/reservations).
+
+### Tables with a stale cache
+
+Rarely, a table may appear Free locally but be Occupied on the server (another device opened it while you were offline). When you tap **Open Session**:
+
+- If online: the server rejects the double-open. You'll see the existing session load instead.
+- If offline: your optimistic open is queued. On reconnect, the queue processor detects the conflict and either merges your cart into the existing session or discards the duplicate open — with a toast explaining what happened.
+
+## Adjusting the guest count later
+
+You can change the guest count anytime from the session's **Manage** view. It's used for:
+
+- Per-guest reports.
+- Automatic split-bill suggestions ("Split 4 ways").
+- Analytics (turnover, average check per guest).
+
+Adjusting it does not affect the bill total.
+
+## Tips & best practices
+
+<Tip>
+  Set the **guest count accurately** at open. Even if you don't split by guest later, kitchen and manager reports rely on it.
+</Tip>
+
+<Tip>
+  Open the table **before** you take the order. Waiters sometimes take the order at the table and then open, which risks losing items if the tablet crashes mid-order — the cart persists per table, but only if the table exists.
+</Tip>
+
+<Tip>
+  If a group is undecided (e.g. "we might get a few more"), open with the current count. Adjust upward when they're settled.
+</Tip>
+
+## Common mistakes
+
+- **Opening the wrong table.** Close it back to Free (see [Closing Tables](/waiter/closing-tables)) or leave it and open the correct one — the empty session won't cause billing issues.
+- **Opening a merged table.** Blocked with the Merged Notice modal; go to the primary instead.
+- **Forgetting to open before ordering on a temporary table.** Fine — temporary tables auto-prompt the Open Session modal when you tap them.
+
+## Related pages
+
+- [Assigned Tables](/waiter/assigned-tables)
+- [Taking Orders](/waiter/taking-orders)
+- [Temporary Tables](/waiter/temporary-tables)
+- [Table Statuses](/tables/table-statuses)
+- [Merging Tables](/tables/merging-tables)
+- [Reservations](/tables/reservations)

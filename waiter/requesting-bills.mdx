@@ -1,0 +1,140 @@
+---
+title: "Requesting Bills"
+sidebarTitle: "Requesting Bills"
+description: "Send the bill request to POS, track kitchen readiness, mark served items, and hand the table off cleanly for payment."
+---
+
+When the guests are ready to pay, you **request the bill**. This is a signal — not a payment — that tells the POS terminal the table is ready to cash out. Payment happens on the [POS](/pos/table-billing), not the waiter tablet.
+
+## Overview
+
+Requesting the bill:
+
+- Flags the table as `billing` on the floor plan (magenta border).
+- Tells the POS to prioritise this table on the [Table Billing](/pos/table-billing) view.
+- Optionally checks the kitchen for un-served items and warns if food is still coming.
+- Broadcasts to nearby devices via LAN so cashiers see it instantly.
+- Queues offline if the network is down.
+
+## Reading the Bill Summary
+
+The **Manage** view for a table shows the **Bill Summary** — a per-item breakdown with KDS status labels:
+
+<Frame caption="Bill Summary with KDS status labels and per-item served checkboxes">
+  ![Bill summary](/images/waiter/bill-summary.png)
+</Frame>
+
+Each item shows one of these status labels:
+
+| Status | Meaning |
+| --- | --- |
+| **Pending** (grey) | In your cart, not yet sent. |
+| **In Queue** (blue) | Sent, waiting for the kitchen to start. |
+| **Preparing** (amber) | Kitchen has started prep. |
+| **Ready** (green) | Kitchen has flagged ready — pick up! |
+| **Printed** (orange) | Paper ticket dispatched (kitchen without KDS). |
+| **Served** (grey check) | You've marked as delivered to the table. |
+| **Cancelled** (grey strike) | Voided line. |
+
+The **subtotal** at the bottom reflects only non-cancelled items.
+
+## Mark items served (thermal print mode)
+
+When `thermal_print_enabled` is on and the kitchen uses **paper tickets** rather than a KDS, the Bill Summary shows a checkbox beside each item once it's `ready`, `printed`, or `served`.
+
+- Tap the checkbox as each item lands at the table.
+- The status flips to **Served**.
+- When **every** non-voided item is served, the session auto-transitions to `served` and the floor card turns grey-green.
+
+A banner explains this:
+
+> _Kitchen ticket printed — tick each item below as it arrives at the table. Once every item is served, the table auto-marks as ready for payment._
+
+## Request the bill
+
+At the bottom of the Manage view:
+
+<Frame caption="Request Bill action in the footer">
+  ![Request bill](/images/waiter/requesting-bills.png)
+</Frame>
+
+1. Tap **Request Bill**.
+2. DishInk queries `table_order_items` for anything still `sent_to_kitchen` or `preparing`.
+
+### If nothing is pending
+
+The request is placed immediately:
+
+- The table flips to `billing`.
+- A LAN broadcast fires.
+- A toast confirms: **Bill requested · Table 7**.
+
+### If items are still with the kitchen
+
+The **Kitchen Warning** modal opens:
+
+<Frame caption="Kitchen Warning — waiting and cooking counts">
+  ![Kitchen warning](/images/waiter/kitchen-warning.png)
+</Frame>
+
+> _Kitchen is still preparing 2 items and 1 more is waiting to start. Are you sure you want to request the bill now?_
+
+You have three options:
+
+- **Cancel** — dismiss, go back to Bill Summary, wait for kitchen.
+- **Request Anyway** — proceed with the bill request. Items in-flight will still be served, but the table shows `billing` immediately.
+- **Notify Kitchen** _(if configured)_ — sends a "priority finish" ping to the KDS.
+
+### Offline bill requests
+
+When offline, the Kitchen Warning check is **skipped** (no way to query in-flight status). The request queues immediately with an amber toast: **Bill request queued · Table 7**. LAN broadcast still fires so the on-network POS can pick it up.
+
+## What the POS does next
+
+The POS receives the request via realtime or LAN:
+
+- The table jumps to the top of the [Table Billing](/pos/table-billing) list.
+- A **New bill request** notification badges the POS chrome.
+- The cashier opens the table and processes payment — [split](/pos/split-bills), [discounts](/pos/discounts), [partial](/pos/partial-payments), [refunds](/pos/refunds), and [Smart Invoice](/smart-invoice/invoice-generation) all live on the POS.
+
+Once payment completes, the session closes automatically and the table returns to `free` (or auto-archives if [temporary](/waiter/temporary-tables)).
+
+## Cancelling a bill request
+
+If the guests order another round after requesting:
+
+1. Simply add items via [Taking Orders](/waiter/taking-orders) — DishInk resets the table from `billing` back to `ordering`.
+2. Any queued POS notification is dismissed.
+3. Send the new items to the kitchen as usual.
+
+No PIN required for this — it's a routine mistake.
+
+## Tips & best practices
+
+<Tip>
+  **Check the KDS labels before requesting.** If you see `Preparing` on a main course, wait — the kitchen warning will catch it, but knowing beforehand avoids awkward "food's still coming" conversations at the table.
+</Tip>
+
+<Tip>
+  For paper-ticket kitchens, **tick items as they land**. The auto-serve transition to `served` makes the cashier's life easier and keeps the floor plan accurate.
+</Tip>
+
+<Tip>
+  If a guest asks for the bill before their dessert arrives, use **Request Anyway** — the KDS keeps preparing, and you serve on delivery. The cashier can start the payment flow in parallel.
+</Tip>
+
+## Common mistakes
+
+- **Requesting before the last course.** The Kitchen Warning is your seatbelt — heed it or use **Request Anyway** knowingly.
+- **Confusing Request Bill with Pay.** Payment is on POS. Requesting is just a signal.
+- **Marking items served the guest hasn't received.** Only tick the checkbox on delivery. If you tick too early and all items go `served`, the table auto-transitions to `served` — the cashier may think it's ready.
+- **Requesting when offline and assuming the POS saw it.** The queue still needs to sync. The LAN broadcast helps on-network — but a POS in another building may not know until reconnect.
+
+## Related pages
+
+- [Table Billing (POS)](/pos/table-billing)
+- [Split Bills](/pos/split-bills)
+- [Partial Payments](/pos/partial-payments)
+- [Sending Orders to Kitchen](/waiter/sending-orders)
+- [Kitchen Display / Preparing Orders](/kitchen/preparing-orders)
+- [Closing Tables](/waiter/closing-tables)

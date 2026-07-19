@@ -1,0 +1,104 @@
+---
+title: "Discounts"
+sidebarTitle: "Discounts"
+description: "Apply percentage or flat-value discounts to a bill or a single item, with optional supervisor PIN gating."
+---
+
+## Overview
+
+Discounts are applied from the Bill View by tapping **Discount** (or **Manager Override** for restricted staff). The Discount Modal supports:
+
+- **Percent** (e.g. 10%) or **Flat** (e.g. K25) mode
+- Quick-value chips: **5% · 10% · 15% · 20%**
+- Live preview: Subtotal → Discount → **New Total**
+- **Supervisor PIN** field (conditional — appears only for restricted staff or when the discount exceeds the free-limit ceiling)
+- **Remove Discount** button (clears the current discount)
+
+Discounts can target the **entire bill** (Bill View → Discount) or a **single line item** (edit the item → Discount).
+
+## Bill-Wide vs Line-Item Discounts
+
+| Scope | How to open | Prints as |
+| --- | --- | --- |
+| **Bill-wide** | Bill View → **Discount** | _Discount K—_ on the totals block |
+| **Line item** | Tap the line → pencil → **Discount** on the item modal | Struck-through unit price \+ discounted price on that line |
+
+Bill-wide discounts are simpler and easier to audit. Use line-item discounts for genuine per-item promos ("Buy one, second half price").
+
+## Percent vs Flat
+
+- **Percent** — safer for large or split bills; scales automatically if items are added later.
+- **Flat** — best when a specific kwacha amount is agreed ("Take K50 off for the wait").
+
+The modal lets you toggle mid-entry; the preview updates live.
+
+## The Supervisor PIN Gate
+
+Every user role has a **free-discount ceiling** (set in Settings → Roles & Permissions — see [Roles & Permissions](/getting-started/roles-permissions)):
+
+- Waiter — often 0% (must always ask)
+- Cashier — e.g. up to 5%
+- Supervisor / Manager — up to 100%
+
+If the requested discount exceeds the current user's ceiling, DishInk shows a **Supervisor PIN** field. Enter any supervisor's PIN to authorise. The override is logged with the supervisor's name and appears on the Batch Invoice under **Manager Overrides**.
+
+<Note>
+  Manager-authorised discounts also show on the ZRA Smart Invoice as a distinct line under the standard _Discount_ field. See [ZRA Integration](/smart-invoice/zra-integration).
+</Note>
+
+## Step by Step
+
+<Steps>
+  <Step title="Open the bill">
+    Pick the session in Active Tables. The Bill View shows.
+  </Step>
+  <Step title="Tap Discount">
+    (Or **Manager Override** if you're a restricted role.)
+  </Step>
+  <Step title="Pick Percent or Flat">
+    Toggle at the top of the modal.
+  </Step>
+  <Step title="Enter the value">
+    Use the quick chips (5/10/15/20 for %) or type into the field.
+  </Step>
+  <Step title="Watch the live preview">
+    - Subtotal — the pre-discount total
+    - Discount — how much is being taken off
+    - New Total — what the customer will pay
+  </Step>
+  <Step title="Enter Supervisor PIN (if prompted)">
+    Only appears if the discount exceeds your role's ceiling.
+  </Step>
+  <Step title="Confirm">
+    Tap **Apply Discount**. The Bill View updates and the discount prints on the receipt.
+  </Step>
+</Steps>
+
+<Frame caption="Discount Modal with 15% selected and live preview.">
+  ![Discount modal placeholder](/images/pos/discount-modal.png)
+</Frame>
+
+## Removing a Discount
+
+Open the Discount Modal again and tap **Remove Discount** at the bottom. If a supervisor authorised the original discount, removing it also needs the same authorisation level (configurable in settings).
+
+## Tips & Best Practices
+
+- Prefer **percent** for anything above K200 total — it's cleaner in audit logs.
+- Train front-of-house to use the **10% quick chip** for common loyalty regulars instead of typing "K35" each time.
+- Bulk-discount your own staff meals via a **Category Rule** in Menu Management, not per-bill discounts. See [Pricing](/menu/pricing).
+- When a customer haggles, call the manager over rather than sharing PINs. PIN-sharing muddies accountability and audit trails.
+
+## Common Mistakes
+
+- **Applying the same discount twice** — a bill-wide 10% \+ a line-item 10% stack multiplicatively. The live preview will show the true final; check it before tapping Apply.
+- **Discount without a reason** — configure your role to require a note in the Manager Override modal so audits show _why_. See [Roles & Permissions](/getting-started/roles-permissions).
+- **Trying to discount a paid bill** — you can't. Issue a partial refund instead. See [Refunds](/pos/refunds).
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Refunds](/pos/refunds)
+- [Voids](/pos/voids)
+- [Roles & Permissions](/getting-started/roles-permissions)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)

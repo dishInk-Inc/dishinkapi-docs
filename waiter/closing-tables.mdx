@@ -1,0 +1,124 @@
+---
+title: "Closing Tables"
+sidebarTitle: "Closing Tables"
+description: "Return a table to Free after payment — automatic on paid sessions, manual for accidental opens, manager-gated for unpaid closes."
+---
+
+Closing a table ends its session and returns the card to **Free** on the floor plan. In normal service, closing happens **automatically** once payment completes. Manual closes exist for accidental opens and edge cases.
+
+## Overview
+
+There are three closing paths:
+
+1. **Automatic close on payment** — the POS processes the full payment; the session ends and the table auto-closes. No waiter action required.
+2. **Manual close of an empty session** — you opened a table by mistake and want to release it. No PIN required.
+3. **Force close with an unpaid bill** — a manager overrides the outstanding amount. Requires **Manager PIN** and a reason.
+
+Temporary tables also **auto-archive** off the floor plan when they close paid.
+
+## Automatic close (the normal path)
+
+Once the cashier has completed payment on the POS:
+
+- The session's `payment_status` becomes `paid`.
+- Any [Smart Invoice](/smart-invoice/overview) submission finalises.
+- The KDS receives a final `session_closed` event; any remaining `served` items are archived.
+- The floor card flips from `billing` (magenta) → `free` (grey/green depending on your theme).
+- If the table is [temporary](/waiter/temporary-tables), it auto-archives off the floor.
+- A LAN broadcast fires so all connected devices update immediately.
+
+You don't need to do anything — but do glance at the card to make sure it flipped. Occasionally a partial payment sits below the total (see [Partial Payments](/pos/partial-payments)) — the table stays `billing` until the balance clears.
+
+## Manual close — empty session
+
+If you opened a table by mistake and there are no items on it:
+
+1. Open the table's **Manage** view.
+2. Scroll to the footer.
+3. Tap **Close Table**.
+
+<Frame caption="Close Table action for an empty session">
+  ![Close table](/images/waiter/closing-tables.png)
+</Frame>
+
+4. Confirm.
+
+The session ends immediately with a `zero_total` reason. The card returns to `free`. No PIN needed because there's no money on the line.
+
+## Force close — unpaid bill
+
+If a bill needs to close without payment (walkout, comp, staff meal that wasn't billed), this is a **manager action**. From the POS or the Waiter Manage view:
+
+1. Tap **Close Table**.
+2. DishInk detects an outstanding amount and opens the **Force Close** modal.
+3. Enter a **reason** — required. Examples:
+   - `Walkout — police notified`
+   - `Comp — VIP birthday`
+   - `Staff meal — Chef approval`
+   - `System error — bill duplicated`
+4. Tap **Force Close**.
+5. **PIN Verify** modal — manager PIN required.
+6. On success: session closes with the outstanding amount recorded as a `walkout` or `comp` (per your reason). A ZRA credit note is issued if the session had already been fiscally submitted.
+
+The full amount and reason land in the shift report and manager audit log.
+
+<Note>
+  Force closes are audited relentlessly. Every field is stored — the manager who authorised, the waiter who initiated, the reason text, the outstanding amount, and (if applicable) the ZRA credit note reference. Use them sparingly.
+</Note>
+
+## Offline closing
+
+Closing (manual or force) queues offline:
+
+- Optimistic: the card flips to `free` on your device immediately.
+- The close operation is queued with any PIN payload attached.
+- LAN broadcast fires so on-network devices reflect the change.
+- On reconnect, the queue replays.
+
+If the server rejects (e.g. someone paid the bill in the meantime and the session already closed), the queue reconciles and you get a toast: _Table 7 already closed — bill paid at 14:32._
+
+## Cancelling a close
+
+You can't "un-close" a session — it's a fiscal action. If a table closed and the same guests want to reorder:
+
+- Open the table as normal — it starts a **new session** for the next round.
+- The previous bill is finalised and reflected in reports.
+
+## Table statuses after close
+
+- Permanent tables → **Free** (grey).
+- Temporary tables → **Auto-archived** off the floor.
+- Merged tables → the primary closes; secondaries return to `free` and un-link.
+
+See [Table Statuses](/tables/table-statuses) for the full lifecycle.
+
+## Tips & best practices
+
+<Tip>
+  **Don't manually close** a table that's just been paid — the automatic close is more reliable and preserves the payment linkage. If the card hasn't flipped after payment, refresh the floor rather than force-closing.
+</Tip>
+
+<Tip>
+  Reason texts matter. `Walkout` is much more useful in the shift report than `n/a`.
+</Tip>
+
+<Tip>
+  For staff meals or comps, pair the force close with a **discount** or **zero-price menu item** rather than a bare walkout — it keeps analytics clean.
+</Tip>
+
+## Common mistakes
+
+- **Force closing an unpaid bill by habit.** Every force close is a money leak. Confirm with a manager before authorising.
+- **Closing a table with an in-flight KDS order.** The kitchen will still prep and serve, but the session is gone — the item ends up abandoned. Cancel the KDS order first via [Editing Orders](/waiter/editing-orders).
+- **Closing to "reset" a stuck table.** Use the [Stuck Tables](/tables/stuck-tables) recovery flow instead — safer and preserves data.
+- **Assuming close = paid.** Force close ≠ paid. It's an outstanding balance recorded to the shift.
+
+## Related pages
+
+- [Requesting Bills](/waiter/requesting-bills)
+- [Table Billing (POS)](/pos/table-billing)
+- [Partial Payments](/pos/partial-payments)
+- [Table Statuses](/tables/table-statuses)
+- [Stuck Tables](/tables/stuck-tables)
+- [Temporary Tables](/waiter/temporary-tables)
+- [Smart Invoice / Fiscal Compliance](/smart-invoice/fiscal-compliance)

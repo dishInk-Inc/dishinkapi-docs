@@ -1,0 +1,115 @@
+---
+title: "Refunds"
+sidebarTitle: "Refunds"
+description: "Return money to a customer with a manager-authorised, ZRA-compliant credit note."
+---
+
+## Overview
+
+A refund reverses part or all of a **paid** sale. Unlike a Void (same-day, no money moved), a refund actually returns money and issues a **ZRA Credit Note** — the legally-required fiscal counter-entry to the original Smart Invoice.
+
+Refunds are opened from **Transaction History** → tap the sale → **Refund**.
+
+## Refund Modal
+
+Every refund needs:
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| **Manager PIN** | Yes | Minimum 4 digits. Any manager-level PIN works. |
+| **Reason** | Yes | Free-text, min 3 chars. Six **Quick chips** pre-fill it: _Wrong item_, _Wrong quantity_, _Customer complaint_, _Price error_, _Duplicate charge_, _Other_. |
+| **ZRA Credit Note Reason** | Yes | Dropdown — see codes below. |
+| **Amount** | Yes | Free-text, or **Full** / **Half** quick chips. Max = original total − already-refunded. |
+| **Refund method** | Yes | Cash · Mobile Money · Card (defaults to original payment method). |
+
+### ZRA Credit Note Reason Codes
+
+| Code | Reason | Use when… |
+| --- | --- | --- |
+| **01** | Reversal | Whole transaction was wrong (duplicate charge, wrong customer). |
+| **02** | Wrong item | Customer got the wrong dish. |
+| **03** | Wrong quantity | Charged for 2, got 1. |
+| **04** | Wrong price | Menu price was outdated on the receipt. |
+| **05** | Goods returned | Retail item / bottled product returned unopened. |
+| **06** | Other | Anything else — expand in the Reason field. |
+
+<Note>
+  The ZRA reason code is embedded in the Smart Invoice credit note XML that submits to ZRA. Pick the closest match — auditors reconcile these codes against your books.
+</Note>
+
+## Full vs Partial Refund
+
+- **Full** chip → pre-fills the full remaining refundable amount.
+- **Half** chip → pre-fills half.
+- **Manual** → type any amount up to the max shown.
+
+If the customer only wants some items refunded, tick those lines in the transaction detail view before opening the Refund Modal — the max recalculates.
+
+## Refund Method
+
+Refunds default to the original payment method (a card sale refunds to card, a MoMo sale to MoMo). You can override:
+
+- **Cash refund** — opens the till drawer instruction on the receipt.
+- **Mobile Money** — records the provider (MTN / Airtel / Zamtel) and an optional transaction reference for reconciliation.
+- **Card** — refund is initiated on the card terminal; enter the terminal's approval code in the confirmation dialog.
+
+## Step by Step
+
+<Steps>
+  <Step title="Open Transaction History">
+    POS → **Shift** tab → find the sale (by table, tag, receipt no, or amount).
+  </Step>
+  <Step title="Open the sale">
+    Tap the transaction → **Refund** button (visible only for paid, non-voided sales within your refund window).
+  </Step>
+  <Step title="Enter Manager PIN">
+    Any manager-level PIN. Overrides are logged with the manager's name.
+  </Step>
+  <Step title="Pick a Reason chip">
+    Or type a free-text reason (min 3 chars).
+  </Step>
+  <Step title="Pick a ZRA credit-note code">
+    Codes 01–06. Match your reason as closely as possible.
+  </Step>
+  <Step title="Enter the amount">
+    Full · Half · or manual entry.
+  </Step>
+  <Step title="Pick refund method">
+    Defaults to the original — override if the customer wants a different channel.
+  </Step>
+  <Step title="Confirm">
+    A credit-note receipt prints, ZRA Smart Invoice submits, and the transaction shows _Refunded K…_ in the history.
+  </Step>
+</Steps>
+
+<Frame caption="Refund Modal with reason chips, ZRA code dropdown, and Full/Half amount chips.">
+  ![Refund modal placeholder](/images/pos/refund-modal.png)
+</Frame>
+
+## Offline Refunds
+
+Refunds require the ZRA API to be reachable. If offline, DishInk still accepts the refund locally and returns the money physically — the credit note **queues** and submits automatically when the internet returns.
+
+The transaction shows a **⚠ Pending ZRA** badge until the queued credit note is accepted. Managers can force-retry from **Smart Invoice → Fiscal Compliance**. See [Fiscal Compliance](/smart-invoice/fiscal-compliance).
+
+## Tips & Best Practices
+
+- Match the **ZRA code** to the actual root cause — auditors read them and mismatches trigger queries.
+- Always print and hand the customer the credit note receipt. It's their proof for card refunds that take 3–5 business days to land back on the card.
+- For frequent "wrong quantity" refunds, review the waiter's order-entry — the fix is usually training, not more refunds.
+- **Half** and **Full** chips prevent typos on large amounts. Prefer them over typing when applicable.
+
+## Common Mistakes
+
+- **Refunding when a Void would work.** Same-day, unchanged bill, no receipt handed to the customer → Void is faster and cleaner (no credit note filed). See [Voids](/pos/voids).
+- **Using ZRA code 06 (Other) as a catch-all.** ZRA flags accounts with unusually high "Other" volumes. Use specific codes wherever they fit.
+- **Refunding without ticking specific lines** — you refund the whole bill's proportion instead of the returned items. Tick the specific items first.
+- **Cash refund from an empty till.** Batch Invoice Cash Out flags negative cash drawers. Ensure the drawer holds enough — otherwise refund to a different method and reconcile later.
+
+## Related Pages
+
+- [Voids](/pos/voids)
+- [Transaction History](/pos/shift)
+- [Fiscal Compliance](/smart-invoice/fiscal-compliance)
+- [ZRA Integration](/smart-invoice/zra-integration)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)

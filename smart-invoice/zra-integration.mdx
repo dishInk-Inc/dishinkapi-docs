@@ -1,0 +1,43 @@
+---
+title: "ZRA Integration"
+sidebarTitle: "ZRA Integration"
+description: "Connect DishInk to the ZRA Smart Invoice API for real-time fiscal submission."
+---
+
+Connect your DishInk account to the ZRA Smart Invoice system. One-time setup takes about 10 minutes.
+
+## Overview
+
+Requirements:
+
+- ZRA taxpayer identification number (TPIN)
+- VAT registration certificate (for VAT mode)
+- ZRA Smart Invoice API credentials (issued by ZRA)
+
+## Connect ZRA
+
+<Frame caption="ZRA integration">
+  ![ZRA setup](/images/smart-invoice/zra-integration.png)
+</Frame>
+
+<Note>
+  If the connection to ZRA drops temporarily, DishInk queues invoices locally and submits them once connectivity is restored. Receipts still print with the correct data.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Keep your VAT registration certificate scanned and uploaded to Settings → Documents for quick audit response.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not share Smart Invoice API credentials. Treat them like a bank password — rotate if a staff member with access leaves.
+</Warning>
+
+## Related pages
+
+- [Overview](/smart-invoice/overview)
+- [Invoice Generation](/smart-invoice/invoice-generation)
+- [Fiscal Compliance](/smart-invoice/fiscal-compliance)

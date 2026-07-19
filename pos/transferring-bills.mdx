@@ -1,0 +1,108 @@
+---
+title: "Transferring Sessions"
+sidebarTitle: "Transferring Sessions"
+description: "Move an open table session from one terminal to another with a manager PIN."
+---
+
+## Overview
+
+Every open bill in DishInk is locked to the terminal that opened it. This is enforced atomically in the database — two cashiers on two devices can never charge the same session.
+
+When a legitimate handover is needed (front counter closing, terminal rebooting, kitchen-side till taking over), a **Session Transfer** moves the lock from one terminal to another. This is a manager-authorised action.
+
+<Note>
+  This is not the same as a **table transfer** (moving guests between tables). See [Table Transfers](/tables/table-transfers) for that.
+</Note>
+
+## When You'll See This
+
+- A cashier on Terminal B taps **Charge** on a session opened by Terminal A → the Transfer prompt fires automatically.
+- Terminal A crashes / goes offline → any manager can force-transfer via **Settings → Terminals → Active Sessions**.
+- End-of-shift handover — outgoing cashier explicitly transfers all their open sessions to the incoming cashier.
+
+## The Transfer Prompt
+
+The Transfer Modal shows:
+
+- Source terminal name and cashier
+- Destination terminal (the one you're on now)
+- Current bill snapshot (total, item count)
+- **Manager PIN** field
+- **Reason** field (free-text, min 3 chars)
+- **Transfer** button (destructive-looking blue → red once PIN validated)
+
+[Once confirmed, the session unlocks from the source and locks to the destination in a single atomic transaction. Other devices update instantly.](/tables/table-transfers)
+
+## The Manager Override
+
+Managers with the _All Terminals_ permission can skip the transfer prompt entirely — they see every session regardless of which terminal opened it. They can also **force-transfer** from Settings → Terminals → Active Sessions when the source terminal is unresponsive.
+
+The override is logged on the Batch Invoice under **Manager Overrides → Session[ Transfers](/tables/item-transfers)**[.](/tables/item-transfers)
+
+## Step by Step (Normal Transfer)
+
+<Steps>
+  <Step title="Try to charge from Terminal B">
+    Pick the session in Active Tables (visible if you have All-Tables permission), tap **Charge**.
+  </Step>
+  <Step title="Transfer prompt appears">
+    DishInk detects the lock mismatch and opens the Transfer Modal.
+  </Step>
+  <Step title="Enter manager PIN">
+    Any manager-level PIN.
+  </Step>
+  <Step title="Enter a reason">
+    E.g. _"Terminal A closing for the night."_
+  </Step>
+  <Step title="Confirm Transfer">
+    Lock moves. Terminal B can now charge the session normally.
+  </Step>
+</Steps>
+
+## Step by Step (Emergency Force-Transfer)
+
+<Steps>
+  <Step title="Log in as manager">
+    Or supervisor with All-Terminals permission.
+  </Step>
+  <Step title="Go to Settings → Terminals">
+    See the list of active terminals and their open sessions.
+  </Step>
+  <Step title="Pick the stranded session">
+    Tap the session card → **Force Transfer**.
+  </Step>
+  <Step title="Pick destination terminal">
+    Any terminal in this branch.
+  </Step>
+  <Step title="Confirm with PIN + reason">
+    Session moves. Original terminal, if it recovers, will show the session as "moved" and refresh its cache.
+  </Step>
+</Steps>
+
+<Frame caption="Transfer Modal on the destination terminal.">
+  ![Session transfer placeholder](/images/pos/session-transfer.png)
+</Frame>
+
+## Kitchen & KDS Behaviour
+
+Kitchen tickets already fired stay associated with the same **session**, regardless of which terminal owns it. The KDS keeps preparing normally — no re-fire, no duplicate tickets.
+
+## Tips & Best Practices
+
+- Standardise on one **primary terminal per station**. Transfers should be the exception, not the routine.
+- If a cashier leaves mid-shift with open bills, the incoming cashier should bulk-transfer via Settings → Terminals rather than one-by-one.
+- Use a clear reason. _"Handover — shift change 22:00"_ is auditable; _"transfer"_ is not.
+
+## Common Mistakes
+
+- **Confusing Session Transfer with Table Transfer.** Different tools. Session = the running bill; Table = the physical furniture. See [Table Transfers](/tables/table-transfers).
+- **Force-transferring a session that's mid-split.** The split is preserved but the split-active lock also moves; the destination terminal continues the split. Do not force-transfer if the source terminal might come back online mid-split.
+- **PIN-sharing to avoid the transfer prompt.** Every override is logged. Do the transfer properly.
+
+## Related Pages
+
+- [Terminal Setup](/pos/terminal-setup)
+- [Table Transfers](/tables/table-transfers)
+- [Creating Sales](/pos/creating-sales)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)
+- [Roles & Permissions](/getting-started/roles-permissions)

@@ -1,0 +1,126 @@
+---
+title: "Quick Sales"
+sidebarTitle: "Quick Sales"
+description: "Fast counter checkout for cafés, bars, and takeaway. No table, no waiter — just cart, charge, done."
+---
+
+## Overview
+
+The **Quick Sale** tab is a table-less checkout flow for orders that don't need a running bill: takeaway counters, coffee shops, bars, pastry cases, and anything paid on the spot.
+
+Layout is two columns:
+
+- **Menu Browser** on the left (categories, grid, or list — see [Menu Browser](/pos/creating-sales#column-1-active-tables)).
+- **Quick Sale Ticket** on the right (the cart).
+
+## The Quick Sale Ticket
+
+Header shows the ticket name (**Quick Sale Ticket**) and a live item count. A **Clear** link on the top right empties the cart.
+
+Each line shows:
+
+- Quantity × item name
+- **Modifier chips** in red (e.g. `Oat Milk +K5.00`)
+- **Custom notes** in amber (e.g. _"No onions"_)
+- Line total on the right
+- **Edit** (pencil) and **Remove** (trash) buttons
+- A **± quantity stepper** below the line
+
+## Customer / Order Tag
+
+Above the cart, there's an optional **Customer / Order Tag** field (e.g. `Table 4 / John`). This label prints on the kitchen ticket and receipt so staff can call the order out. Tap **Keypad** to type with an on-screen keyboard, or use your device's keyboard.
+
+## The Three Action Buttons
+
+At the bottom of the cart, up to three buttons appear depending on whether your kitchen uses the Kitchen Display System (KDS) or paper kitchen printers.
+
+### 1. Preview Receipt (optional)
+
+Opens the receipt preview with a **Print & Charge Now** action. Use this when the customer wants to see the total before you charge, or when you want to inspect the receipt layout before it prints.
+
+### 2. Send & Charge  _or_  Print & Charge  (emerald, left button)
+
+Which one appears depends on your kitchen setup:
+
+| Setup | Left button | What it does |
+| --- | --- | --- |
+| **KDS enabled** (recommended) | **Send & Charge** — ChefHat icon | Sends the order to the KDS _first_, then opens the Charge Modal. |
+| **Kitchen Printer only** | **Print & Charge** — Printer icon | Prints a kitchen ticket to the paper printer _first_, then opens the Charge Modal. |
+
+<Note>
+  KDS is the recommended primary route — it's real-time, cancellable, and shows prep timers. Kitchen printers are a fallback for kitchens without a screen. See [Kitchen Display System](/kds/receiving-orders) and [Kitchen Printers](/printing/kitchen-printers).
+</Note>
+
+### 3. Charge Now  (red, right button)
+
+Charges immediately — **no kitchen ticket at all**. Use this for items that need no prep: water, bottled drinks, pastries in the display, retail items.
+
+## Step by Step
+
+<Steps>
+  <Step title="Switch to the Quick Sale tab">
+    Tap **Quick Sale** at the top of the POS.
+  </Step>
+  <Step title="Add items">
+    Tap items in the menu browser. Search with `Search dishes…`, switch between Category / Grid / List views, or filter by category.
+  </Step>
+  <Step title="Adjust quantities or add modifiers">
+    Tap the pencil icon to edit modifiers, notes, or quantity. Tap the ± buttons to bump the quantity directly.
+  </Step>
+  <Step title="Add a tag (optional)">
+    Type a customer name, table number, or order tag so kitchen staff can call the order.
+  </Step>
+  <Step title="Choose the flow">
+    - Food needing prep \+ KDS → **Send & Charge**
+    - Food needing prep \+ paper printer → **Print & Charge**
+    - Drinks / pastries / retail → **Charge Now**
+  </Step>
+  <Step title="Charge">
+    The Charge Modal opens. Pick Cash, Mobile Money, or Card and confirm. See [Creating Sales](/pos/creating-sales#payment-method-flows) for full payment details.
+  </Step>
+</Steps>
+
+<Frame caption="Quick Sale tab with menu browser and Quick Sale Ticket.">
+  ![Quick Sale placeholder](/images/pos/quick-sale.png)
+</Frame>
+
+## Stock Status Pills
+
+Every menu item in the Quick Sale browser shows a stock pill drawn from live inventory:
+
+| Pill | Colour | Meaning |
+| --- | --- | --- |
+| **Adequate** | Green | Plenty in stock. |
+| **Low** | Amber | Below the low-stock threshold. |
+| **Unavailable** | Red | Out of stock — blocked from sale. |
+| **Override** | Blue | A manager has overridden the sold-out state (temporary, PIN-authorised). |
+| **No recipe** | Gray | Item has no linked recipe, so stock isn't tracked. |
+| **Manual off** | Gray | Manually marked unavailable in Menu Management. |
+
+Some items also show a **~N left** badge — the number of servings remaining based on ingredient recipes.
+
+### Inventory Override
+
+If you tap a sold-out item, DishInk prompts for an **Inventory Override**: a manager PIN plus a written reason. The override is logged for the shift and clears at the next stock count.
+
+## Tips & Best Practices
+
+- **Turn on KDS whenever possible.** Real-time prep tracking, no lost tickets, no printer jams.
+- Use the **tag** field liberally — even _"Bald guy in blue shirt"_ is better than nothing when a coffee comes out and no one knows whose it is.
+- Keep the **Category** view for menus with photos; switch to **List** when moving fast and you know the menu by heart.
+- Train staff to use **Charge Now** for anything already made (bottles, pre-packed items) — it saves the kitchen team an unnecessary ticket.
+
+## Common Mistakes
+
+- **Charging Now** on food that needs prep — the kitchen never gets the ticket. Look for the ChefHat / Printer icon on the left button when the customer ordered food.
+- Forgetting to clear the customer tag between orders — the next order inherits it. Tap the × on the tag or **Clear** the cart.
+- Adding a discount after **Send & Charge** — you can't; the ticket has already left. Add discounts before you tap the emerald button.
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Reprinting Receipts](/pos/reprinting-receipts)
+- [Discounts](/pos/discounts)
+- [Kitchen Display System](/kds/receiving-orders)
+- [Kitchen Printers](/printing/kitchen-printers)
+- [Menu Items](/menu/menu-items)

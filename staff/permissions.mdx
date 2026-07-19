@@ -1,0 +1,44 @@
+---
+title: "Permissions"
+sidebarTitle: "Permissions"
+description: "Configure per-role permissions across every DishInk module."
+---
+
+Permissions define what each role can and cannot do. DishInk ships with predefined role templates and supports custom permission sets for enterprise deployments.
+
+## Overview
+
+Permissions are grouped by module. Each permission is a single toggle:
+
+- POS: create sale, refund, void, apply discount, override price
+- Tables: open, close, transfer, merge
+- Inventory: view, edit stock, purchase orders
+- Reports: view, export, financial detail
+- Staff: view, edit, PIN reset, clock override
+
+## Configure custom permissions
+
+<Frame caption="Permissions matrix">
+  ![Permissions](/images/staff/permissions.png)
+</Frame>
+
+<Note>
+  Every permission change is logged with the administrator and timestamp for audit.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Design custom roles per venue type: "Bar Cashier", "Head Chef", "Host". More granular than built-in roles and portable across branches.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not grant refund or void permissions to standard cashiers. Route these through manager PIN approval instead.
+</Warning>
+
+## Related pages
+
+- [Roles & Permissions](/getting-started/roles-permissions)
+- [Staff Accounts](/staff/staff-accounts)

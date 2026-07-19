@@ -1,0 +1,44 @@
+---
+title: "Kitchen Order Problems"
+sidebarTitle: "Kitchen Orders"
+description: "Missing tickets, wrong-station routing, and stale prep timers."
+---
+
+Kitchen order issues typically involve missing tickets, wrong-station routing, or stale prep timers.
+
+## Overview
+
+Symptoms:
+
+- Ticket sent from Waiter App but not visible on KDS
+- Ticket appears at the wrong station
+- Prep timer stuck at 00:00 or unrealistic times
+- Ticket bumped twice
+
+## Diagnostic flow
+
+<Frame caption="Kitchen order issue">
+  ![Kitchen order](/images/troubleshooting/kitchen.png)
+</Frame>
+
+<Note>
+  Every ticket has a full audit trail — who sent it, when, and every status change. Use it to trace exact failure points.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Confirm station routing after any menu update. New items sometimes land in the wrong category and route poorly.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not bump tickets from the KDS to "catch up" if the kitchen fell behind. Timing metrics become meaningless.
+</Warning>
+
+## Related pages
+
+- [KDS: Receiving Orders](/kds/receiving-orders)
+- [Menu: Menu Items](/menu/menu-items)
+- [Categories](/menu/categories)

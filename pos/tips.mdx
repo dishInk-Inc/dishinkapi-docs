@@ -1,0 +1,118 @@
+---
+title: "Tips"
+sidebarTitle: "Tips"
+description: "How tips are captured, split, pooled or attributed to a specific waiter — and how staff cash them out."
+---
+
+## Overview
+
+DishInk captures tips through three distinct flows and routes them according to your **Tip Policy** (Settings → Payments → Tips). Every kwacha of tip is logged against a staff member or the pool, and appears on the Batch Invoice Cash Out — no shoebox accounting.
+
+## The Three Tip Flows
+
+### 1. Explicit Tip (before charge)
+
+On the Charge Modal, expand the **Tip** section:
+
+- **% chips** — 5% · 10% · 15% · 20%
+- **Fixed K chips** — K10 · K20 · K30 · K50
+- **Custom** field
+
+The tip is added to the Grand Total _before_ the customer pays. This is the cleanest flow — the customer knows the exact total including tip.
+
+### 2. Overpayment → Tip (during cash payment)
+
+When a cash payment exceeds the total, DishInk shows the overage in green and offers:
+
+- **Give Change** — hand it back.
+- **Tip · K\_\_** — book the overage as a tip.
+
+Use this for the very common Zambian scenario: customer hands you a K200 note for a K180 bill, waves off the change with _"keep it"_.
+
+### 3. Post-Charge Tip Adjustment (card-based tips)
+
+When a customer tips on the card terminal itself (they add K20 to the K180 slip), the cashier records it after the fact:
+
+- Open the transaction in **Shift**
+- Tap **Adjust Tip**
+- Enter the tip amount
+- Confirm — the transaction total updates and the tip is attributed.
+
+<Note>
+  Card-terminal tips need this manual sync because DishInk's charge locks in _before_ the card slip is signed. The Adjust Tip step captures what actually landed on the merchant statement.
+</Note>
+
+## Routing: Pool vs Waiter
+
+Every tip routes according to the **Tip Policy** set in Settings:
+
+| Policy | How it distributes |
+| --- | --- |
+| **Waiter-Attributed** | Tip goes to the primary waiter of the session. On Quick Sale (no waiter), it goes to the cashier. |
+| **Pool** | Tip goes into a shared pool, distributed by shift hours or by a fixed formula (Settings → Payments → Tip Pool Rules). |
+| **Hybrid** | Custom split — e.g. 70% waiter, 30% pool. Configurable percentage. |
+
+Hybrid is the most common in mid-size restaurants: rewards the waiter for good service while still sharing with support staff (kitchen, bar, runners).
+
+## Multi-Waiter Sessions
+
+When multiple waiters worked one table:
+
+- **Waiter-Attributed** — tip goes to the _primary_ waiter (the one who opened the session).
+- **Shared** contributions (see [Batch Cash-Out — Shared vs Handoff](/pos/batch-cash-out#9-staff-performance-breakdown)) _split the tip proportionally by dollar contribution_.
+- **Handoff** — if the cashier who closed the bill never punched an item on that table, the tip still goes to the waiter(s), not the cashier.
+
+## Tips on the Batch Invoice
+
+- **Summary card: Tips** — total for the period.
+- **By Staff** — tips per staff member.
+- **Staff Performance Breakdown** — tips broken out by Waiter-Attributed vs Pool Share vs Handoff.
+- **Manager Overrides** — any manual tip adjustments (added, removed, reassigned) with reason.
+
+## Cashing Out Tips
+
+At end-of-shift, each staff member's **Batch Invoice Cash Out** shows their **Tips Owed** (waiter-attributed \+ pool share). The manager pays out cash tips against this figure, or the payroll system syncs them into the next pay run — see [Payroll](/staff/cash-out).
+
+## Step by Step (Adding a Tip at Charge)
+
+<Steps>
+  <Step title="Open the Charge Modal">
+    Tap **Charge** on any session or Quick Sale ticket.
+  </Step>
+  <Step title="Expand Tip">
+    The Tip section is collapsed by default — tap the header to open.
+  </Step>
+  <Step title="Pick a chip or type">
+    % 5/10/15/20, or Fixed K10/20/30/50, or Custom.
+  </Step>
+  <Step title="Confirm charge">
+    The confirmation shows _Charge K180.00 · Tip K20.00_ clearly. The customer pays the combined amount.
+  </Step>
+</Steps>
+
+<Frame caption="Charge Modal with the Tip section expanded showing quick chips.">
+  ![Tips placeholder](/images/pos/tips.png)
+</Frame>
+
+## Tips & Best Practices
+
+- Post your **tip policy** in the staff room. Ambiguity around pool vs waiter is the fastest way to lose trust.
+- Encourage **explicit tips** over overpayment-to-tip — cleaner for the customer, easier for the cashier.
+- Reconcile card-terminal tips daily using **Adjust Tip**. Do not leave a backlog — matching statements a week later is painful.
+- For hybrid policy, review the split quarterly. Growing kitchens deserve a bigger pool share; a stagnant policy demotivates back-of-house.
+
+## Common Mistakes
+
+- **Charging without expanding Tip** when the customer said "add 10%". The chip is one tap — don't forget it.
+- **Booking a tip as Cash when the customer paid card.** The tip method mirrors the charge method — override only when the tip is physically in cash despite a card sale.
+- **Assuming card-terminal tips auto-sync.** They don't. Adjust Tip in Shift is required.
+- **Distributing pool tips manually.** The Batch Invoice already calculates each waiter's share by shift hours. Use the number it gives you.
+
+## Related Pages
+
+- [Creating Sales](/pos/creating-sales)
+- [Partial Payments](/pos/partial-payments)
+- [Shift](/pos/shift)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)
+- [Cash Out (Staff)](/staff/cash-out)
+- [Roles & Permissions](/getting-started/roles-permissions)

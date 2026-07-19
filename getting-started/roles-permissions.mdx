@@ -1,0 +1,50 @@
+---
+title: "User Roles & Permissions"
+sidebarTitle: "Roles & Permissions"
+description: "Every DishInk role, what it can do, and how to configure custom permission sets."
+---
+
+DishInk ships with predefined roles that match standard restaurant hierarchy. Enterprise administrators can also build custom permission sets in **Staff Management → Permissions**.
+
+## Overview
+
+| Role | Typical user | Access |
+| --- | --- | --- |
+| **Owner** | Business owner | Full access, billing, all branches |
+| **Administrator** | IT / operations lead | Full access minus billing |
+| **General Manager** | Branch GM | One or more branches, full ops |
+| **Manager** | Shift manager | Overrides, refunds, voids, reports |
+| **Cashier** | Front counter | POS, receipts, cash-out |
+| **Waiter** | Floor staff | Waiter App, table service |
+| **Kitchen** | Chef / line cook | KDS only |
+| **Custom** | Any | Fine-grained permission set |
+
+## What each role can do
+
+## Configure custom permissions
+
+<Frame caption="Permissions matrix">
+  ![Permissions](/images/getting-started/permissions.png)
+</Frame>
+
+<Note>
+  Custom roles are portable across branches. Design them per venue type (bar cashier, head chef) rather than modifying built-in roles.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Follow the principle of least privilege. Only owners and administrators should have access to billing, integrations, and security.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not give cashiers direct refund permissions. Require a manager PIN — the single most effective control against internal loss.
+</Warning>
+
+## Related pages
+
+- [Staff Accounts](/staff/staff-accounts)
+- [PIN Login](/staff/pin-login)
+- [Permissions](/staff/permissions)

@@ -1,0 +1,38 @@
+---
+title: "CSV Exports"
+sidebarTitle: "CSV Exports"
+description: "Raw CSV export for spreadsheets, accounting imports, and BI tools."
+---
+
+CSV exports give you raw report data for spreadsheet analysis, accounting imports, and business-intelligence tools.
+
+## Overview
+
+Every report supports CSV export. Files are UTF-8 encoded and use standard comma separators — compatible with Excel, Google Sheets, and every major accounting package.
+
+## Export data to CSV
+
+<Frame caption="CSV export">
+  ![CSV export](/images/reports/csv-export.png)
+</Frame>
+
+<Note>
+  Column names are stable across versions so you can build recurring imports without breakage.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Automate accounting imports. Schedule daily CSV email delivery to a dedicated accounting inbox, then use a rules engine (Zapier, Make) to import into your ledger.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not open large CSVs in Excel without checking the number-format setting. Excel silently truncates long IDs — use text-format imports for order numbers.
+</Warning>
+
+## Related pages
+
+- [PDF Exports](/reports/pdf-exports)
+- [Transaction History](/pos/transaction-history)

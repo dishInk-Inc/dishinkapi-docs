@@ -1,0 +1,103 @@
+---
+title: "Table Transfers"
+sidebarTitle: "Table Transfers"
+description: "Move an active session — bill, items, guests, waiter — to a free table. Rules, candidate filtering, and how it differs from merging."
+---
+
+Transfer moves an entire active session from one table to another **free** table. The original table becomes free; the new table takes over the bill.
+
+## Overview
+
+Reasons to transfer:
+
+- A group asked to move (e.g. from a small table to a booth).
+- You need a specific table for a reservation and the current occupants agreed to switch.
+- A temporary walk-in table is now moving to a permanent table because seating opened up.
+
+Transfer is **not** the same as [Merge](/tables/merging-tables). Merge combines two active sessions. Transfer moves one to a free spot.
+
+## Transfer a table
+
+1. Open the source table by tapping its card.
+2. In the Table Session modal, tap **Transfer / Merge**.
+3. The **Transfer Merge modal** opens in **Transfer** mode by default.
+
+<Frame caption="Transfer / Merge modal in Transfer mode — only free tables shown">
+  ![Table transfer](/images/tables/table-transfers.png)
+</Frame>
+
+4. The candidate list shows only **free tables** in the branch. Merged, active, and reserved tables are hidden in Transfer mode.
+5. Each row shows the target table's name, section, and capacity.
+6. Pick your target. Confirm.
+
+The floor plan updates: the source table becomes free (no session, no badges), the target table takes on the bill and all its state.
+
+## What moves
+
+Everything transfers as a single atomic operation:
+
+| Item | Behaviour |
+| --- | --- |
+| Cart items (un-sent) | Moved to the new table |
+| Kitchen tickets already sent | Retagged in KDS to the new table name |
+| Discounts | Retained |
+| Waiter assignment | Follows the session — the assigned waiter now sees the new table |
+| Guest count | Retained |
+| Payment history (partial payments) | Retained |
+| Reservation on the old table | Cleared if the reservation was for the current occupants |
+
+## Split lock rule
+
+If the source table has an **active split payment**, transfer is **blocked**:
+
+> _Cannot transfer — this table has an active split. Clear the split first._
+
+Same reason as merge: split payments reference specific items. Resolve the split (pay or clear) before moving.
+
+## Candidate filtering
+
+DishInk shows only valid targets. A table is a valid transfer target if it is:
+
+- **Free** (no active session).
+- **Not merged.**
+- **Not reserved** for a different group (see [Reservations](/tables/reservations)).
+- Not the source itself.
+
+If no tables meet the criteria, the modal displays: _"No available tables to transfer to. Free one up first."_
+
+## Kitchen coordination
+
+Kitchen tickets already sent are **retagged** to the new table on the KDS. This is automatic — no re-print needed.
+
+<Note>
+  Runners may already have the food. Tell the kitchen verbally when you transfer a table mid-preparation so runners deliver to the right seat.
+</Note>
+
+## Tips & best practices
+
+<Tip>
+  Transfer before payment, not after. Moving a table after paying creates confusion in reports — the revenue is booked to the original table.
+</Tip>
+
+<Tip>
+  If a walk-in is moving to a permanent table, transfer instead of closing and reopening. The bill stays intact and the guest sees no interruption.
+</Tip>
+
+<Tip>
+  Managers: after a big transfer, glance at the KDS. Confirm the tickets show the new table name.
+</Tip>
+
+## Common mistakes
+
+- **Trying to transfer to an active table.** Use [Merge](/tables/merging-tables) instead.
+- **Transferring with an active split.** Blocked. Clear the split.
+- **Transferring a table that has kitchen items still preparing without telling the kitchen.** Food may go to the old seat.
+- **Using Transfer to fix a wrong table.** If items were added to the wrong table by mistake, use [Item Transfers](/tables/item-transfers) — it's the surgical tool.
+
+## Related pages
+
+- [Item Transfers](/tables/item-transfers)
+- [Merging Tables](/tables/merging-tables)
+- [Table Statuses](/tables/table-statuses)
+- [Transferring Sessions](/pos/transferring-bills)
+- [Floor Plan](/tables/floor-plan)
