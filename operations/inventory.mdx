@@ -1,7 +1,7 @@
 ---
-title: "Inventory and Food Cost Tracking for Restaurants"
+title: "Inventory and Food Cost Management for Restaurants"
 sidebarTitle: "Inventory"
-description: "Track stock levels, recipe-based ingredient deductions, food costs, margins, and waste with DishInk Inventory — synced with every order from POS and Waiter App."
+description: "Track stock, auto-deduct ingredients per recipe, calculate food cost %, and block unavailable items — all synced with every POS and Waiter App order."
 ---
 
 DishInk Inventory connects directly to every order channel — POS, Waiter App, and QR ordering — so your stock updates automatically on every sale. Build recipes with exact ingredient quantities, link them to your menu items, and let the system handle deductions, food cost calculations, low-stock alerts, and automated unavailability blocking. No spreadsheets, no manual counting between services.
@@ -110,12 +110,7 @@ Every override is fully logged with the manager's name, timestamp, and reason. O
 - **After fixed hours** — override clears after a set number of hours
 
 <Note>
-  **Inventory permissions** — the following permission flags control access to inventory features:
-  - `can_view_inventory` — view stock levels and movement history
-  - `can_manage_inventory` — add stock, log waste, and make adjustments
-  - `can_manage_recipes` — create and edit recipes
-  - `can_override_inventory` — temporarily override availability blocks (manager-level)
-  - `can_view_food_cost` — access food cost and margin data
+  **Override access is manager-level.** Only staff members with manager or owner roles can execute inventory overrides. All overrides are logged automatically with the user's name, timestamp, and reason — giving you a complete audit trail for every exception.
 </Note>
 
 ## Frequently Asked Questions
