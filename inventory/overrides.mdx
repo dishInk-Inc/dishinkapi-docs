@@ -1,0 +1,89 @@
+---
+title: "Inventory Overrides"
+sidebarTitle: "Overrides"
+description: "Temporarily mark items available or unavailable with end_of_day, on_restock, or timed expiry."
+icon: "toggle-on"
+---
+
+## Overview
+
+An **inventory override** temporarily flips an item's availability without changing recipes or stock. Use it when reality diverges from the system — a fridge breaks, a supplier is late, or a special is running for one lunch service. Overrides live in the `inventory_overrides` table and auto-expire.
+
+<Frame>
+  ![Overrides panel showing active overrides with expiry rules](/images/inventory/overrides.png)
+</Frame>
+
+## Expiry rules
+
+<CardGroup cols={3}>
+  <Card title="end_of_day" icon="calendar-day">
+    Override clears at midnight (venue local time).
+  </Card>
+
+  <Card title="on_restock" icon="boxes-packing">
+    Override clears the moment the ingredient is restocked above its min level.
+  </Card>
+
+  <Card title="timed" icon="clock">
+    Override clears at a specific timestamp you pick.
+  </Card>
+</CardGroup>
+
+## Creating an override
+
+<Steps>
+  <Step title="Open Inventory → Overrides">
+    Or use the shortcut from any menu item or ingredient.
+  </Step>
+  <Step title="Pick the target">
+    An ingredient (affects every item using it) or a menu item (affects just that item).
+  </Step>
+  <Step title="Choose available or unavailable">
+    Unavailable is far more common — sold out, equipment down.
+  </Step>
+  <Step title="Set the expiry rule">
+    end\_of\_day, on\_restock, or timed with a specific end time.
+  </Step>
+  <Step title="Add a note (optional)">
+    "Fryer broken", "Supplier delivery Tuesday". Notes show to managers only.
+  </Step>
+  <Step title="Save">
+    The override is active immediately. POS, waiter, and online ordering all respect it.
+  </Step>
+</Steps>
+
+## Precedence
+
+1. **Active override** — wins over everything.
+2. **Auto-unavailability** — kicks in if enabled in [Inventory Settings](/inventory/settings) and stock is depleted.
+3. **Manual availability toggle** on the menu item.
+
+<Note>
+  Overrides never edit stock levels. They are a display-only shortcut. If you sold the last one, decrement stock through a normal sale or [Adjustment](/inventory/adjustments).
+</Note>
+
+## Ending an override early
+
+Managers can clear an active override at any time — open the override and click **Clear Now**. This is the only way to end an `on_restock` override before stock arrives.
+
+## Tips
+
+- Use **on\_restock** for supplier delays — no manual re-enable needed.
+- Use **end\_of\_day** for one-service situations ("kitchen swamped, hide dessert until tomorrow").
+- Use **timed** for scheduled specials that end mid-service.
+- Always add a **note** — stops managers unclearing overrides they don't understand.
+
+## Common mistakes
+
+- **Override instead of adjustment.** Overrides don't fix stock; they only hide items. Use both if needed.
+- **Forgetting on\_restock overrides.** If you don't restock, the override never clears. Set a reminder.
+- **Overriding a widely-used ingredient.** Hides every item that uses it — confirm impact first.
+- **Manual availability toggle after an override.** Confusing state. Clear the override first.
+
+## Related pages
+
+- [Inventory Settings](/inventory/settings)
+- [Stock Levels](/inventory/stock-levels)
+- [Low Stock Alerts](/inventory/low-stock)
+- [Adjustments](/inventory/adjustments)
+- [Menu Availability](/menu/availability)

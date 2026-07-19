@@ -1,0 +1,86 @@
+---
+title: "Modifiers & Ingredient Links"
+sidebarTitle: "Modifiers"
+description: "Link modifier options to ingredients so add-ons deduct stock. Three views: Menu Categories, Modifier Groups, Links."
+icon: "circle-plus"
+---
+
+## Overview
+
+Modifiers are the add-ons a customer picks with a menu item: extra cheese, no onions, large size. On their own they add price. When linked to **ingredients**, they also deduct stock automatically — so an "Extra Cheese" modifier drops your cheese stock every time it's ordered.
+
+<Frame>
+  ![Modifier links view showing options linked to ingredients](/images/inventory/modifier-links.png)
+</Frame>
+
+## The three views
+
+<CardGroup cols={3}>
+  <Card title="Menu Categories" icon="list">
+    Browse by category. See which items expose which modifier groups.
+  </Card>
+
+  <Card title="Modifier Groups" icon="layer-group">
+    Manage groups (Sides, Size, Extras) and their options.
+  </Card>
+
+  <Card title="Links" icon="link">
+    Audit view: every modifier option and the ingredient(s) it deducts.
+  </Card>
+</CardGroup>
+
+## Linking a modifier to an ingredient
+
+<Steps>
+  <Step title="Open Inventory → Modifiers">
+    Switch to the **Modifier Groups** view.
+  </Step>
+  <Step title="Pick a group and option">
+    E.g. Group "Extras" → Option "Extra Cheese".
+  </Step>
+  <Step title="Add ingredient link">
+    Click **Add ingredient**. Select ingredient (Cheddar), enter quantity (30g), confirm unit.
+  </Step>
+  <Step title="Set deduct_quantity">
+    Almost always **true**. Set to false only when the modifier changes price but not stock (e.g. "No cheese").
+  </Step>
+  <Step title="Save">
+    The link is active. Selling this modifier will now deduct 30g of Cheddar per order.
+  </Step>
+</Steps>
+
+## `deduct_quantity` semantics
+
+| Value | Effect |
+| --- | --- |
+| **true** (default) | Modifier deducts its linked ingredient(s) on sale. |
+| **false** | Modifier price applies but stock is unchanged. |
+
+<Note>
+  Negative modifiers ("No onions", "Sauce on side") normally set `deduct_quantity=false` because they change preparation but don't remove ingredients from stock — the recipe already deducted onions.
+</Note>
+
+## Multi-ingredient modifiers
+
+A single modifier can link to multiple ingredients. E.g. "Family Upgrade" adds 2 chicken pieces, 200g chips, and 1 drink. Every sale deducts all three.
+
+## Tips
+
+- Audit the **Links view** monthly — modifiers get added, but links often forgotten.
+- Match modifier units to ingredient units (ingredient in kg → modifier in kg or g via conversion).
+- Test after linking: place a test order with the modifier, check [Adjustments](/inventory/adjustments) for the auto-deduction.
+- Use modifier groups for **size upgrades** so quantity scales linearly.
+
+## Common mistakes
+
+- **No ingredient link.** Modifier priced but stock unaffected — quietly loses margin visibility.
+- **`deduct_quantity=true` on a negative modifier.** Removes ingredients that were never added.
+- **Double-counting via recipe and modifier.** If a burger recipe already includes cheese and "Extra Cheese" also links to cheese, you deduct twice — which is correct. But confirm the intent.
+- **Wrong unit.** Ingredient in kg, modifier in g without converting — severe over-deduction.
+
+## Related pages
+
+- [Recipes](/inventory/recipes)
+- [Ingredients](/inventory/ingredients)
+- [Stock Levels](/inventory/stock-levels)
+- [Menu Items](/menu/items)

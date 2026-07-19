@@ -1,0 +1,72 @@
+---
+title: "Inventory Settings"
+sidebarTitle: "Settings"
+description: "Auto-unavailability, min servings threshold, servings badge visibility, and override policy."
+icon: "gear"
+---
+
+## Overview
+
+Inventory Settings hold the venue-wide rules that govern how stock affects the menu. Configure once during onboarding; revisit only when policy changes.
+
+<Frame>
+  ![Inventory settings panel](/images/inventory/settings.png)
+</Frame>
+
+## Settings
+
+<AccordionGroup>
+  <Accordion title="Auto-unavailability">
+    When **on**, a menu item automatically becomes unavailable the moment its calculated servings-left drops to (or below) the min-servings threshold. Turns back on as soon as stock is restocked.
+  </Accordion>
+
+  <Accordion title="Minimum servings threshold">
+    Servings-left value at which a menu item is considered out. Default **0**. Set higher (e.g. 2) to hide items before they hit true zero — useful for high-volume services.
+  </Accordion>
+
+  <Accordion title="Servings badge threshold">
+    The value below which the POS shows a **servings-left badge** on the menu tile. Default **5**. Encourages staff to upsell alternatives before an item runs out.
+  </Accordion>
+
+  <Accordion title="Override policy">
+    Choose which roles can create [inventory overrides](/inventory/overrides). Default: managers and above.
+  </Accordion>
+</AccordionGroup>
+
+## Recommended defaults
+
+<Checklist>
+  * Auto-unavailability: **On**
+  * Minimum servings threshold: **0** (or 2 for high-turnover items)
+  * Servings badge threshold: **5**
+  * Override policy: **Manager+**
+</Checklist>
+
+## How settings interact
+
+1. A sale is placed.
+2. Recipe \+ modifier auto-deduction fires.
+3. Servings-left is recalculated for every affected menu item.
+4. If servings-left ≤ **servings badge threshold**: badge appears on POS tile.
+5. If servings-left ≤ **minimum servings threshold** AND **auto-unavailability=on**: item becomes unavailable.
+6. Restocking flips the item back to available (if no override is active).
+
+## Tips
+
+- Turn on **auto-unavailability** for anything perishable — protects against overselling.
+- Set **badge threshold at 5** so staff have time to warn customers before sell-out.
+- Set **minimum servings threshold to 1 or 2** for hero items to preserve a buffer for VIP orders.
+
+## Common mistakes
+
+- **Auto-unavailability off during a busy service.** Staff sell items you can't fulfil. Turn it on.
+- **Badge threshold too high** (e.g. 20). Every item shows a badge — loses signal.
+- **Threshold changes mid-service.** Confusing for POS operators. Change at close-out.
+
+## Related pages
+
+- [Recipes](/inventory/recipes)
+- [Overrides](/inventory/overrides)
+- [Stock Levels](/inventory/stock-levels)
+- [Low Stock Alerts](/inventory/low-stock)
+- [Menu Availability](/menu/availability)

@@ -1,0 +1,116 @@
+---
+title: "Inventory Overview"
+sidebarTitle: "Overview"
+description: "The 7-tab inventory workspace: ingredients, stock, recipes, modifiers, adjustments, low stock, and settings."
+icon: "boxes-stacked"
+---
+
+## Overview
+
+DishInk Inventory tracks every raw material from delivery to plate. Ingredients are linked to menu items through **recipes** and to modifiers through **modifier links**, so every sale automatically deducts the exact quantity used. Managers see live stock, food-cost bands, and low-stock alerts across every branch.
+
+<Frame>
+  ![Inventory workspace with the seven tabs](/images/inventory/overview.png)
+</Frame>
+
+## The seven tabs
+
+<CardGroup cols={2}>
+  <Card title="Ingredients" icon="carrot" href="/inventory/ingredients">
+    Central library of raw materials with unit, category, min/max, ZMW unit cost.
+  </Card>
+
+  <Card title="Stock Levels" icon="warehouse" href="/inventory/stock-levels">
+    Live quantity per branch. Restock modal with live preview.
+  </Card>
+
+  <Card title="Recipes" icon="scroll" href="/inventory/recipes">
+    Link ingredients to menu items. Servings-left badge, food-cost card.
+  </Card>
+
+  <Card title="Modifiers" icon="circle-plus" href="/inventory/modifiers">
+    Link ingredients to modifier options. Three views for setup and audit.
+  </Card>
+
+  <Card title="Adjustments" icon="clipboard-list" href="/inventory/adjustments">
+    Immutable log of every restock, waste, damage, manual, or auto-deduction.
+  </Card>
+
+  <Card title="Low Stock" icon="triangle-exclamation" href="/inventory/low-stock">
+    Severity bands, bulk restock actions.
+  </Card>
+
+  <Card title="Settings" icon="gear" href="/inventory/settings">
+    Auto-unavailability, min servings, override policy, badge thresholds.
+  </Card>
+</CardGroup>
+
+## How auto-deduction works
+
+<Steps>
+  <Step title="A menu item is sold at the POS">
+    Any channel: dine-in, takeaway, WhatsApp, online, QR menu.
+  </Step>
+  <Step title="Recipe lookup">
+    DishInk reads the recipe and multiplies each ingredient quantity by the sold quantity.
+  </Step>
+  <Step title="Modifier lookup">
+    Every modifier attached to the order line adds its linked ingredient deductions (respecting `deduct_quantity`).
+  </Step>
+  <Step title="Stock decremented">
+    Ingredient stock drops. An `auto_deduction` row is written to Adjustments.
+  </Step>
+  <Step title="Servings-left recalculated">
+    Menu badge updates. If below the threshold, the item shows a badge on the POS.
+  </Step>
+  <Step title="Auto-unavailability (optional)">
+    If enabled and servings hits the min-servings threshold, the item becomes unavailable until stock recovers.
+  </Step>
+</Steps>
+
+<Note>
+  Recipes flagged `ignore_stock` bypass deduction — useful for items you don't want to track (e.g. water, complimentary bread).
+</Note>
+
+## Food-cost bands
+
+Every recipe shows a food-cost percentage: `(ingredient_cost / selling_price) × 100`.
+
+<CardGroup cols={3}>
+  <Card title="Healthy" color="#16a34a" icon="circle-check">
+    Under 30%. Comfortable margin.
+  </Card>
+
+  <Card title="Warning" color="#eab308" icon="triangle-exclamation">
+    30–40%. Review pricing or portion sizes.
+  </Card>
+
+  <Card title="Critical" color="#dc2626" icon="circle-xmark">
+    Above 40%. Losing money — act now.
+  </Card>
+</CardGroup>
+
+## Tips
+
+- Set **min stock** on every ingredient during onboarding so alerts work from day one.
+- Review the **Critical food-cost band** weekly — usually the fastest margin lift available.
+- Use **auto-unavailability** for high-turnover items (chicken wings, ribs) so you never sell what you can't serve.
+- Take a **monthly full stock count** with the Adjustments tab, using reason code `manual`.
+
+## Common mistakes
+
+- **No recipes.** Menu items with no recipe don't deduct — stock stays at 999 forever.
+- **Wrong unit.** Recipe says 200g flour but ingredient is stored in kg — always match units.
+- **Skipping modifiers.** Extra cheese without a modifier link doesn't deduct cheese stock.
+- **Ignoring the food-cost card.** Critical items compound losses — catch them early.
+
+## Related pages
+
+- [Ingredients](/inventory/ingredients)
+- [Stock Levels](/inventory/stock-levels)
+- [Recipes](/inventory/recipes)
+- [Modifiers](/inventory/modifiers)
+- [Adjustments](/inventory/adjustments)
+- [Low Stock Alerts](/inventory/low-stock)
+- [Inventory Settings](/inventory/settings)
+- [Purchase Tracking](/inventory/purchase-tracking)
