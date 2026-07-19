@@ -1,12 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "DishInk",
+  "projectType": "saas",
+  "projectName": "DishInk",
+  "projectDescription": "DishInk is an all-in-one restaurant operating system built for African hospitality businesses, combining POS, kitchen display, inventory, staff management, payroll, analytics, and digital menus in a single connected platform.",
   "theme": "almond",
-  "colors": {
-    "primary": "#e4504e",
-    "light": "#f4aca4"
-  },
-  "favicon": "https://media.brand.dev/c0846e3a-f5a1-4460-96b0-2bf49cd684de.png",
+  "primaryColor": "#e4504e",
+  "lightColor": "#f4aca4",
+  "darkColor": null,
   "navigation": {
     "tabs": [
       {
@@ -79,11 +78,31 @@
       }
     ]
   },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Get Started Free",
-      "href": "https://dishink.com/auth?mode=signup"
-    }
-  }
+  "keyFeatures": [
+    "Point-of-Sale (POS) with ZRA Smart Invoice compliance",
+    "Kitchen Display System (KDS) with real-time order sync",
+    "Waiter App for digital floor-side ordering",
+    "Table Management with live floor plan",
+    "QR Code Digital Menu & hosted restaurant website",
+    "WhatsApp Online Ordering (no app required)",
+    "Recipe-based Inventory & Food Cost tracking",
+    "HRM, Payroll & Staff Attendance automation",
+    "Analytics Hub (revenue, menu, kitchen, staff)",
+    "Three-layer Offline Mode (Cloud / LAN / Local Storage)",
+    "Multi-location management dashboard",
+    "Split billing and multiple payment methods (MTN MoMo, Airtel Money, cash, card)"
+  ],
+  "publicApiSurface": [
+    "Management Portal login (email + password)",
+    "Staff PIN Login",
+    "QR code per-table menu links (dishink.com/r/{restaurant})",
+    "WhatsApp ordering shareable menu URL",
+    "Booking platform integration (paste URL — Dineplan, OpenTable, SevenRooms, etc.)",
+    "Customer order tracking page (via QR on receipt)",
+    "Customer-facing Order Board (KFC-style display)",
+    "CSV export for analytics and payroll reports",
+    "PDF pay slip generation",
+    "AI Menu Extraction (PDF/photo upload)",
+    "AI Image Import (Pexels/Pixabay)"
+  ]
 }

@@ -1,0 +1,126 @@
+---
+title: "Analytics Hub — Business Insights Across POS, Kitchen, and Staff"
+sidebarTitle: "Analytics"
+description: "DishInk Analytics automatically populates four dashboards — revenue, menu, kitchen, and staff — from live POS, KDS, and attendance data. No imports needed."
+---
+
+DishInk Analytics Hub is zero-setup. The moment your team takes an order, fires a kitchen ticket, or clocks in for a shift, the data flows automatically into four dedicated dashboards — Revenue, Menu, Kitchen, and Staff. There is nothing to import, configure, or connect. Every number comes from a live source inside DishInk, so your analytics are always current and always accurate.
+
+## The Four Analytics Modules
+
+<Tabs>
+  <Tab title="Revenue">
+    The Revenue module shows you where every sale comes from, how much it costs to produce, and what your real margins look like — all broken down across any time period you choose.
+
+    **What's included:**
+
+    - **Revenue trend** — daily, weekly, or hourly breakdown so you can spot peaks and slow periods
+    - **Payment method breakdown** — cash, card, mobile money, and split payments all itemised separately
+    - **Food cost trend** — ingredient cost over time plotted against revenue so you can watch margins move
+    - **Gross profit and margin %** — total revenue minus food cost, expressed as both a value and a percentage
+    - **Category margin table** — margin breakdown by menu category so you know which sections drive the most profit
+    - **CSV export** — export any period's revenue data with one tap
+    - Tips are included in revenue totals and fully itemised in the payment breakdown
+
+    Use the Revenue module to track whether promotions are hitting your margins, whether a price increase is sticking, or simply which days you need more staff.
+  </Tab>
+  <Tab title="Menu">
+    The Menu module tells you which items are driving revenue, which carry hidden costs, what time your kitchen is busiest, and which items are being cancelled at an alarming rate.
+
+    **What's included:**
+
+    - **Top 10 items by revenue** — your highest-earning dishes ranked automatically from POS data
+    - **Category breakdown** — revenue and order count per menu category
+    - **Void rate per item** — percentage of orders for each item that were voided or cancelled before being served; high void rates flag kitchen issues or ordering errors automatically
+    - **Peak hours heatmap** — a visual map of your busiest days and times so you can plan staffing and prep around real patterns
+    - **Margin table** — cost, price, and margin for up to 50 menu items on one screen
+    - **CSV export** — export menu performance data for any date range
+
+    <Info>
+      A high void rate on a specific item automatically surfaces in the dashboard as a flag. Investigate whether it's a kitchen execution issue, a menu description problem, or an item that needs to be reconsidered.
+    </Info>
+  </Tab>
+  <Tab title="Kitchen">
+    The Kitchen module pulls data directly from the KDS to show you how fast your kitchen is actually working — not how fast you think it is.
+
+    **What's included:**
+
+    - **Average prep time** — mean time from ticket creation (or kitchen receipt) to item marked ready
+    - **On-time rate vs target** — percentage of items completed within your target prep time; the default target is 85%
+    - **Overdue items** — items that exceeded the target prep time, listed by station and order
+    - **Station cards** — individual performance breakdown per kitchen station (grill, cold section, bar, etc.)
+    - **Efficiency chart** — visual display of throughput and timing trends across the selected period
+    - **Prep distribution** — spread of prep times across all items, showing where your kitchen is clustering and where outliers sit
+    - **CSV export** — export kitchen efficiency data for any date range
+
+    **Configurable timer start** — choose whether prep time begins when the order is created at the POS or when it is sent to the kitchen. Configure this in **Settings → KDS → Timer Start**.
+
+    <Tip>
+      Use the Kitchen module before renegotiating supplier lead times or adjusting station staffing. On-time rate drops on specific stations tell you exactly where the bottleneck is.
+    </Tip>
+  </Tab>
+  <Tab title="Staff">
+    The Staff module ranks your entire team automatically from live POS data — no subjective ratings, no manual entry, just numbers from every order and shift.
+
+    **What's included:**
+
+    - **Revenue served per staff member** — total order value each staff member processed
+    - **Tips earned** — total tips attributed to each staff member for the period
+    - **Hours worked** — pulled from clock-in/clock-out records
+    - **Orders taken** — total number of orders processed per person
+    - **Average revenue per hour** — revenue served divided by hours worked; your true productivity metric
+    - **Staff leaderboard** — auto-ranked from highest to lowest revenue served; updates with every order
+    - **Expandable cards** — click any staff member's card to see their full breakdown
+    - **CSV export** — export the full staff performance table for any period
+
+    Filter by week, month, or all time. Use the leaderboard to identify your top performers, spot team members who may need support, and set data-backed revenue targets.
+  </Tab>
+</Tabs>
+
+## Date Filters & CSV Export
+
+Every analytics tab includes a full date range picker so you can analyse any period you need. Charts, totals, and tables all update instantly when you change the range.
+
+**Available presets:**
+
+- Today
+- This week
+- This month
+- Custom range — pick any start and end date
+
+Every module also has a **CSV export** button. Exported files include every column visible in the analytics view, ready to open in Excel, share with your accountant, or archive for board reports.
+
+## Permissions
+
+Analytics access is permission-controlled. Each of the four modules has its own independent permission flag:
+
+| Permission flag | Controls access to |
+|---|---|
+| `can_view_analytics_kitchen` | Kitchen Analytics tab |
+| `can_view_analytics_revenue` | Revenue Analytics tab |
+| `can_view_analytics_menu` | Menu Analytics tab |
+| `can_view_analytics_staff` | Staff Analytics tab |
+
+<Note>
+  Managers receive access to all four analytics modules by default. Individual analytics permissions can be toggled per staff member from the Role Templates panel — useful for giving a head chef Kitchen Analytics access without granting Revenue or Staff visibility.
+</Note>
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Does analytics require manual data entry?">
+    No. All analytics data flows automatically from live DishInk modules. POS data feeds Revenue, Menu, and Staff analytics. KDS data feeds Kitchen analytics. Attendance data feeds the hours and shift metrics in Staff analytics. There is nothing to import, configure, or manually update.
+  </Accordion>
+  <Accordion title="When does data refresh?">
+    Revenue, Menu, and Staff data refresh when you tap the refresh button or change the date range. Kitchen analytics — including the overdue items table — updates in near real time so managers can spot and act on kitchen delays during service.
+  </Accordion>
+  <Accordion title="What is the on-time rate?">
+    The on-time rate is the percentage of kitchen items that were prepared and marked ready within your target prep time. The default target is 85% — meaning at least 85% of items should be completed on time. You can configure both the target percentage and the timer start point (order created vs sent to kitchen) in Settings.
+  </Accordion>
+  <Accordion title="What is the void rate?">
+    The void rate is the percentage of ordered items that were voided or cancelled before being served to the guest. A void rate above a normal threshold on a specific item can indicate kitchen execution problems, ordering errors, or menu items that confuse customers. DishInk surfaces high void rates automatically as a flag in the Menu module.
+  </Accordion>
+  <Accordion title="Can I export analytics data?">
+    Yes. Every analytics module has a CSV export button. Select your date range, then tap Export to download a full CSV of that module's data — revenue breakdown, menu performance, kitchen efficiency, or staff leaderboard — ready for accounting, reporting, or archiving.
+  </Accordion>
+</AccordionGroup>
