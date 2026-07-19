@@ -117,24 +117,15 @@
                 "pages": [
                   "staff/payroll/overview",
                   "staff/payroll/wage-structures",
-                  "payroll/overview",
                   "staff/payroll/pay-schedules",
                   "staff/payroll/settings",
-                  "payroll/wage-structures",
                   "staff/payroll/generating",
-                  "payroll/settings",
                   "staff/payroll/records",
-                  "payroll/generating-payroll",
-                  "payroll/records",
                   "staff/payroll/pay-slips",
-                  "payroll/pay-slips",
                   "staff/payroll/tips",
-                  "payroll/tip-distribution",
                   "staff/payroll/deductions",
                   "staff/payroll/advances",
-                  "payroll/salary-advances",
                   "staff/payroll/reports",
-                  "payroll/deductions",
                   "staff/payroll/staff-earnings"
                 ]
               }
