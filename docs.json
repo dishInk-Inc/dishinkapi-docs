@@ -102,7 +102,8 @@
               "inventory/low-stock",
               "inventory/overrides",
               "inventory/settings",
-              "inventory/purchase-tracking"
+              "inventory/purchase-tracking",
+              "inventory/receipes"
             ]
           },
           {
