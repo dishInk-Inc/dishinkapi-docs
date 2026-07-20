@@ -93,7 +93,6 @@
             "icon": "boxes-stacked",
             "pages": [
               "inventory/overview",
-              "inventory/products",
               "inventory/ingredients",
               "inventory/stock-levels",
               "inventory/recipes",
@@ -101,9 +100,7 @@
               "inventory/modifiers",
               "inventory/low-stock",
               "inventory/overrides",
-              "inventory/settings",
-              "inventory/purchase-tracking",
-              "inventory/receipes"
+              "inventory/settings"
             ]
           },
           {
