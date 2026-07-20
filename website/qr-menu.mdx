@@ -1,44 +1,102 @@
 ---
-title: "QR Menu"
-sidebarTitle: "QR Menu"
-description: "Table-specific QR codes that open a mobile-optimised digital menu."
+title: "Managing QR Codes"
+sidebarTitle: "QR Code Management"
+description: "Create, manage, and download QR codes for every table in your restaurant."
 ---
 
-QR Menus let guests view your menu on their own phones by scanning a table sticker. No app download, no login, no wait — just scan and browse.
+Every table in DishInk gets its own QR code that links customers directly to your digital menu. Go to **Front Operations → QR Codes** to manage them.
 
-## Overview
+## The dashboard at a glance
 
-Each table has a unique QR code that opens a mobile-optimised digital menu. Optional add-ons:
+The top of the page shows a live stats bar with counts across all your tables:
 
-- Order from the phone — waiter approves before firing to kitchen
-- Call waiter button
-- Bill request button
-- Multi-language menu
+| Stat | What it means |
+| --- | --- |
+| **Total** | All tables in your account |
+| **Standard** | Tables using the basic black-and-white QR code |
+| **Premium** | Tables using a branded Premium design |
+| **Unassigned** | Premium tables with no design assigned yet |
+| **Printed** | Tables you've marked as printed |
+| **Placed** | Tables you've marked as physically placed |
+| **Active** | Tables with their QR code marked as active |
 
-## Generate a QR code
+## Adding a table
 
-<Frame caption="QR menu on phone">
-  ![QR menu](/images/website/qr-menu.png)
-</Frame>
+1. Type the table name in the **Add a New Table** field — e.g. "Table 1", "VIP Booth", "Bar Seat 3"
+2. Choose **Standard** or **Premium** style using the toggle
+3. Click **Create**
+
+The table appears in the grid immediately with its QR code ready to download.
 
 <Note>
-  QR menus load in under 2 seconds on 3G. Photos are compressed and lazy-loaded so slow connections still work.
+  Premium style is only available if your account has Premium QR enabled. The Premium toggle is disabled otherwise.
 </Note>
+
+## Renaming a table
+
+Click the table name on any card to enter rename mode. You can update two fields:
+
+- **Table name** — the full name shown on the QR card and menu page
+- **Short label** — an optional abbreviated name (e.g. "T1" instead of "Table 1") used when a design is set to display the short label style
+
+Press **Enter** or click **Save** to confirm. Click **Cancel** to revert.
+
+## Table status toggles
+
+Each table card has three status toggles you can flip independently:
+
+| Toggle | What it tracks |
+| --- | --- |
+| **Printed** | You have printed the QR code |
+| **Placed on Table** | The QR code is physically on the table |
+| **Active** | The QR code is live and accepting scans |
+
+These are tracking flags for your own operations — they don't affect whether the QR code works when scanned.
+
+## Downloading a QR code
+
+Click **Download** on any table card to save the QR code as a PNG file. The file is named after your restaurant and table automatically.
+
+For Premium cards, the download includes the full branded design with frame, colors, logo, and any ring text.
+
+<Warning>
+  For Premium cards, the Download button is disabled until a design is assigned to the table. Assign a design first, then download.
+</Warning>
+
+## Deleting a table
+
+Click the **Delete** (trash) button on the card and confirm the prompt. Deletion is permanent.
+
+## Filtering tables
+
+Use the **All / Standard / Premium** filter above the grid to show only the table type you want to work with.
+
+On multi-location accounts, a **Location** filter also appears. Use it to show tables assigned to a specific branch, unassigned tables, or all tables at once.
+
+## The General Menu QR code
+
+A **General Menu** card appears at the top of the grid when the All filter is active. This QR code links to your menu without a table number — useful for takeaway counters, reception desks, or printed marketing materials.
+
+It supports the same Standard and Premium style options as table cards.
 
 ## Tips & best practices
 
 <Tip>
-  Print QR stickers on tabletop-safe laminated cards. Cheap stickers peel off after weeks of cleaning.
+  Use the **Printed** and **Placed** toggles as a checklist when rolling out new tables. Filter by "Unassigned" to find any Premium tables that still need a design before you print.
+</Tip>
+
+<Tip>
+  Name tables exactly as they appear in your floor plan. The table name is embedded in the QR URL and shown on the KDS and waiter app when orders come in.
 </Tip>
 
 ## Common mistakes
 
 <Warning>
-  Do not use one QR code for every table. Table-specific QRs enable one-tap bill requests and waiter calls.
+  Deleting a table removes its QR code permanently. Any printed QR codes for that table will stop working. Create a new table and reprint if you need to restore it.
 </Warning>
 
 ## Related pages
 
-- [Managing Website](/website/managing-website)
-- [Creating Tables](/tables/creating-tables)
-- [WhatsApp Ordering](/whatsapp/overview)
+- [QR Designer: Premium Designs](/website/qr-menu)
+- [Multi-Location: Managing Branches](/multi-location/managing-branches)
+- [Website & QR Menus: QR Menu](/website/qr-menu)

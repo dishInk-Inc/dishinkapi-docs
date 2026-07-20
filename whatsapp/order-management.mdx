@@ -1,48 +1,128 @@
 ---
-title: "Order Management"
-sidebarTitle: "Order Management"
-description: "Unified queue for WhatsApp, QR, and website orders with one-tap acceptance and KDS routing."
+title: "Online Orders"
+sidebarTitle: "Online Orders"
+description: "Track, update, and manage customer orders placed through your digital menu and WhatsApp ordering."
 ---
 
-The Order Management queue is the unified view of every online order — WhatsApp, QR menu, and website — in one screen.
-
-## Overview
-
-Each order card shows:
-
-- Source (WhatsApp / QR / Website)
-- Order number and customer name
-- Items, modifiers, notes
-- Delivery, pickup, or dine-in
-- Payment status
-- Time since submitted
-
-Orders are accepted, sent to the KDS, and tracked through to completion in the same flow as POS orders.
-
-## Work the queue
-
-<Frame caption="Order queue">
-  ![Order queue](/images/whatsapp/order-management.png)
-</Frame>
+The Orders page is your central dashboard for all customer orders placed through your digital menu and WhatsApp ordering channel. Go to **Front Operations → Online Orders** to access it.
 
 <Note>
-  Rejected orders trigger an automatic apology \+ refund message (if pre-paid).
+  Order Management is available on **Growth** and **Enterprise** plans. Starter plan accounts see an upgrade prompt instead of the orders dashboard.
 </Note>
+
+## The dashboard at a glance
+
+Four stat cards at the top of the page summarise the current filtered period:
+
+| Card | What it shows |
+| --- | --- |
+| **Total Orders** | Number of orders in the selected date range |
+| **Collected** | Total paid revenue, with unpaid amount shown below |
+| **Delivered** | Count of delivered orders, with pending count below |
+| **Avg Rating / Avg Order** | Average star rating if reviews exist, otherwise average order value |
+
+## Filtering by date
+
+The default view shows the last 30 days. Use the date presets to switch quickly:
+
+- **Today** — current day only
+- **7d** — last 7 days
+- **30d** — last 30 days (default)
+- **1yr** — last 12 months
+
+Click the search icon to open the full filter bar where you can also set custom date ranges and search by customer name.
+
+## Delivery status tabs
+
+Orders are grouped by delivery status. Tabs appear only for statuses that have orders in the current filter:
+
+| Status | Meaning |
+| --- | --- |
+| **Pending** | Order received, not yet started |
+| **Preparing** | Kitchen is working on the order |
+| **Dispatched** | Order is on the way to the customer |
+| **Delivered** | Order successfully delivered |
+| **Cancelled** | Order was cancelled |
+
+Click a tab to filter to that status only. Click **All** to see every order grouped by status.
+
+## Opening an order
+
+Click any order card to open the Order Detail modal. The modal shows:
+
+- Customer name, phone number, and delivery address
+- Date, time, and total amount
+- Itemised order list with quantities and line totals
+- Full status controls and notes fields
+- Order timeline (paid, dispatched, delivered timestamps)
+
+## Updating an order
+
+Inside the Order Detail modal you can change:
+
+| Field | Options |
+| --- | --- |
+| **Delivery Status** | Pending, Preparing, Dispatched, Delivered, Cancelled |
+| **Order Status** | Pending, Sent, Completed, Cancelled |
+| **Payment Status** | Unpaid, Paid, Partial, Refunded |
+| **Payment Method** | Cash, Mobile Money, Card, Online, Other |
+| **Admin Notes** | Private internal notes — not visible to the customer |
+| **Customer Review** | Star rating (1–5) and review text |
+
+Click **Save** in the modal header to commit changes. The save button shows a confirmation tick when successful.
+
+<Note>
+  Changes are saved per order. Updating one order does not affect others.
+</Note>
+
+## Processing a refund
+
+If you set Payment Status to **Refunded** or **Partial**, a Refund Details section appears in the modal where you can enter:
+
+- **Refund Amount** — the amount refunded in Kwacha
+- **Reason** — a text note explaining the refund
+
+These are recorded against the order for reporting purposes.
+
+## Customer reviews
+
+You can log a customer's star rating and review text directly on the order. This feeds into the **Avg Rating** stat card and can be used for quality tracking.
+
+## Refreshing orders
+
+Click **Refresh** at the top right of the dashboard to reload orders with the current filters. Orders do not auto-refresh — use this after a busy period to pull in the latest.
+
+## Multi-location accounts
+
+On multi-location accounts, owners see a **Viewing** switcher above the dashboard:
+
+- **This Location** — orders for the currently active branch only
+- **All Locations** — combined orders from every branch, with a location badge on each card
+
+Branch staff only ever see orders for their assigned branch.
+
+## Permissions
+
+Staff with `can_view_orders` can see the orders dashboard. Staff with `can_manage_orders` can update order status, payment, and notes. Without `can_manage_orders`, the modal fields and Save button are disabled and a read-only notice is shown.
 
 ## Tips & best practices
 
 <Tip>
-  Assign a dedicated staff member to the queue during peak hours. Split attention between counter and queue causes missed WhatsApp orders.
+  Check the Pending tab at the start of every shift and move orders to Preparing as soon as the kitchen starts on them. Customers can see delivery status updates on their order tracking page.
+</Tip>
+
+<Tip>
+  Use Admin Notes to log anything staff need to know about a specific order — allergy flags, customer callback requests, or refund approvals. Notes are never visible to the customer.
 </Tip>
 
 ## Common mistakes
 
 <Warning>
-  Do not accept orders without confirming stock. If you cannot fulfil, reject immediately — delayed rejections erode trust.
+  Marking an order as Delivered does not automatically mark it as Paid. Always update Payment Status separately when you collect payment.
 </Warning>
 
 ## Related pages
 
-- [Order Lifecycle](/whatsapp/order-lifecycle)
-- [Delivery & Pickup](/whatsapp/delivery-pickup)
-- [KDS: Receiving Orders](/kds/receiving-orders)
+- [WhatsApp & Online Ordering: Overview](/whatsapp/overview)
+- [WhatsApp & Online Ordering: Order Lifecycle](/whatsapp/order-lifecycle)
+- [Reports: Revenue Reports](/reports/revenue-reports)

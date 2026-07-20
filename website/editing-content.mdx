@@ -1,46 +1,128 @@
 ---
-title: "Editing Content"
+title: "Website Content"
 sidebarTitle: "Editing Content"
-description: "Update hero, about, hours, and calls-to-action without a web developer."
+description: "Edit every section of your public restaurant website — hero, about, featured items, location, gallery, and contact."
 ---
 
-The website content editor lets you update hero text, about copy, opening hours, and calls-to-action without a web developer.
+The Content Management page is where you write and update the text and images shown on your public restaurant website. Go to **Front Operations → Website Content** to access it.
 
-## Overview
+## How it works
 
-Editable sections:
+The page is divided into six sections, each accessible from the sidebar (desktop) or the tab strip (mobile). Edit one section at a time and click **Save Changes** when done. Changes go live on your public website immediately after saving.
 
-- Hero (banner text and image)
-- About (story, values, chef bio)
-- Opening hours
-- Location and map
-- Contact form
-- Call-to-action buttons (book a table, order on WhatsApp)
+## Sections
 
-## Edit content
+### Hero Section
 
-<Frame caption="Website content editor">
-  ![Editing content](/images/website/editing.png)
-</Frame>
+The hero is the first thing customers see when they visit your website — the full-width banner at the top of the page.
+
+You can set:
+
+- **Headline** — your restaurant name or a short brand statement
+- **Tagline** — a one-line description shown below the headline
+- **Hero images** — one or more photos that rotate in the banner
+
+The Hero Section has its own internal save flow. Follow the prompts inside the editor — the main Save Changes button does not apply to the hero.
+
+### About Section
+
+The About section tells your restaurant's story. Fields include:
+
+- **Section title** — heading shown above the about text (default: "About Us")
+- **Description** — your main about text, 2–4 sentences recommended
+- **Mission** — a short mission statement shown as a highlighted callout
+- **Core values** — a list of values shown as tags or bullet points
+- **About image** — a photo shown alongside the about text
+
+### Featured Items
+
+This section controls the heading above your featured menu items on the home page. You can set:
+
+- **Section title** — heading text (default: "Featured Dishes")
+- **Description** — optional subtitle text below the heading
+
+The actual items that appear are controlled by the featured flag on individual menu items in Menu Management.
+
+### Location
+
+This section controls the heading above your location/map embed on the home page.
+
+- **Section title** — heading text (default: "Our Location")
+
+The actual address and map shown come from your contact information settings.
+
+### Gallery
+
+This section controls the heading above your photo gallery on the home page.
+
+- **Section title** — heading text (default: "Gallery")
+- **Description** — optional subtitle text
+
+The actual photos shown come from the Gallery Management page.
+
+### Contact CTA
+
+This section controls the call-to-action block that prompts customers to get in touch.
+
+- **Title** — heading text (default: "Get In Touch")
+- **Description** — supporting text shown below the heading
+
+## Saving changes
+
+Click **Save Changes** in the top-right header or in the footer bar below the editor. On mobile, a floating **Save Changes** button appears at the bottom of the screen.
+
+The button changes state to confirm the outcome:
+
+| State | Meaning |
+| --- | --- |
+| **Save Changes** | Ready to save |
+| **Saving…** | Request in progress |
+| **Saved!** (green) | Changes saved successfully |
+| **Retry** (orange) | An error occurred — click to try again |
 
 <Note>
-  Every edit is versioned. Roll back with one tap if something breaks.
+  Saving one section does not affect other sections. Each section saves independently.
 </Note>
+
+## Preview mode
+
+Click **Preview** in the top-right header to toggle a live preview panel alongside the editor. The preview updates as you type so you can see how changes will look before saving.
+
+## Error handling
+
+If a save fails, an error banner appears above the editor explaining the cause:
+
+| Error type | Cause | What to do |
+| --- | --- | --- |
+| **Connection failed** | No internet | Check connection and click Retry |
+| **Session expired** | Auth timeout | Click "Refresh page" in the banner |
+| **Access denied** | Missing permission | Contact your manager |
+| **Invalid fields** | Bad input | Check the fields and correct any issues |
+| **Server error** | DishInk backend issue | Wait a moment and click Retry |
+
+## Permissions
+
+Staff with `can_view_content` can view the Content Management page. Staff with `can_manage_content` can make and save changes. Without `can_manage_content`, all fields are read-only and a yellow notice is shown at the top of the page. The Save Changes button is disabled.
 
 ## Tips & best practices
 
 <Tip>
-  Keep hero text under 12 words. Long headlines lose readers on mobile.
+  Keep your hero tagline under 10 words. Shorter taglines read better on mobile and load faster in the banner.
+</Tip>
+
+<Tip>
+  Write the About description in the first person ("We started DishInk Kitchen in 2019…"). It feels more personal and builds trust with customers browsing before their first visit.
 </Tip>
 
 ## Common mistakes
 
 <Warning>
-  Do not paste text from Word. Hidden formatting breaks the layout — paste as plain text and re-format inside the editor.
+  Switching tabs without saving will lose any unsaved changes in the current section. Always click Save Changes before switching to another tab.
 </Warning>
 
 ## Related pages
 
-- [Managing Website](/website/managing-website)
-- [Themes](/website/themes)
-- [Gallery](/website/gallery)
+- [Website Gallery](/website/gallery)
+- [Menu Items: Featured](/menu/menu-items)
+- [Website Themes](/website/themes)
+- [Contact Information](/website/contact-information)

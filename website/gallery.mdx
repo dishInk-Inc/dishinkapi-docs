@@ -1,42 +1,76 @@
 ---
-title: "Gallery"
+title: "Website Gallery "
 sidebarTitle: "Gallery"
-description: "Showcase food, interior, and event photography on your website."
+description: "Upload and manage the photo gallery shown on your public restaurant website."
 ---
 
-The gallery showcases your restaurant — food photography, interior shots, event moments, chef stories.
+The gallery is the photo section on your public website. Images you add here appear in the Gallery section of your home page. Go to **Front Operations → Website Gallery** to manage it.
 
-## Overview
+## Uploading images
 
-Gallery images appear:
+Click the upload area and select one or more images from your device. Supported formats are PNG and JPG up to 5 MB each.
 
-- On the website home page
-- On dedicated gallery pages
-- In social preview cards when shared
+Multiple images upload in parallel. Each image goes through two stages before appearing in the gallery:
 
-## Manage the gallery
+- **Preparing** — the image is compressed to optimise load speed on your website
+- **Uploading** — the compressed image is transferred to storage
 
-<Frame caption="Gallery manager">
-  ![Gallery](/images/website/gallery.png)
-</Frame>
+A progress bar appears on each image tile while it processes. Once done, the image moves from the uploading section into the main gallery grid automatically.
 
 <Note>
-  Large images are auto-compressed for mobile. Upload the highest resolution you have.
+  Uploads continue in the background. You do not need to stay on this page — navigate away and come back; completed images will be in the gallery.
 </Note>
+
+### If an upload fails
+
+A red error overlay appears on the failed tile with two buttons:
+
+- **Retry** (↺) — attempts the upload again
+- **Remove** (×) — discards the failed image
+
+Check your internet connection before retrying. Multiple failures usually indicate a connectivity problem.
+
+## Plan limits
+
+| Plan | Image limit |
+| --- | --- |
+| Starter | 5 images |
+| Growth | 20 images |
+| Growth Pro | Unlimited |
+| Enterprise | Unlimited |
+
+The header shows your current count against your limit (e.g. "7 / 20 images used"). When you reach the limit, the upload area is hidden and an upgrade banner appears.
+
+## Deleting an image
+
+Hover over any image in the gallery grid and click the red trash button that appears in the top-right corner. Confirm the prompt to delete permanently.
+
+<Warning>
+  Deleted images are removed from both the gallery and your storage permanently. This cannot be undone — reupload the image if you need it back.
+</Warning>
+
+## Permissions
+
+Staff with `can_view_gallery` can see the gallery page. Staff with `can_manage_gallery` can upload and delete images. Without `can_manage_gallery`, the upload area is hidden and delete buttons don't appear — the page is read-only.
 
 ## Tips & best practices
 
 <Tip>
-  Refresh the gallery quarterly. Stale photos signal a stale restaurant.
+  Upload landscape photos (wider than tall) for the best appearance in the gallery grid. Portrait photos work but may crop awkwardly depending on your website theme.
+</Tip>
+
+<Tip>
+  Use real photos of your food and space — not stock images. Customers convert better when they can see the actual restaurant before visiting.
 </Tip>
 
 ## Common mistakes
 
 <Warning>
-  Do not upload blurred or under-lit photos. Poor gallery images hurt more than helping.
+  Do not close the browser tab while images are uploading. The upload will be interrupted. Reopen the gallery page and retry the failed images.
 </Warning>
 
 ## Related pages
 
-- [Managing Website](/website/managing-website)
+- [Website Content](/website/editing-content)
+- [Website Themes](/website/themes)
 - [Menu Images](/menu/images)

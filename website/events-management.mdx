@@ -1,0 +1,117 @@
+---
+title: "Events Management"
+sidebarTitle: "Events Management"
+description: "Create, publish, and manage events shown on your public restaurant website."
+---
+
+The Events Management page lets you create and publish events — DJ nights, themed dinners, live music, and anything else you want to promote on your website. Go to **Front Operations → Events Management** to access it.
+
+## Creating an event
+
+Click **New Event** in the top-right corner to open the event form. Fill in the details and click **Save Event**.
+
+### Event fields
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| **Event Title** | ✅ Yes | Shown as the event heading on your website |
+| **Event Date** | ✅ Yes | The date the event takes place |
+| **Start Time** | No | Shown alongside the date if set |
+| **End Time** | No | Shown as an end time range if set |
+| **Description** | No | Short text describing the event |
+| **Event Poster** | No | Portrait image (3:4 ratio recommended) used as the event thumbnail |
+| **CTA Button Label** | No | Text on the action button (default: "Get Tickets") |
+| **CTA URL** | No | Link the button points to — ticket booking page, external site, etc. |
+| **Published** | No | On by default — controls whether the event is visible on your website |
+| **Featured** | No | Highlights the event on the home page |
+
+## Uploading an event poster
+
+Click the poster upload area in the form to select an image. The poster uploads in the background while you finish filling in the other fields. A progress indicator shows the upload status.
+
+To change a poster on an existing event, hover over the poster in the edit form and click the pencil icon. To remove it, click the red trash icon.
+
+<Note>
+  Portrait images (taller than wide) work best for event posters. Recommended dimensions are 600×800 px or similar 3:4 ratio.
+</Note>
+
+## Editing an event
+
+Click the **pencil** (✏️) icon on any event card to open the edit form. Make your changes and click **Save Event**.
+
+## Publishing and unpublishing
+
+Each event has a **Published** toggle that controls visibility on your public website:
+
+- **Published (Live)** — the event appears on your website
+- **Unpublished (Draft)** — the event is saved but hidden from customers
+
+Toggle this from the event card by clicking the **eye** (👁) icon, or from inside the edit form.
+
+<Note>
+  Unpublished events still count toward your plan limit.
+</Note>
+
+## Featuring an event
+
+Click the **star** (⭐) icon on any event card to mark it as featured. Featured events are highlighted on your website home page.
+
+You can also toggle featured status from inside the edit form.
+
+## Upcoming vs past events
+
+Events are automatically split into two sections based on their date:
+
+- **Upcoming** — events on today's date or in the future, shown fully
+- **Past Events** — events whose date has passed, shown dimmed in a collapsible section
+
+Click the **Past Events** heading to expand and see previous events. Past events can still be edited, re-published, or deleted.
+
+## Deleting an event
+
+Click the **trash** (🗑) icon on the event card and confirm the prompt. Deletion removes the event and its poster image permanently.
+
+<Warning>
+  Deleting an event is permanent. If you want to hide an event temporarily, unpublish it instead.
+</Warning>
+
+## Plan limits
+
+| Plan | Event limit |
+| --- | --- |
+| Starter | 5 events |
+| Growth | 30 events |
+| Growth Pro | Unlimited |
+| Enterprise | Unlimited |
+
+The header shows your current count against your limit. When the limit is reached, the **New Event** button is hidden and an upgrade banner appears.
+
+## Permissions
+
+Staff with `can_view_events` can see the Events Management page. Staff with `can_manage_events` can create, edit, publish, feature, and delete events. Without `can_manage_events`, the page is read-only — no buttons appear and the form cannot be opened.
+
+## Tips & best practices
+
+<Tip>
+  Create events 2–3 weeks in advance. Customers browsing your menu before a visit are more likely to come back if they see an upcoming event that interests them.
+</Tip>
+
+<Tip>
+  Always fill in the CTA URL if you have a ticketing link. The button appears prominently on the event card and drives direct bookings.
+</Tip>
+
+<Tip>
+  Feature your next event on the home page. Only feature one or two at a time — too many featured events dilutes the impact.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  A past event that is still published will continue to appear on your website until you either unpublish or delete it. Review your past events regularly and unpublish anything that is no longer relevant.
+</Warning>
+
+## Related pages
+
+- [Website Content](/website/editing-content)
+- [Website Gallery](/website/gallery)
+- [Website Themes](/website/themes)
