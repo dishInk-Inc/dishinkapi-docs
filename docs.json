@@ -3,7 +3,7 @@
   "name": "DishInk",
   "theme": "almond",
   "colors": {
-    "primary": "#e4504e",
+    "primary": "#ea3d3a",
     "light": "#f4aca4"
   },
   "favicon": "https://media.brand.dev/c0846e3a-f5a1-4460-96b0-2bf49cd684de.png",
@@ -248,6 +248,30 @@
       "type": "button",
       "label": "Get Started Free",
       "href": "https://dishink.com/auth?mode=signup"
+    },
+    "links": [
+      {
+        "href": "https://dishink.com/",
+        "label": "dishink Website"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/images/logo5.png",
+    "dark": "/images/logo5.png"
+  },
+  "background": {
+    "decoration": "gradient"
+  },
+  "banner": {
+    "content": "Hello There ! Welcome to Official Dishink User Manual and Docs",
+    "dismissible": true,
+    "color": {
+      "light": "#f48686",
+      "dark": "#ed3a3a"
     }
+  },
+  "metadata": {
+    "timestamp": true
   }
 }
