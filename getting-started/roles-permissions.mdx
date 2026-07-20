@@ -4,47 +4,172 @@ sidebarTitle: "Roles & Permissions"
 description: "Every DishInk role, what it can do, and how to configure custom permission sets."
 ---
 
-DishInk ships with predefined roles that match standard restaurant hierarchy. Enterprise administrators can also build custom permission sets in **Staff Management → Permissions**.
+DishInk ships with five built-in roles that match standard restaurant hierarchy. Owners and managers can create custom role templates in **Staff Management → Roles** and apply fine-grained permissions per staff member.
 
-## Overview
+## Built-in roles
 
-| Role | Typical user | Access |
+| Role | Typical user | Access level |
 | --- | --- | --- |
-| **Owner** | Business owner | Full access, billing, all branches |
-| **Administrator** | IT / operations lead | Full access minus billing |
-| **General Manager** | Branch GM | One or more branches, full ops |
-| **Manager** | Shift manager | Overrides, refunds, voids, reports |
+| **Owner** | Business owner | Full access to everything — no restrictions |
+| **Manager** | Shift manager | Full access to most features, except explicit-only permissions |
 | **Cashier** | Front counter | POS, receipts, cash-out |
-| **Waiter** | Floor staff | Waiter App, table service |
+| **Waiter** | Floor staff | Waiter interface, table service |
 | **Kitchen** | Chef / line cook | KDS only |
-| **Custom** | Any | Fine-grained permission set |
-
-## What each role can do
-
-## Configure custom permissions
-
-<Frame caption="Permissions matrix">
-  ![Permissions](/images/getting-started/permissions.png)
-</Frame>
 
 <Note>
-  Custom roles are portable across branches. Design them per venue type (bar cashier, head chef) rather than modifying built-in roles.
+  There is no separate Administrator role. Managers get broad access automatically, but certain sensitive permissions (payroll, tips, billing, settings, LAN) must still be granted explicitly — even for managers.
+</Note>
+
+## How permissions work
+
+DishInk uses a two-track permission system:
+
+**Track 1 — Role bypass.** Managers automatically pass permission checks for most features without needing individual toggles. Owners always pass every check unconditionally.
+
+**Track 2 — Explicit only.** A set of sensitive permissions are never auto-granted by role. They must be turned on individually per staff member, even for managers. These are:
+
+- `can_edit_contact`, `can_edit_hours`, `can_edit_social`, `can_edit_features`
+- `can_manage_settings`, `can_manage_terminals`, `can_view_settings`
+- `can_manage_payroll`, `can_manage_tips`
+- `can_delete_staff`
+- `can_view_all_reports`
+- `can_view_all_tables`
+- `can_view_lan_conflicts`
+- `can_view_billing`, `can_manage_billing`
+- `can_switch_locations` and all cross-location sub-permissions
+
+<Warning>
+  Being a manager does not grant any of the explicit-only permissions above. If a manager needs to run payroll or access billing, you must turn on that permission for them individually.
+</Warning>
+
+## Permission categories
+
+Permissions are grouped into the following categories in the role editor:
+
+### Growth Pro views
+
+Controls which Back Operations modules a staff member can open.
+
+| Permission | What it unlocks |
+| --- | --- |
+| `can_view_kds` | Kitchen Display System |
+| `can_view_pos` | Point of Sale |
+| `can_view_waiter` | Waiter Interface |
+| `can_view_tables` | Table Management |
+| `can_view_inventory` | Inventory Management |
+| `can_view_analytics` | Business Analytics (master gate) |
+| `can_view_staff` | Staff Management |
+| `can_view_payroll` | HRM & Payroll Suite |
+
+### Sales reports
+
+Every staff member with POS access can generate and print their own shift report — no toggle needed. Enabling `can_view_all_reports` upgrades this to the full manager-style report: all staff numbers, staff picker, summary/detailed toggle, and CSV exports. Explicit only — manager role is not enough.
+
+### Admin page access
+
+Controls which Front Operations pages a staff member can visit: Dashboard, Menu, Gallery, Messages, QR Codes, Orders, Website Content.
+
+### Admin page editing
+
+Controls which Front Operations pages a staff member can make changes on: Menu, Gallery, Content, QR Codes, Messages, Inventory, Orders.
+
+### Management controls
+
+- `can_manage_staff` — add and edit staff members
+- `can_delete_staff` — permanently remove staff (explicit only)
+- `can_edit_shifts` — modify shift records
+
+### Analytics access
+
+Requires `can_view_analytics` to be enabled first. Managers get all four automatically. Other roles need individual grants:
+
+- `can_view_analytics_kitchen`
+- `can_view_analytics_revenue`
+- `can_view_analytics_menu`
+- `can_view_analytics_staff`
+
+### Transaction overrides
+
+- `can_process_payments` — process and finalise payments
+- `can_apply_discounts` — apply discounts on orders
+- `can_void_orders` — void active orders
+
+### HR — Payroll & Tips
+
+Explicit only. Manager role is not enough.
+
+- `can_manage_payroll` — approve payroll records, mark wages as paid, run payroll calculations
+- `can_manage_tips` — distribute tips, change tip distribution mode and settings, mark tips as paid
+
+### Settings access
+
+All explicit only, even for managers.
+
+- `can_view_settings` — open the settings panel
+- `can_manage_settings` — change general settings
+- `can_edit_contact`, `can_edit_hours`, `can_edit_social`, `can_edit_features` — granular website settings
+- `can_manage_terminals` — add and configure POS terminals
+
+### LAN & Network
+
+Explicit only. Controls access to the LAN Monitor page, connected devices, offline sync queue, and conflict log. Owners always have this access.
+
+- `can_view_lan_conflicts`
+
+### Multi-location access
+
+Explicit only. Growth Pro required. Staff are locked to their home location unless `can_switch_locations` is enabled. Sub-permissions only apply after switching:
+
+- `can_switch_locations` — master switch
+- `can_manage_cross_location_menu` — edit menu and price overrides at switched location
+- `can_manage_cross_location_inventory` — manage stock at switched location
+- `can_view_cross_location_analytics` — view analytics at switched location
+
+### Billing access
+
+Explicit only. Manager role is not enough. Controls access to the subscription and billing panel in Back Ops Settings.
+
+- `can_view_billing` — view current plan, billing dates, usage stats, request history
+- `can_manage_billing` — submit upgrade, downgrade, cancel, and payment method change requests
+
+<Note>
+  `can_manage_billing` automatically grants `can_view_billing` as well — you only need to enable one.
+</Note>
+
+## Creating and editing role templates
+
+Go to **Staff Management → Roles** to manage role templates. Select an existing role to edit its permissions, or click **Create New Role** to start from scratch.
+
+Role templates can be assigned to staff members when creating or editing their account. The template sets the defaults — individual permissions can still be adjusted per staff member after assignment.
+
+<Note>
+  Only owners and staff with `can_manage_staff` can create or edit role templates.
 </Note>
 
 ## Tips & best practices
 
 <Tip>
-  Follow the principle of least privilege. Only owners and administrators should have access to billing, integrations, and security.
+  Design role templates around job function, not seniority. A "Bar Cashier" template is more useful than a modified Manager role — it stays accurate when staff rotate positions.
+</Tip>
+
+<Tip>
+  Use explicit-only permissions deliberately. Payroll, billing, and tip management should only be granted to the specific people who handle them — not everyone at manager level.
 </Tip>
 
 ## Common mistakes
 
 <Warning>
-  Do not give cashiers direct refund permissions. Require a manager PIN — the single most effective control against internal loss.
+  Do not rely on the Manager role to cover payroll, tips, or billing. These are explicit-only and must be toggled on individually, by design.
+</Warning>
+
+<Warning>
+  Deleting a staff member (`can_delete_staff`) is permanent and explicit-only for that reason. Grant it only to owners and a designated HR lead.
 </Warning>
 
 ## Related pages
 
 - [Staff Accounts](/staff/staff-accounts)
 - [PIN Login](/staff/pin-login)
-- [Permissions](/staff/permissions)
+- [Clocking In & Out](/getting-started/clocking-in-out)
+- [Multi-Location: Staff Access](/multi-location/staff-access)
+- [HRM & Payroll: Overview](/staff/payroll/overview)

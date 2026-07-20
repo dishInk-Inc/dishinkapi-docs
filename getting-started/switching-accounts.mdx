@@ -4,38 +4,60 @@ sidebarTitle: "Switching Accounts"
 description: "Switch between staff users on a shared terminal, or between multiple branches on an owner account."
 ---
 
-DishInk supports two types of switching: **staff switching** between users on a shared device, and **branch switching** between locations on a multi-branch account.
-
-## Overview
-
-- Staff switching keeps device sessions stable while auditing every action per user.
-- Branch switching lets owners and administrators oversee multiple locations from one login.
+DishInk supports two types of switching: **staff switching** between users on a shared device, and **branch switching** between locations on a multi-branch owner account.
 
 ## Switch staff on a shared terminal
 
-<Frame caption="Switch user">
-  ![Switch user](/images/getting-started/switch-user.png)
-</Frame>
+On any shared device, the currently logged-in staff member is shown in two places:
 
-## Switch branches
+- **Top bar** — a small avatar badge with the staff member's name and a **Switch Acc** button next to it
+- **Bottom of the sidebar** — a card showing the staff member's name and role
+
+To switch to a different staff user, click **Switch Acc** in the top bar or use **Logout** at the bottom of the sidebar. This returns you to the staff login screen where the next person can select their name and enter their PIN.
 
 <Note>
-  The branch selector only shows branches your role has access to. Cashiers and waiters are locked to a single home branch.
+  Switching staff does not require a full sign-out of the owner account. The device stays connected to the same restaurant — only the active staff session changes.
 </Note>
+
+<Warning>
+  Switching users does not close any open bills belonging to the previous staff member. Always ensure open tables and active POS sessions are handed over or closed before switching.
+</Warning>
+
+## Switch branches (multi-location)
+
+If your account has multiple locations, a **Location Switcher** appears in:
+
+- The **top bar** on desktop (compact mode, next to the staff badge)
+- The **sidebar header** on mobile
+
+Click it to switch to a different branch. The entire dashboard reloads to show data, staff, and settings for the selected location. You stay logged in — no password is needed to switch branches.
+
+<Note>
+  The location switcher only appears if your account has more than one branch and your role has the `can_switch_locations` permission. Cashiers and waiters are typically locked to their home branch and will not see the switcher.
+</Note>
+
+## Staff roles and what they can switch
+
+| Role | Staff switching | Branch switching |
+| --- | --- | --- |
+| Owner | Full access | All branches |
+| Manager | Full access | Branches they are assigned to |
+| Cashier | PIN login on shared device | Home branch only |
+| Waiter | PIN login on shared device | Home branch only |
+| Kitchen | PIN login on shared device | Home branch only |
 
 ## Tips & best practices
 
 <Tip>
-  Assign every device to a home branch. Devices default to that branch on launch, preventing accidental cross-branch sales.
+  Assign every shared device to a home branch. This prevents accidental cross-branch sales if a staff member forgets to switch before starting a session.
 </Tip>
 
-## Common mistakes
-
-<Warning>
-  Switching users does not close any open bills belonging to the previous cashier. Always clock out at end of shift so reports and cash-outs stay accurate.
-</Warning>
+<Tip>
+  Staff members must clock in before accessing Back Operations. If a staff member switches and the next person skips clock-in, they will be automatically redirected to the clock-in screen.
+</Tip>
 
 ## Related pages
 
 - [Clocking In & Out](/getting-started/clocking-in-out)
-- [Multi-Location](/multi-location/managing-branches)
+- [Roles & Permissions](/getting-started/roles-permissions)
+- [Multi-Location: Managing Branches](/multi-location/managing-branches)

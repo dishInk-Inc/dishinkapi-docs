@@ -1,61 +1,116 @@
 ---
 title: "Navigation Overview"
-sidebarTitle: "Navigation Overview"
-description: "The layout of the DishInk dashboard, POS, Waiter App, and Kitchen Display."
 ---
 
-DishInk shares a consistent layout across every module. Once you learn the pattern on one screen, the rest follow the same rules.
+DishInk uses a single consistent shell across every module. The sidebar and top bar stay fixed while the main content area changes as you move between sections.
 
-## Dashboard layout
+## Top bar
 
-<Frame caption="Dashboard navigation">
-  ![Dashboard navigation](/images/getting-started/dashboard-nav.png)
-</Frame>
+The top bar runs across the full width of the screen on desktop and contains:
 
-| Area | Purpose |
+| Element | Purpose |
 | --- | --- |
-| **Top bar** | Branch switcher, search, user menu, notifications |
-| **Left sidebar** | Modules — POS, KDS, Waiter, Tables, Inventory, Reports |
-| **Main pane** | The current module view |
-| **Right rail** | Contextual actions, filters, live status |
+| **Sidebar toggle** | Show or hide the left sidebar |
+| **Front ops / Back ops switcher** | Jump between your public-facing tools and your restaurant operations |
+| **Staff badge** | Shows the currently logged-in staff member with a quick logout / switch account button |
+| **Location switcher** | Appears only for multi-location accounts — switch between branches without logging out |
+| **Page title** | Displays the current module name (e.g. `DISHINK POINT OF SALE`) |
 
-## POS layout
+## Left sidebar
 
-- **Left** — categories and menu grid
-- **Centre** — current order (cart)
-- **Right** — payment panel and split billing controls
-- **Bottom** — quick actions (discount, void, hold)
+The sidebar is divided into two sections that you can collapse or expand independently.
 
-## Waiter App layout
+### Front Operations
 
-- **Home** — assigned tables and floor plan
-- **Table view** — cart, modifiers, send-to-kitchen
-- **Notifications** — bill requests, kitchen status changes
+Tools for managing your public-facing restaurant presence:
 
-## KDS layout
+- Front Ops Dashboard
+- Manage Menu
+- Add Menu Item
+- Website Content
+- Website Gallery
+- Bookings & Messages
+- Online Orders
+- Events Management
+- QR Codes
 
-- **Hall View** — all active tickets
-- **Station View** — filtered by kitchen station
-- **Bump bar** — mark preparing, ready, or completed
+### Back Operations
+
+Restaurant operations tools (requires Growth Pro):
+
+- Operations Dashboard
+- Kitchen Display System
+- Table Management
+- Waiter Interface
+- Point of Sale
+- Inventory Management
+- Staff Management
+- HRM & Payroll Suite
+- Business Analytics (with Kitchen, Revenue, Menu, and Staff sub-views)
+- LAN Monitor
 
 <Note>
-  All modules share a common colour language: green (fresh), amber (attention), red (overdue).
+  Back Operations items are locked behind the Growth Pro plan. Locked items appear greyed out with a **Growth Pro \+** label. Individual sub-items within Analytics can also be restricted per staff permission.
 </Note>
 
-## Tips & best practices
+### Collapsing the sidebar
 
-<Tip>
-  Use the global search at the top of the dashboard to jump to any customer, order, product, or staff member — much faster than clicking through menus.
-</Tip>
+Click the **chevron button** on the right edge of the sidebar to collapse it to icon-only mode. Click the **panel icon** in the top bar to hide it entirely. Both states are remembered across sessions.
 
-## Common mistakes
+## Front ops vs Back ops
+
+The **Front ops / Back ops** switcher in the top bar controls which section appears at the top of your sidebar. Set it to whichever you use most — DishInk remembers your preference.
+
+| Front ops | Back ops |
+| --- | --- |
+| Menu, website, online orders, QR codes | POS, KDS, waiter, tables, inventory, payroll |
+| Customer-facing tools | Restaurant operations tools |
+
+## Bottom of sidebar
+
+The bottom strip contains your account controls:
+
+| Control | Purpose |
+| --- | --- |
+| **Staff badge** | Your name and role while logged in as a staff member |
+| **Settings** | Front Ops Settings and Back Ops Settings (dropdown) |
+| **Clock In / My Earnings** | Visible to staff only — attendance and pay tracker |
+| **View Site** | Opens your public restaurant page in a new tab |
+| **Theme toggle** | Cycles between Light, Dark, and System theme |
+| **Logout** | Signs out and returns to the login screen |
+
+## Mobile navigation
+
+On mobile, the sidebar is hidden by default behind a **hamburger menu button** in the top-left corner. Tap it to open the full sidebar as a slide-in drawer. Tap outside it or the × button to close.
 
 <Warning>
-  On smaller tablets the sidebar collapses into a menu button. Expand it before assuming a feature is missing.
+  On tablets in portrait mode the sidebar is hidden by default. If a feature appears missing, open the sidebar first before assuming it isn't available.
 </Warning>
+
+## Offline mode
+
+DishInk works offline for core operations. When you lose internet, the following modules stay fully functional:
+
+- Point of Sale
+- Waiter Interface
+- Kitchen Display System
+- Table Management
+- LAN Monitor
+- Inventory (read-only)
+
+All other pages (reports, settings, payroll, etc.) require an active connection and will show an **Internet required** screen with quick links back to the offline-capable modules.
+
+## Staff permissions and role restrictions
+
+What appears in your sidebar depends on your role:
+
+- **Owners and Managers** see everything
+- **Other staff roles** (Waiter, Cashier, Kitchen) only see items their permissions allow
+- Items you don't have access to are hidden entirely — not just greyed out
 
 ## Related pages
 
 - [Logging In](/getting-started/logging-in)
-- [POS: Creating Sales](/pos/creating-sales)
-- [KDS: Receiving Orders](/kds/receiving-orders)
+- [Roles & Permissions](/getting-started/roles-permissions)
+- [Clocking In & Out](/getting-started/clocking-in-out)
+- [Multi-Location: Managing Branches](/multi-location/managing-branches)
