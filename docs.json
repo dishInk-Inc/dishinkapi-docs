@@ -265,10 +265,9 @@
   },
   "banner": {
     "content": "Hello There ! Welcome to Official Dishink User Manual and Docs",
-    "dismissible": true,
     "color": {
-      "light": "#f48686",
-      "dark": "#ed3a3a"
+      "light": "#f4b9b9",
+      "dark": "#fa3232"
     }
   },
   "metadata": {
