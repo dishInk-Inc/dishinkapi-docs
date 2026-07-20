@@ -1,44 +1,88 @@
 ---
 title: "Menu Items"
 sidebarTitle: "Menu Items"
-description: "Customer-facing products with photos, prices, modifiers, and recipes."
+description: "Add, edit, search, and delete individual items on your DishInk menu."
 ---
 
-Menu Items are the customer-facing products. Each has a name, description, image, price, modifiers, category, and (optionally) a recipe linking it to inventory.
+Menu items live inside categories. Each item has a name, price, description, images, availability status, and an optional prep time that drives the KDS countdown timer.
 
-## Overview
+## Adding an item
 
-Every menu item can carry:
-
-- Name and description
-- Photo
-- Base price and variant prices
-- Modifier groups (extras, cooking preference)
-- Category and KDS station
-- Prep-time target
-- Availability schedule
-
-## Create a menu item
-
-<Frame caption="Menu item editor">
-  ![Menu item](/images/menu/menu-items.png)
-</Frame>
+1. Go to **Front Operations → Manage Menu**
+2. Click **Add Item** in the top-right corner
+3. Fill in the item details and save
 
 <Note>
-  Menu items without recipes still sell fine — stock deduction and margin analytics simply skip them.
+  The Add Item button is disabled when you have reached your plan's item limit. Your current count and limit are shown in the header. Upgrade your plan to add more items.
 </Note>
 
-## Tips & best practices
+## Editing an item
 
-<Tip>
-  Use consistent photo dimensions (square, 1:1). QR menus and websites render cleaner with uniform photos.
-</Tip>
+Click **Edit** on any item row to open the inline edit form. You can change:
 
-## Common mistakes
+| Field | Notes |
+| --- | --- |
+| **Name** | Displayed on the menu, POS, waiter app, and KDS |
+| **Price** | Base price in Kwacha (K) |
+| **Description** | Short description shown on the menu page |
+| **Category** | Move the item to a different category |
+| **Images** | Up to 3 images per item |
+| **Prep Time** | Minutes — drives the KDS countdown timer |
+| **Featured** | Mark as a popular item |
+| **Available** | Toggle availability without deleting |
+
+Click **Save Changes** when done. The form stays open if there is an error — the error message appears above the buttons.
+
+## Prep time and the KDS timer
+
+Setting a prep time on an item starts a countdown on the Kitchen Display System when that item is ordered. The timer turns red when the prep time is exceeded.
+
+Leave prep time blank if you don't want a countdown for that item.
+
+Items with a prep time show a blue **Xm** badge in the menu list and a **timed** count on their category row.
+
+## Images
+
+Each item supports up to **3 images**. The first image is used as the thumbnail in the menu list, POS, and waiter app.
+
+To add images, open the edit form and use the image uploader in the Images section. To remove an image, hover over it and click the × button.
+
+### Batch image upload
+
+If multiple items are missing images, a purple **Add Images (N)** button appears in the header. Click it to open the batch image editor and add photos to multiple items at once.
+
+## Searching items
+
+Use the search bar at the top of the Manage Menu page to filter items by name or description. Matching text is highlighted in yellow. Categories with matching items expand automatically.
+
+The search results summary shows how many items matched and across how many categories. Click **Clear** to reset.
+
+## Deleting an item
+
+Click **Delete** on the item row and confirm the prompt. Deletion is permanent.
 
 <Warning>
-  Do not publish menu items without descriptions on your QR menu — guests skip anything they don't recognise.
+  Deleted items are removed from the menu, POS, waiter app, and KDS immediately. Any open orders that already contain the item are not affected, but the item cannot be re-added to new orders.
 </Warning>
+
+## Featured items
+
+Checking **Featured item** in the edit form marks the item with a **Popular** badge on the menu page. This is separate from featured categories.
+
+## Availability
+
+Unchecking **Available** in the edit form marks the item as unavailable. It shows an **Unavailable** badge in the menu list and is hidden from the public menu and POS until you re-enable it.
+
+This is useful for temporarily 86ing an item without deleting it.
+
+## Plan limits
+
+| Plan | Item limit |
+| --- | --- |
+| Starter | 15 items |
+| Growth | Unlimited |
+| Growth Pro | Unlimited |
+| Enterprise | Unlimited |
 
 ## Related pages
 
@@ -46,4 +90,4 @@ Every menu item can carry:
 - [Pricing](/menu/pricing)
 - [Availability](/menu/availability)
 - [Images](/menu/images)
-- [Products](/inventory/products)
+- [KDS: Receiving Orders](/kds/receiving-orders)

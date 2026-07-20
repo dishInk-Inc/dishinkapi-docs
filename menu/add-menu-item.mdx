@@ -1,0 +1,135 @@
+---
+title: "Adding Menu Items"
+sidebarTitle: "Adding Items"
+description: "Add individual menu items, save drafts, and extract menus from images using AI."
+---
+
+The Add Menu Item page is where you build out your menu one item at a time. It supports image uploads, draft saving, AI extraction from existing menus, and branch price overrides for multi-location accounts.
+
+Go to **Front Operations → Add Menu Item** to get started.
+
+## The form
+
+Fill in the following fields:
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| **Item Name** | ✅ Yes | Shown on the menu page, POS, waiter app, and KDS |
+| **Description** | No | Short text shown on the public menu |
+| **Price (K)** | ✅ Yes | Base price in Kwacha — applies to all locations by default |
+| **Category** | ✅ Yes | The section this item belongs to on the menu |
+| **Nutrition Info** | No | Free-text field, e.g. "Calories: 450 \| Protein: 20g" |
+| **Featured** | No | Marks the item as popular on the homepage |
+| **Available** | No | On by default — uncheck to hide the item from orders |
+
+Once the form is complete, click **Publish Item** to save it live to your menu immediately.
+
+<Note>
+  Publishing is instant. The form resets after you click Publish so you can start the next item straight away. Your published item is confirmed with a toast notification.
+</Note>
+
+## Adding images
+
+Each item supports up to **3 images**. The first image is used as the thumbnail on the menu page, POS, and waiter app.
+
+To add images, click the **Add photo** tile in the image grid and select one or more files. Supported formats are PNG and JPG up to 5 MB each.
+
+Images upload in the background while you fill in the rest of the form. A progress bar appears on each image tile while it uploads, and a green tick appears when it's done.
+
+<Warning>
+  Do not click **Publish Item** while images are still uploading. A warning modal will appear if you try — wait for all images to finish before publishing, otherwise the item will save without its photos.
+</Warning>
+
+### Retrying a failed upload
+
+If an image fails to upload (shown with a red error overlay), click **Retry** on that tile. Check your internet connection first if multiple images fail.
+
+### Removing an image
+
+Hover over any image tile and click the red × button in the bottom-right corner to remove it.
+
+## Creating a new category inline
+
+If the category you need doesn't exist yet, you can create one without leaving the form:
+
+1. Click the **\+** button next to the category dropdown
+2. Type the new category name
+3. Press **Enter** or click the tick button
+
+The new category is created immediately and selected automatically. Press **Escape** to cancel.
+
+## Saving as a draft
+
+If you're not ready to publish yet, click **Save as Draft** to save your progress locally on your device. Drafts preserve the form fields and any already-uploaded images.
+
+To view and manage your drafts, click the **Drafts** tab at the top of the page. From there you can:
+
+- **Load** a draft to continue editing it
+- **Delete** individual drafts
+- **Clear all** drafts at once
+
+When you load a draft, the form is populated with the saved data and your images are restored. The tab shows a badge with the number of saved drafts.
+
+<Note>
+  Drafts are stored locally on your device. They are not synced across devices or browsers. If you clear your browser data, drafts will be lost.
+</Note>
+
+## AI menu extraction
+
+The **Extract Menu with AI** button lets you import items from an existing menu — a photo, a PDF, or a typed list — without entering each item by hand.
+
+Click the purple **Extract Menu with AI** button to open the importer. Follow the prompts to upload your source and review the extracted items before publishing.
+
+<Note>
+  AI extraction is best for onboarding an existing menu quickly. Always review the extracted items before publishing — prices and descriptions may need adjusting.
+</Note>
+
+## Setting branch prices after publishing
+
+On multi-location accounts, a prompt appears after each item is published offering to set branch-specific prices. Click **Set Branch Prices** to open the Branch Price Editor for that item.
+
+You can also set branch prices later from **Manage Menu** by clicking the **Locations** (📍) button on any item row.
+
+## Plan limits
+
+| Plan | Item limit |
+| --- | --- |
+| Starter | 15 items |
+| Growth | Unlimited |
+| Growth Pro | Unlimited |
+| Enterprise | Unlimited |
+
+When you reach your plan limit, the form is locked and an upgrade banner appears. Publishing is blocked until you upgrade or remove existing items.
+
+## Tips & best practices
+
+<Tip>
+  Publish items in batches by category. Add all your Starters first, then Mains, then Drinks — this keeps the menu organized from day one.
+</Tip>
+
+<Tip>
+  Write the item name exactly as it should appear on the menu. Avoid abbreviations — customers and kitchen staff both read it.
+</Tip>
+
+<Tip>
+  Use the **Save as Draft** button if you're gathering images or waiting for pricing confirmation. Drafts survive page refreshes and browser restarts.
+</Tip>
+
+## Common mistakes
+
+<Warning>
+  Do not close the browser tab while images are still uploading. The upload will be interrupted. If this happens, re-open the Add Item page — a **Resume Paused Uploads** banner will appear asking you to re-select the interrupted files.
+</Warning>
+
+<Warning>
+  The Starter plan has a 15-item limit that applies to the total across all categories. Plan your category structure before you start adding items.
+</Warning>
+
+## Related pages
+
+- [Categories](/menu/categories)
+- [Menu Items](/menu/menu-items)
+- [Pricing](/menu/pricing)
+- [Availability](/menu/availability)
+- [Images](/menu/images)
+- [Multi-Location: Shared Menus](/multi-location/shared-menus)

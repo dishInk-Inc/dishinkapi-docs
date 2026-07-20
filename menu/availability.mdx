@@ -1,44 +1,73 @@
 ---
 title: "Availability"
 sidebarTitle: "Availability"
-description: "Control when items can be sold by day, hour, branch, or stock condition."
+description: "Control which items are visible and available to order across your menu, POS, and waiter app."
 ---
 
-Availability controls when a menu item can be sold — by day, hour, branch, or stock condition.
+DishInk gives you several ways to control item availability — from globally toggling an item off, to hiding it at a specific branch, to marking a whole category as unavailable.
 
-## Overview
+## Marking an item unavailable
 
-Common availability patterns:
+To temporarily stop an item from being ordered:
 
-- Breakfast items — 6:00–11:00 only
-- Sunday roast — Sundays only
-- Cocktails — bar branches only
-- Fresh fish — available while ingredient stock ≥ 5
+1. Go to **Front Operations → Manage Menu**
+2. Click **Edit** on the item
+3. Uncheck **Available**
+4. Click **Save Changes**
 
-## Configure availability
+The item shows an **Unavailable** badge in the menu list. It is hidden from the public menu page and cannot be added to orders on the POS or waiter app.
 
-<Frame caption="Availability">
-  ![Availability](/images/menu/availability.png)
-</Frame>
+To bring it back, re-check Available and save.
 
 <Note>
-  Availability rules apply to POS, QR menus, WhatsApp ordering, and the website consistently.
+  Marking an item unavailable does not delete it. All its details, images, and pricing are preserved and restored instantly when you re-enable it.
 </Note>
+
+## Hiding an item at a specific branch
+
+For multi-location accounts, you can hide an item at one branch without affecting others:
+
+1. Click the **Locations** (📍) button on the item row
+2. Find the branch in the editor
+3. Toggle the **Visible** button to **Hidden**
+4. Click **Save \[Branch\] Price**
+
+A hidden item does not appear on that branch's menu page or POS. Other branches are unaffected.
+
+## Checking what's unavailable
+
+Unavailable items show a red **Unavailable** badge in the menu list. Use the search bar to quickly find a specific item by name if you have a long menu.
+
+Items hidden at specific branches show an **N location overrides** badge on the item row — open the Locations editor to see which branches have overrides.
+
+## Availability vs deletion
+
+| Action | Item preserved | Reversible | Affects orders |
+| --- | --- | --- | --- |
+| Mark unavailable | ✅ Yes | ✅ Yes | Hidden from new orders |
+| Hide at branch | ✅ Yes | ✅ Yes | Hidden at that branch only |
+| Delete item | ❌ No | ❌ No | Open orders unaffected |
+
+Always prefer marking unavailable or hiding over deleting, unless you are permanently removing the item from your menu.
 
 ## Tips & best practices
 
 <Tip>
-  Use time-based availability instead of manually toggling items. Staff forget; schedules don't.
+  Use the unavailable toggle to 86 items in real time during service. It takes effect immediately across the POS, waiter app, and public menu — no refresh needed on staff devices.
+</Tip>
+
+<Tip>
+  At the end of each service, review your unavailable items and re-enable anything that will be available tomorrow. This prevents carry-over unavailability that staff forget to fix.
 </Tip>
 
 ## Common mistakes
 
 <Warning>
-  Do not disable availability by deleting a menu item. Deletion removes it from historical reports too. Use availability instead.
+  Do not delete an item just because it's out of stock today. Mark it unavailable instead. Deleting removes it from your sales history and reports permanently.
 </Warning>
 
 ## Related pages
 
 - [Menu Items](/menu/menu-items)
-- [Stock Levels](/inventory/stock-levels)
-- [Multi-Location](/multi-location/shared-menus)
+- [Pricing](/menu/pricing)
+- [Multi-Location: Shared Menus](/multi-location/shared-menus)

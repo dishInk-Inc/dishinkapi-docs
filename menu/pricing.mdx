@@ -1,46 +1,69 @@
 ---
 title: "Pricing"
-sidebarTitle: "Pricing"
-description: "Base prices, variants, modifier surcharges, and time or location-based overrides."
 ---
 
-Pricing controls what customers pay. DishInk supports base prices, variant prices, modifier surcharges, time-based prices (happy hour), and location-based prices (per-branch overrides).
+DishInk uses a two-level pricing system. Every item has a **base price** that applies everywhere by default. On multi-location accounts, individual branches can override the base price or hide the item entirely.
 
-## Overview
+## Setting a base price
 
-| Price type | Use case |
-| --- | --- |
-| **Base price** | Standard menu price |
-| **Variant price** | Small/large, glass/bottle |
-| **Modifier surcharge** | Extra cheese \+ZMW 10 |
-| **Time-based (happy hour)** | Discount from 5–7 pm |
-| **Location override** | Different price in a premium branch |
-| **Delivery price** | Higher for delivery orders |
+The base price is set in the item's edit form under **Price (K)**. This price applies to all locations unless a branch override is set.
 
-## Configure pricing
+To update a base price:
 
-<Frame caption="Pricing">
-  ![Pricing](/images/menu/pricing.png)
-</Frame>
+1. Go to **Front Operations → Manage Menu**
+2. Click **Edit** on the item
+3. Update the Price field and click **Save Changes**
+
+## Branch price overrides (multi-location)
+
+On multi-location accounts, each branch can have its own price for any item. This is useful when the same dish costs more at a city-centre location than at a suburban one.
+
+### Opening the branch price editor
+
+Click the **Locations** button (📍) on any item row to open the Branch Price Editor. It shows all your branches with their current override status.
+
+### Setting a branch price
+
+1. Find the branch row in the editor
+2. Enter a price in the **K** field — leave it blank to use the base price
+3. Click **Save \[Branch\] Price**
+
+Each branch saves independently. You can set different prices for each location in the same session.
+
+### Resetting to base price
+
+If a branch has an override, a **Reset** button appears on its row. Click it to remove the override and revert to the base price.
+
+### Hiding an item at a specific branch
+
+Use the **Visible / Hidden** toggle on the branch row to hide the item at that location. Hidden items do not appear on that branch's public menu or POS.
+
+A red **Hidden** badge and a warning message appear when an item is set to hidden.
 
 <Note>
-  Every price change is logged in the audit trail with the administrator, timestamp, and previous value.
+  Hiding an item at a branch is different from marking it unavailable globally. A hidden item only disappears at that specific branch — all other branches are unaffected.
 </Note>
+
+## Override indicators
+
+Items with branch overrides show a small **N location overrides** badge next to the base price in the menu list. This lets you quickly see which items have been customised per branch.
+
+## Branch staff and pricing
+
+Branch staff with the `can_manage_menu` permission but without full multi-location access can only manage prices for their own branch. When they click **Edit** (shown as **Set Price**) on an item, they are taken directly to the branch price editor for their location only. They cannot edit the base price or see other branches.
 
 ## Tips & best practices
 
 <Tip>
-  Review pricing quarterly against your food cost. A 30% ingredient cost jump erodes margins fast — catch it before it spreads.
+  Set your base price to the most common price across your locations. Only set overrides for branches where the price genuinely differs — this keeps the branch price editor clean.
 </Tip>
 
-## Common mistakes
-
-<Warning>
-  Do not increase prices without informing the front line. Cashiers get caught explaining price jumps to regulars.
-</Warning>
+<Tip>
+  If an item is not sold at a particular branch at all, hide it at that branch rather than setting a zero price. Hidden items don't appear on the menu or POS, which avoids confusion for staff.
+</Tip>
 
 ## Related pages
 
 - [Menu Items](/menu/menu-items)
-- [Discounts](/pos/discounts)
-- [Menu Analytics](/reports/menu-analytics)
+- [Multi-Location: Shared Menus](/multi-location/shared-menus)
+- [Staff Permissions](/getting-started/roles-permissions)

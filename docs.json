@@ -155,7 +155,9 @@
               "menu/menu-items",
               "menu/pricing",
               "menu/availability",
-              "menu/images"
+              "menu/images",
+              "menu/add-menu-item",
+              "menu/menu-view-modes"
             ]
           },
           {
