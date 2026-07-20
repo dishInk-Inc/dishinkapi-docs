@@ -279,5 +279,38 @@
   },
   "appearance": {
     "default": "dark"
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/dishink",
+      "instagram": "https://www.instagram.com/dishink__",
+      "facebook": "https://dishink.com/"
+    },
+    "links": [
+      {
+        "header": "Policies and Terms",
+        "items": [
+          {
+            "label": "Privacy Policy",
+            "href": "https://dishink.com/privacy-policy"
+          },
+          {
+            "label": "Terms of Service",
+            "href": "https://dishink.com/terms"
+          },
+          {
+            "label": "Cookie Policy",
+            "href": "https://dishink.com/cookies"
+          },
+          {
+            "label": "Refund Policy",
+            "href": "https://dishink.com/refund-policy"
+          }
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "indexing": "all"
   }
 }
