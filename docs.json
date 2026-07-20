@@ -113,25 +113,25 @@
               "staff/shift-reports",
               "staff/clock-in",
               "staff/clock-out",
-              "staff/cash-out",
-              {
-                "group": "Payroll",
-                "icon": "money-check-dollar",
-                "pages": [
-                  "staff/payroll/overview",
-                  "staff/payroll/wage-structures",
-                  "staff/payroll/pay-schedules",
-                  "staff/payroll/settings",
-                  "staff/payroll/generating",
-                  "staff/payroll/records",
-                  "staff/payroll/pay-slips",
-                  "staff/payroll/tips",
-                  "staff/payroll/deductions",
-                  "staff/payroll/advances",
-                  "staff/payroll/reports",
-                  "staff/payroll/staff-earnings"
-                ]
-              }
+              "staff/cash-out"
+            ]
+          },
+          {
+            "group": "Payroll",
+            "icon": "money-check-dollar",
+            "pages": [
+              "staff/payroll/overview",
+              "staff/payroll/wage-structures",
+              "staff/payroll/pay-schedules",
+              "staff/payroll/settings",
+              "staff/payroll/generating",
+              "staff/payroll/records",
+              "staff/payroll/pay-slips",
+              "staff/payroll/tips",
+              "staff/payroll/deductions",
+              "staff/payroll/advances",
+              "staff/payroll/reports",
+              "staff/payroll/staff-earnings"
             ]
           },
           {
