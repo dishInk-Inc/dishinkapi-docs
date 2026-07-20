@@ -257,7 +257,7 @@
     ]
   },
   "logo": {
-    "light": "/images/logo5.png",
+    "light": "/images/logosecondary1.png",
     "dark": "/images/logo5.png"
   },
   "background": {
@@ -268,9 +268,13 @@
     "color": {
       "light": "#f4b9b9",
       "dark": "#fa3232"
-    }
+    },
+    "dismissible": false
   },
   "metadata": {
     "timestamp": true
+  },
+  "appearance": {
+    "default": "dark"
   }
 }
