@@ -1,0 +1,126 @@
+---
+title: "LAN & Offline Mode"
+sidebarTitle: "LAN & Offline Mode"
+description: "Keep service running when the internet drops. DishInk automatically switches to LAN Mode and syncs everything back once you're reconnected."
+---
+
+## Overview
+
+DishInk is built to keep working even when your internet connection isn't. If your WiFi router loses its internet link but is still powered on, your devices — POS, KDS, waiter phones, manager tablets — automatically find each other on the local network and keep talking to one another. Orders keep flowing to the kitchen, tables stay in sync, and nothing needs to be typed twice.
+
+The **LAN & Operations Monitor** (Growth Pro → LAN) gives owners and managers a live view of connection status, which devices are online, what's waiting to sync, and anything that needs a manual look after reconnecting.
+
+<Note>
+  Staff on the floor don't need to think about any of this. Screens keep working the same way whether you're online, on LAN only, or fully offline. This page is mainly for owners and managers who want visibility into what happened during an outage.
+</Note>
+
+## The Three Connection States
+
+<Steps>
+  <Step title="Online (normal)">
+    Full internet connection. Every device syncs through DishInk's cloud in real time. This is how you'll be running the vast majority of the time.
+  </Step>
+  <Step title="LAN Mode (WiFi up, internet down)">
+    Your router is on but the internet link is out. Devices detect this and connect directly to each other over the WiFi network instead. Orders, kitchen tickets, and table status all keep moving between devices with no interruption to service — the only difference is that nothing reaches the cloud until the internet returns.
+  </Step>
+  <Step title="Fully Offline (no WiFi at all)">
+    If the router itself is off or unreachable, each device works on its own. Everything you do is saved on that device and will sync automatically the moment WiFi or internet comes back. Devices simply can't see each other until the network is back up.
+  </Step>
+</Steps>
+
+The status pill at the top of the LAN Monitor always tells you which of these three states you're currently in, and how many devices are connected.
+
+## Hub Device
+
+One device on the network quietly takes on the job of relaying information between all the others while offline. Your main POS terminal takes this role by default; if it's closed, your KDS screen automatically steps in. You'll see a small **Hub** crown badge next to whichever device currently holds this role. There is nothing to configure — it's automatic and it fails over on its own.
+
+## Connected Devices
+
+The **Connected Devices** panel lists every device currently reachable on the network, along with its type (POS, KDS, Waiter, Manager) and, where available, the staff member logged in on it. This is a useful quick check during service — if a waiter's phone isn't showing up here, it's worth checking their WiFi connection before assuming something's wrong with an order.
+
+You can rename **this device** from the Connection Status panel (tap **Rename** next to the device name) — handy for telling devices apart, e.g. "KDS Main Screen" or "Waiter Phone — Front Counter".
+
+## Offline Queue
+
+Anything done while your internet is down — a new order, a status update, a payment — is saved locally first and placed into an **Offline Queue** on that device. The queue count shows how many actions are still waiting to reach DishInk's cloud.
+
+The moment your internet returns, the queue drains automatically — no one needs to press anything. If you want to trigger a sync manually (for example, right after reconnecting, to confirm everything went through), tap **Force Sync**.
+
+Each queued item shows what kind of action it is, which table it belongs to, and how long ago it happened. If something has failed to sync a few times in a row, you'll see a retry count and a short error note next to it.
+
+## Conflict Log
+
+Very occasionally, two devices might both try to do something that can't both be true — for example, two staff members opening the same table while offline, or a status being sent out of order. DishInk catches these automatically when syncing and never applies a conflicting action twice; instead, it quietly skips the duplicate and logs it here for you to review.
+
+Each entry in the **Conflict Log** shows:
+
+- What kind of conflict it was (e.g. a duplicate table open, a session that was already closed, a status sent out of order)
+- Which table and action it involved
+- A plain-language explanation of what happened and why it was skipped
+
+Review each entry and tap the checkmark to **mark it resolved** once you're satisfied nothing needs fixing, or use **Resolve All** to clear a batch at once. Toggle **Show Resolved** to bring back anything you've already cleared.
+
+<Tip>
+  A conflict being logged doesn't mean something went wrong with service — it means DishInk protected you from double-booking a table or double-charging a bill. The log exists so you have a record, not because action is always required.
+</Tip>
+
+## Manager Overrides
+
+Sometimes a manager needs to step in and close a table without payment, or force-reset a stuck table. These actions always require manager (or higher) authorization and are recorded here for accountability.
+
+Each override entry shows who authorized it, their role, the table involved, and — when you expand it — a snapshot of what the table looked like at the time: guest count, amount outstanding, assigned waiters, and the order items on the bill. This gives you a clean audit trail for anything closed outside the normal payment flow.
+
+## Kitchen Print Queue
+
+Every kitchen ticket sent from any device — waiter app or POS — passes through the **Kitchen Print Queue** on its way to the printer. This panel shows recent tickets, their status (pending, printing, printed, or failed), which staff member and device sent them, and which terminal ultimately printed them.
+
+- **Pending / Printing** — the ticket is on its way; no action needed.
+- **Printed** — done. You can still tap **Reprint** if a physical copy was lost or damaged.
+- **Failed** — the printer didn't confirm the print. Tap **Reprint** to try again, or **Mark Printed** if you've confirmed it printed and just want to clear the flag.
+
+Use **Mark all seen** to clear the badge count once you've reviewed recent activity, and **Show all** to bring back tickets you've already dismissed.
+
+## Setting Up Kitchen Ticket Printing
+
+<Steps>
+  <Step title="Go to Settings → Hardware & Printing">
+    Open printer settings from the main Settings menu.
+  </Step>
+  <Step title="Enable Kitchen Printer">
+    Choose a connection method (USB, Network, or QZ Tray) and select your kitchen printer from the dropdown.
+  </Step>
+  <Step title="Set a print station">
+    On the desktop POS that sits nearest the kitchen, enable **This device is a print station**. This is the device that will physically print tickets.
+  </Step>
+  <Step title="Turn on Kitchen Ticket Printing">
+    In Settings → Kitchen Ticket Printing, switch the feature on.
+  </Step>
+  <Step title="Done">
+    Waiters will now see a **Print Ticket** button in their cart, and tickets will print automatically at the print station.
+  </Step>
+</Steps>
+
+## Frequently Asked Questions
+
+**Does the WiFi need internet for LAN Mode to work?** No. LAN Mode only needs the router itself to be powered on. Devices find each other directly over the local network — internet is not required for orders, tickets, or table status to keep moving.
+
+**What happens if I take an order while offline?** It's sent to the kitchen over WiFi if LAN Mode is active, and saved locally either way. It syncs to the cloud automatically once internet returns.
+
+**Can I take payments while offline?** Cash payments work exactly as normal. Card and mobile money payments are recorded locally and sync once internet returns; if there's an issue you'll be prompted to retry.
+
+**What if two people open the same table at once while offline?** DishInk catches this during sync — only the first session is kept, and the duplicate shows up in the Conflict Log for your review. No table gets double-billed.
+
+**Do I need to open devices in a specific order?** No. Devices find each other automatically within a few seconds, in any order. For the smoothest experience, open all your devices before service starts.
+
+**How many devices can be on the network at once?** Up to 10 devices on the same WiFi network — enough for most restaurant setups covering waiter phones, KDS screens, POS terminals, and manager tablets.
+
+**What if the router loses power completely?** Every device keeps working independently and saves locally. Once the router is back, devices reconnect and sync automatically — nothing is lost.
+
+**Will I lose data if the internet drops mid-service?** No. Every action is saved locally first and synced once connectivity returns. Anything that needed manual review shows up in the Conflict Log.
+
+## Related Pages
+
+- [Terminal Setup](/pos/terminal-setup)
+- [Creating Sales](/pos/creating-sales)
+- [Table Billing](/pos/table-billing)
+- [Batch Invoice Cash Out](/pos/batch-cash-out)
