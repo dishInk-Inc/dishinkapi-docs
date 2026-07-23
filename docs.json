@@ -263,9 +263,6 @@
     "light": "/images/logosecondary1.png",
     "dark": "/images/logo5.png"
   },
-  "background": {
-    "decoration": "gradient"
-  },
   "banner": {
     "content": "Hello There ! Welcome to Official Dishink User Manual & Docs",
     "color": {
