@@ -1,64 +1,132 @@
 ---
 title: "Smart Invoice — Overview"
 sidebarTitle: "Overview"
-description: "Full ZRA Smart Invoice integration with real-time submission, verified QR codes, and audit trails."
+description: "Full ZRA Smart Invoice integration with real-time fiscalisation, verified QR codes, and a complete audit trail."
 ---
 
-Coming Soon
+## What is Smart Invoice?
 
-## Overview
+ZRA Smart Invoice is Zambia Revenue Authority's mandatory electronic fiscal system for VAT-registered businesses. Every sale must be submitted to ZRA in real time and returned with a unique receipt number, digital signature, and QR code before a valid tax invoice can be issued to a customer.
 
-- Real-time submission to ZRA on every sale (VAT mode)
-- Verified ZRA QR code printed on every receipt
-- VAT-compliant line-item breakdowns
-- Full audit trail for regulatory review
-- Batch invoice generation for reporting periods
-- Turnover tax mode for non-VAT SMEs
+DishInk integrates directly with ZRA Smart Invoice — cashiers never need to think about it. When a payment is completed at the POS, DishInk automatically submits the sale to ZRA, receives the fiscal signature, and prints the verified receipt. The entire process takes under two seconds.
 
-<Frame caption="Smart Invoice compliant receipt">
-  ![Smart Invoice](/images/smart-invoice/overview.png)
+<Frame caption="A DishInk ZRA-compliant tax invoice with fiscal QR code">
+  ![Smart Invoice Receipt](/images/smart-invoice/overview.png)
 </Frame>
+
+## What DishInk handles automatically
+
+<CardGroup cols={2}>
+  <Card title="Real-time submission" icon="bolt">
+    Every completed sale is submitted to ZRA within seconds. No manual uploads, no end-of-day batches.
+  </Card>
+
+  <Card title="Verified QR code" icon="qrcode">
+    Every receipt includes a scannable QR code that ZRA inspectors can verify on the spot.
+  </Card>
+
+  <Card title="Digital signature" icon="signature">
+    Each receipt carries a unique fiscal signature from ZRA's VSDC confirming it is genuine.
+  </Card>
+
+  <Card title="Offline resilience" icon="wifi-slash">
+    If ZRA is temporarily unreachable, sales are queued and submitted automatically when connectivity returns.
+  </Card>
+
+  <Card title="Audit trail" icon="scroll">
+    Every submission is logged with timestamps, receipt numbers, and ZRA responses — always ready for inspection.
+  </Card>
+
+  <Card title="Multi-branch support" icon="building">
+    Each branch and terminal has its own ZRA device registration with separate credentials.
+  </Card>
+</CardGroup>
 
 ## Two tax modes
 
 <Tabs>
-  <Tab title="Turnover Tax (SME)">
-    Designed for smaller businesses that are not VAT-registered. Tax is calculated as a percentage of total sales turnover.
-
-    - Automatically calculated on every sale
-    - Receipt shows Turnover Tax (TOT) breakdown
-    - ZRA-compliant receipt format
-    - No VAT registration required
-  </Tab>
   <Tab title="ZRA Smart Invoice (VAT)">
-    Full ZRA Smart Invoice integration for VAT-registered businesses. Every sale is submitted in real time and returns a verified QR code.
+    For VAT-registered businesses. Every sale is fiscalised in real time through ZRA's Smart Invoice system.
 
-    - Real-time submission on every sale
-    - Verified ZRA QR code on every receipt
-    - VAT-compliant line-item breakdowns
-    - Audit-ready transaction logs
+    **What you get:**
+
+    - Receipt number from ZRA on every sale
+    - Verified digital signature
+    - Scannable QR code for inspector verification
+    - VAT breakdown per tax category (Standard 16%, Exempt, Zero-rated)
+    - Full audit log for regulatory review
+
+    **Requirements:**
+
+    - Active TPIN from ZRA
+    - ZRA Smart Invoice device approval
+    - Device initialised in DishInk (one-time setup)
+
+    **Receipt header shows:** `TAX INVOICE`
+  </Tab>
+  <Tab title="Turnover Tax (SME)">
+    For smaller businesses that are not VAT-registered. No ZRA device required.
+
+    **What you get:**
+
+    - Sales receipt with turnover tax calculated automatically
+    - ZRA-compliant receipt format
+    - Full transaction history
+
+    **Requirements:**
+
+    - None — works immediately after setting your tax rate
+
+    **Receipt header shows:** `SALES RECEIPT`
   </Tab>
 </Tabs>
 
-Switch modes under **Settings → Billing and Tax**.
+Switch modes under **Settings → Billing and Tax → Tax Mode**.
 
-<Note>
-  ZRA integration requires your taxpayer identification and VAT number configured under Settings. See [ZRA Integration](/smart-invoice/zra-integration).
-</Note>
+## The setup process at a glance
 
-## Tips & best practices
-
-<Tip>
-  Test the integration on a low-value sale before your first busy service. Confirms the connection is live and receipts print with the QR code.
-</Tip>
-
-## Common mistakes
-
-coming soon
+<Steps>
+  <Step title="Get your ZRA approval">
+    Register on the ZRA Smart Invoice Taxpayer Portal and obtain your device serial number and TPIN. ZRA approves your registration before you can proceed.
+  </Step>
+  <Step title="Add your device in DishInk">
+    Go to **ZRA Smart Invoice → Devices → Add Device**. Enter your TPIN, branch code, and device serial number. DishInk calls ZRA to complete the one-time handshake.
+  </Step>
+  <Step title="Map your menu items">
+    Assign UNSPSC classification codes and VAT categories to each menu item under **ZRA Smart Invoice → Item Mapping**. This tells ZRA what type of goods you are selling.
+  </Step>
+  <Step title="Sync items to ZRA">
+    Click **Sync to ZRA** to register your mapped items. ZRA must receive item registrations before they can appear on fiscal receipts.
+  </Step>
+  <Step title="Start taking payments">
+    From this point everything is automatic. Every sale at the POS is fiscalised without any action from the cashier.
+  </Step>
+</Steps>
 
 ## Related pages
 
-- [ZRA Integration](/smart-invoice/zra-integration)
-- [Invoice Generation](/smart-invoice/invoice-generation)
-- [Fiscal Compliance](/smart-invoice/fiscal-compliance)
-- [FAQ](/smart-invoice/faq)
+<CardGroup cols={2}>
+  <Card title="ZRA Integration" icon="plug" href="/smart-invoice/zra-integration">
+    Device setup, TPIN configuration, and environment switching.
+  </Card>
+
+  <Card title="Item Mapping" icon="tag" href="/smart-invoice/item-mapping">
+    UNSPSC codes, VAT categories, and syncing items to ZRA.
+  </Card>
+
+  <Card title="Fiscalisation Queue" icon="list" href="/smart-invoice/fiscalisation-queue">
+    Monitoring job status, retrying failures, and understanding offline mode.
+  </Card>
+
+  <Card title="Receipt Format" icon="receipt" href="/smart-invoice/receipt-format">
+    What appears on a ZRA-compliant tax invoice and why each field is required.
+  </Card>
+
+  <Card title="Purchase Management" icon="shopping-cart" href="/smart-invoice/purchase-management">
+    Acknowledging supplier invoices and claiming input VAT.
+  </Card>
+
+  <Card title="FAQ" icon="circle-question" href="/smart-invoice/faq">
+    Common questions about ZRA Smart Invoice and DishInk.
+  </Card>
+</CardGroup>

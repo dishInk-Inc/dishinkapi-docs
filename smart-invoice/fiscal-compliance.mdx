@@ -1,47 +1,311 @@
 ---
 title: "Fiscal Compliance"
 sidebarTitle: "Fiscal Compliance"
-description: "ZRA compliance features, audit trails, and audit-ready exports."
+description: "How DishInk keeps your business ZRA-compliant automatically — audit trails, record retention, and what to expect during a ZRA inspection."
 ---
 
-DishInk keeps you compliant with ZRA regulations automatically. This page summarises the compliance features and audit-ready outputs available.
+## What compliance means for your restaurant
 
-## Overview
+ZRA fiscal compliance is not a one-time setup — it is an ongoing obligation. Every sale must be fiscalised, every receipt must carry a verified ZRA signature, and all records must be retained for a minimum of six years.
 
-Compliance features:
+DishInk handles the technical side of this automatically. This page explains exactly what DishInk does, what you are responsible for, and how to handle a ZRA audit.
 
-- Every sale submitted to ZRA in real time (VAT mode)
-- Verified QR code on every receipt
-- Full audit trail: order, edits, refunds, voids, timestamps, staff
-- Immutable invoice records (deletions blocked)
-- Batch invoice generation for reporting periods
-- Configurable tax rules for special-status items
+---
 
-## Audit-ready outputs
+## What DishInk does automatically
 
-<Frame caption="Compliance export">
-  ![Compliance](/images/smart-invoice/fiscal.png)
-</Frame>
+<CardGroup cols={2}>
+  <Card title="Real-time fiscalisation" icon="bolt">
+    Every completed sale is submitted to ZRA within seconds. No manual uploads, no end-of-day batches, no action required from staff.
+  </Card>
+
+  <Card title="Verified QR code" icon="qrcode">
+    Every tax invoice includes a ZRA-verified QR code that inspectors can scan to confirm the receipt is genuine.
+  </Card>
+
+  <Card title="Digital signature" icon="signature">
+    Each receipt carries a unique fiscal signature from ZRA's VSDC. The signature cannot be reproduced without ZRA's involvement — it proves the receipt was not fabricated.
+  </Card>
+
+  <Card title="Consecutive invoice numbers" icon="list-ol">
+    CIS Invoice Numbers are generated server-side in strict sequence with no gaps. Cashiers cannot influence, skip, or duplicate them — this is a ZRA requirement.
+  </Card>
+
+  <Card title="Immutable receipt ledger" icon="lock">
+    Fiscal receipt records in DishInk cannot be deleted — not by staff, not by managers, not by DishInk administrators. This is enforced at the database level.
+  </Card>
+
+  <Card title="Six-year retention" icon="calendar">
+    All transaction records, fiscal signatures, and ZRA responses are retained for a minimum of six years in line with ZRA's record-keeping requirement.
+  </Card>
+
+  <Card title="Full audit trail" icon="scroll">
+    Every action on a transaction is logged — who processed it, when, what changed. Voids and refunds require manager PIN and capture the authorising manager's identity.
+  </Card>
+
+  <Card title="Offline resilience" icon="wifi-slash">
+    If ZRA is temporarily unreachable, sales are queued and submitted automatically when connectivity returns. No fiscal data is lost.
+  </Card>
+</CardGroup>
+
+---
+
+## The audit trail
+
+DishInk maintains a complete, tamper-evident record of every transaction event.
+
+### What is logged on every sale
+
+| Event | What is recorded |
+| --- | --- |
+| Payment processed | Transaction ID, CIS Invoice No, amount, tax breakdown, payment method, staff member, terminal, branch, timestamp |
+| ZRA submission | ZRA receipt number, SDC ID, fiscal signature, submission timestamp, full ZRA response |
+| Receipt printed | Print method, timestamp |
+| Session closed | Who closed it, when, final amounts |
+
+### What is logged on voids
+
+Voids require a manager PIN. The void record captures:
+
+- The manager who authorised it (name, role, staff ID)
+- The reason provided (free text, mandatory)
+- The timestamp
+- The original transaction details
+
+A void cannot be processed without a valid manager PIN. The system verifies the PIN against a hashed value — plain PINs are never stored.
+
+### What is logged on refunds
+
+Refunds create a new transaction record linked to the original. The record captures:
+
+- The original transaction ID and ZRA invoice number
+- The refund amount
+- The credit note reason code (ZRA-defined codes e.g. goods returned, price correction)
+- The staff member who processed it
+- A ZRA credit note submission with the original receipt number referenced
+
+### What is logged on split bills
+
+Each portion of a split bill generates its own transaction record. The shared ZRA submission (made on the first portion) is referenced across all portion receipts so the entire table total can be reconstructed from the records.
+
+---
+
+## Record retention
 
 <Note>
-  All fiscal data is retained for at least 6 years, meeting the standard ZRA record-keeping requirement.
+  ZRA requires fiscal records to be retained for a minimum of **6 years** from the date of the transaction. DishInk enforces this at the database level.
 </Note>
 
-## Tips & best practices
+### How DishInk enforces retention
 
-<Tip>
-  Reconcile your Smart Invoice batch to your bank deposits monthly. Discrepancies are easier to explain when the trail is fresh.
-</Tip>
+**At the database level:** A database rule blocks all `DELETE` operations on the `smart_invoice_receipts` table. This rule cannot be bypassed by any user, including DishInk administrators. The only way to remove a fiscal receipt record would be to drop the rule at the database infrastructure level — something DishInk monitors and would not permit.
 
-## Common mistakes
+**What is retained:**
+
+- The full transaction record (amounts, items, payment method, staff, terminal)
+- The ZRA submission payload (what was sent to ZRA)
+- The ZRA response (what ZRA returned including receipt number and signature)
+- The fiscal signature
+- All void and refund records linked to the original transaction
+
+**What this means for you:** You can ask DishInk support for an export of any transaction going back 6 years. You do not need to maintain your own backups of fiscal data — DishInk holds it.
+
+---
+
+## Compliance by transaction type
+
+### Standard VAT sale
+
+| Requirement | How DishInk satisfies it |
+| --- | --- |
+| Fiscalised in real time | Submitted to ZRA on payment completion |
+| "TAX INVOICE" on receipt | Printed in bold, centered, prominently |
+| TPIN on receipt | Device TPIN printed — matches what was submitted to ZRA |
+| CIS Invoice Number | Consecutive, server-generated, unmodifiable |
+| Date and time | Server timestamp — not device clock |
+| Item descriptions | From menu item names |
+| Quantity and unit price | From order items |
+| Tax breakdown per category | Shown as Tax Summary on receipt |
+| Total including tax | Printed in bold |
+| ZRA receipt number | From ZRA's fiscal response |
+| Digital signature | From ZRA's VSDC |
+| QR code | Encodes all fiscal data for inspector verification |
+
+### Refund / credit note
+
+| Requirement | How DishInk satisfies it |
+| --- | --- |
+| Original invoice referenced | `orgIncNo` field sent to ZRA with original ZRA receipt number |
+| Credit note reason code | ZRA-defined reason codes (01 = goods returned, etc.) |
+| Fiscalised with ZRA | Submitted as credit note type to ZRA |
+| Linked to original | Transaction record references original transaction ID |
+
+### Split bill
+
+| Requirement | How DishInk satisfies it |
+| --- | --- |
+| Table total fiscalised | ZRA submission made for the full table amount on first portion |
+| Per-portion receipts | Each payer gets their own receipt referencing the shared ZRA submission |
+| Portion records | Each portion transaction stored independently with full audit trail |
+
+---
+
+## Preparing for a ZRA inspection
+
+ZRA inspectors may visit your restaurant and ask to verify receipts. Here is what to expect and how DishInk helps you respond.
+
+### If an inspector scans a QR code
+
+The inspector uses ZRA's mobile verification app to scan the QR code on a receipt. The app contacts ZRA's servers and confirms:
+
+- The receipt number exists in ZRA's records
+- The business TPIN matches
+- The amounts were not altered after submission
+
+**If the scan passes:** The receipt is verified. No further action needed.
+
+**If the scan fails:**
+
+1. Find the transaction in DishInk's history
+2. Check the Fiscalisation Queue for the job status
+3. If the job is `SUCCESS`, the receipt is genuine — the inspector's app may have a connectivity issue, ask them to retry
+4. If the job is `Failed` or `Dead`, the receipt was not fiscalised — see [Fiscalisation Queue](/smart-invoice/fiscalisation-queue) for how to resolve
+
+### If an inspector asks for transaction records
+
+DishInk can export transaction records in formats suitable for ZRA review. Contact DishInk support to request an export for a specific date range or transaction reference.
+
+### If an inspector asks about a voided transaction
+
+Every void is logged with:
+
+- The manager who authorised it
+- The reason
+- The timestamp
+- The original transaction
+
+Voids are visible in DishInk's transaction history with a `VOID` status. The original receipt data is preserved — the void does not delete it.
+
+### If an inspector questions a gap in invoice numbers
+
+CIS Invoice Numbers are consecutive and server-generated. There should be no gaps. If an inspector identifies a gap:
+
+1. The gap may have been caused by a failed transaction where the CIS number was reserved but the transaction did not complete
+2. Contact DishInk support with the CIS number range in question — full logs are retained
+
+---
+
+## VAT categories and correct classification
+
+Using the correct VAT category on each menu item is your responsibility as the taxpayer. DishInk enforces that a category is selected — it cannot validate whether you chose the correct one.
+
+**Standard categories for restaurants:**
+
+| Category | Use for | Rate |
+| --- | --- | --- |
+| A — Standard VAT | Most prepared food, drinks, services | 16% |
+| C — Zero-rated | Specific exempt goods (consult ZRA) | 0% |
+| D — Exempt | Basic unprepared foodstuffs (rare for restaurants) | 0% |
+| E — Tourism Levy | Licensed tourism operators only | Special |
 
 <Warning>
-  Do not manually edit any exported CSV before submitting to ZRA. Edits break the audit hash and can trigger investigation.
+  Applying the wrong VAT category (e.g. marking a standard meal as Exempt) constitutes incorrect tax reporting. Consult your accountant or ZRA if you are unsure which category applies to a specific item.
 </Warning>
+
+---
+
+## What you are responsible for
+
+DishInk handles the technical fiscalisation. You as the business owner remain responsible for:
+
+<Steps>
+  <Step title="Correct VAT category assignment">
+    Ensure each menu item is mapped to the correct VAT category. DishInk cannot make this legal determination for you.
+  </Step>
+  <Step title="Keeping device credentials current">
+    If ZRA suspends or updates your device registration, update it in DishInk promptly. Sales cannot fiscalise with invalid credentials.
+  </Step>
+  <Step title="Acknowledging supplier purchases">
+    ZRA-registered supplier invoices must be acknowledged (approved or rejected) through the Purchases tab. Unacknowledged purchases may affect your input VAT claims.
+  </Step>
+  <Step title="Registering your branch with ZRA">
+    After initializing a device, register your branch details with ZRA using the Register Branch button on the Devices tab. ZRA requires branch registration before accepting sales.
+  </Step>
+  <Step title="Acting on Dead jobs">
+    Jobs that reach Dead status will not retry automatically. Review the error, resolve the underlying issue, and manually retry. A Dead job means a sale that has not been fiscalised with ZRA.
+  </Step>
+  <Step title="Providing valid receipts to customers">
+    Receipts marked Pending ZRA Sync are not yet legally complete. For customers who require a valid VAT invoice, reprint once the fiscal job succeeds.
+  </Step>
+</Steps>
+
+---
+
+## Common compliance mistakes
+
+<Warning>
+  **Do not manually edit exported data before submitting to ZRA.** Any modification to exported transaction data breaks the audit chain and can trigger a ZRA investigation.
+</Warning>
+
+<Warning>
+  **Do not issue handwritten receipts instead of DishInk receipts.** Handwritten receipts are not fiscalised and do not satisfy ZRA's Smart Invoice requirement for VAT-registered businesses.
+</Warning>
+
+<Warning>
+  **Do not ignore Dead jobs in the Fiscalisation Queue.** A Dead job is a sale that ZRA has no record of. This creates a discrepancy between your sales records and ZRA's records. Resolve Dead jobs promptly.
+</Warning>
+
+<Tip>
+  Reconcile your Smart Invoice records to your bank deposits monthly. Review the Fiscalisation Queue weekly to ensure no Dead jobs have accumulated. Discrepancies are significantly easier to explain when the trail is fresh.
+</Tip>
+
+<Tip>
+  Before your first busy service, process a low-value test sale and verify the receipt prints with the ZRA receipt number and QR code. Confirm the QR code scans correctly using your phone's camera. This takes two minutes and confirms end-to-end fiscalisation is working.
+</Tip>
+
+---
+
+## Data export for audits
+
+DishInk can provide the following exports for ZRA audit purposes:
+
+| Export | Contents | How to request |
+| --- | --- | --- |
+| Transaction history | All sales, refunds, voids for a date range with ZRA receipt numbers | Reports section in DishInk or contact support |
+| Fiscal receipt log | ZRA submission payloads and responses | Contact DishInk support |
+| Item mapping register | UNSPSC codes and VAT categories per menu item | ZRA Smart Invoice → Item Mapping |
+| Device registration record | Device initialization timestamps and ZRA-issued credentials | ZRA Smart Invoice → Devices |
+
+<Note>
+  All exports include the ZRA receipt number, fiscal signature, and timestamp for every transaction. These are sufficient for ZRA audit verification purposes.
+</Note>
+
+---
 
 ## Related pages
 
-- [Overview](/smart-invoice/overview)
-- [Invoice Generation](/smart-invoice/invoice-generation)
-- [ZRA Integration](/smart-invoice/zra-integration)
-- [FAQ](/smart-invoice/faq)
+<CardGroup cols={2}>
+  <Card title="Overview" icon="house" href="/smart-invoice/overview">
+    Smart Invoice overview and setup guide.
+  </Card>
+
+  <Card title="ZRA Integration" icon="plug" href="/smart-invoice/zra-integration">
+    Device setup, TPIN configuration, branch registration.
+  </Card>
+
+  <Card title="Fiscalisation Queue" icon="list" href="/smart-invoice/fiscalisation-queue">
+    Monitoring submissions and resolving failures.
+  </Card>
+
+  <Card title="Receipt Format" icon="receipt" href="/smart-invoice/receipt-format">
+    Every field on a ZRA-compliant tax invoice explained.
+  </Card>
+
+  <Card title="Purchase Management" icon="shopping-cart" href="/smart-invoice/purchase-management">
+    Acknowledging supplier invoices and input VAT.
+  </Card>
+
+  <Card title="FAQ" icon="circle-question" href="/smart-invoice/faq">
+    Common questions and troubleshooting.
+  </Card>
+</CardGroup>

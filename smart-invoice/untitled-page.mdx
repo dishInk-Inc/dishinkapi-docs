@@ -1,0 +1,129 @@
+---
+title: "Item Mapping"
+sidebarTitle: "Item Mapping"
+description: "Assign UNSPSC classification codes and VAT categories to your menu items before syncing to ZRA."
+---
+
+## Why item mapping is required
+
+ZRA Smart Invoice requires every product or service that appears on a fiscal receipt to be pre-registered with a standardized classification code. This is how ZRA categorizes what your business sells and which tax rules apply.
+
+DishInk handles the ZRA registration automatically — but you need to tell DishInk what category each menu item belongs to.
+
+<Note>
+  Items that have not been mapped and synced to ZRA cannot appear on fiscal receipts. If an unmapped item is sold, DishInk will still complete the sale but the ZRA submission will use a generic fallback description rather than the specific item name.
+</Note>
+
+## UNSPSC codes
+
+UNSPSC stands for United Nations Standard Products and Services Code. ZRA uses this international standard to classify all goods and services.
+
+For a restaurant, nearly everything you sell falls into a small number of categories:
+
+| Category | Examples | Code range |
+| --- | --- | --- |
+| Prepared Meals | Nshima, grilled chicken, burgers, pizza | 5019xxxx |
+| Beverages — Non-alcoholic | Water, soft drinks, juice, coffee, tea | 5020xxxx |
+| Beverages — Alcoholic | Beer, wine, spirits, cocktails | 5020xxxx |
+| Bakery | Cakes, pastries, bread rolls | 5018xxxx |
+| Snacks | Fries, nuts, popcorn | 5019xxxx |
+| Services | Service charge, delivery fee | 8014xxxx |
+
+DishInk provides a searchable list of the most common restaurant codes. You can search by:
+
+- Item name (e.g. "burger", "beer", "coffee")
+- Code prefix (e.g. "5019")
+- Category name (e.g. "prepared meals")
+
+## VAT categories
+
+Each item also needs a VAT category that tells ZRA how to tax it:
+
+| Code | Label | When to use |
+| --- | --- | --- |
+| **A** | Standard VAT (16%) | Most restaurant items — prepared food, drinks, services |
+| **B** | Minimum-rate VAT | Reduced rate items. Rare in restaurants. |
+| **C** | Zero-rated | Exports and specific listed items. Not typical for dine-in. |
+| **D** | Exempt | Basic unprepared foodstuffs. Rare for restaurants. |
+| **E** | Tourism Levy | Only for licensed tourism operators. |
+
+<Tip>
+  For the vast majority of restaurant items, select **A — Standard VAT (16%)**. When in doubt, use A. Contact your accountant if you believe specific items qualify for a different category.
+</Tip>
+
+## Mapping your items
+
+1. Go to **ZRA Smart Invoice → Item Mapping**
+2. You will see all your menu items listed with their current mapping status
+3. For each unmapped item:
+   - Click the UNSPSC field and search for the right category
+   - Select the VAT category from the dropdown
+   - Click **Save Mapping**
+
+### Bulk mapping
+
+If many items share the same category (e.g. all your spirits are the same UNSPSC code):
+
+1. Select multiple items using the checkboxes
+2. Click **Bulk Apply**
+3. Set the UNSPSC code and VAT category once
+4. Click **Apply to X items**
+
+This overwrites any existing mapping for the selected items.
+
+## Syncing to ZRA
+
+Saving a mapping in DishInk does not immediately tell ZRA. You need to sync:
+
+- **Sync Pending** — sends all items that have been mapped but not yet sent to ZRA
+- **Sync All** — force-resyncs every mapped item (use after changing codes)
+- **Retry** — on individual items that failed to sync
+
+<Info>
+  Syncing registers items with ZRA using your device's TPIN and branch code. An active, initialized device must exist before you can sync.
+</Info>
+
+### Sync statuses
+
+| Status | Meaning |
+| --- | --- |
+| **Not Mapped** | No UNSPSC or VAT code assigned yet |
+| **Pending Sync** | Mapped in DishInk but not yet sent to ZRA |
+| **Synced** | Successfully registered with ZRA |
+| **Sync Failed** | ZRA rejected the registration — see error message |
+
+## Understanding sync failures
+
+Common reasons an item sync fails:
+
+**Invalid UNSPSC code** The code you entered does not exist in ZRA's classification list. Search DishInk's code browser for the closest match.
+
+**Item name too long** ZRA caps item names at 200 characters. Shorten the menu item name.
+
+**No active device** You cannot sync items without an initialized, active device. Set up your device first.
+
+**ZRA server unavailable** Temporary ZRA outage. Click Retry — DishInk will try again automatically.
+
+## Keeping mappings up to date
+
+- When you add a new menu item, DishInk will show it as **Not Mapped**
+- When you change a classification code, the item reverts to **Pending Sync** and must be re-synced
+- Changing a price or item name alone does not require re-sync
+
+<Warning>
+  If you change an item's VAT category after it has been synced (e.g. moving from A to C), you must re-sync the item. ZRA needs to know about the change before it appears on new receipts.
+</Warning>
+
+## Syncing ZRA master data
+
+DishInk can download the full UNSPSC classification list directly from ZRA. This gives you access to thousands of codes beyond DishInk's curated restaurant shortlist.
+
+Go to **ZRA Smart Invoice → ZRA Data Sync → Sync from ZRA**.
+
+This also downloads ZRA's lookup codes for tax categories, units of measure, and payment types — required for UAT approval.
+
+## Related pages
+
+- [ZRA Integration](/smart-invoice/zra-integration)
+- [Fiscalisation Queue](/smart-invoice/fiscalisation-queue)
+- [Receipt Format](/smart-invoice/receipt-format)

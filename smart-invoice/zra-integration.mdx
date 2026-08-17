@@ -1,13 +1,141 @@
 ---
 title: "ZRA Integration"
 sidebarTitle: "ZRA Integration"
-description: "Connect DishInk to the ZRA Smart Invoice API for real-time fiscal submission."
+description: "How to register your device, configure your TPIN, and complete the one-time ZRA handshake."
 ---
 
-Coming soon
+## Before you start
+
+You need three things from ZRA before you can set up Smart Invoice in DishInk:
+
+<Steps>
+  <Step title="TPIN">
+    Your 10-digit Taxpayer Identification Number. This is your business's unique identifier with ZRA. You receive it when you register for tax with ZRA.
+  </Step>
+  <Step title="Device serial number">
+    After applying for Smart Invoice on the ZRA Taxpayer Portal, ZRA approves your application and issues a device serial number. This is a unique identifier for your physical POS terminal.
+  </Step>
+  <Step title="Branch code (bhfId)">
+    A 3-digit branch identifier. For a single-location business this is `000`. For multi-branch businesses, ZRA assigns a different code per branch (e.g. `001`, `002`).
+  </Step>
+</Steps>
+
+<Warning>
+  Do not begin setup in DishInk until ZRA has approved your Smart Invoice application. Attempting to initialize before approval will result in an error from ZRA's servers.
+</Warning>
+
+## Adding a device
+
+1. Go to **ZRA Smart Invoice** in the main navigation
+2. Click **Add Device** (top right)
+3. Fill in the form:
+
+| Field | What to enter |
+| --- | --- |
+| Device Name | A label you choose — e.g. "Front Counter", "Drive Through" |
+| Environment | Sandbox for testing, Production for real fiscal receipts |
+| TPIN | Your 10-digit ZRA taxpayer number |
+| Branch (bhfId) | 3-digit branch code from ZRA — usually `000` |
+| Device Serial Number | From your ZRA VSDC approval letter |
+
+4. Click **Create & Initialize**
+
+DishInk immediately contacts ZRA to complete the device handshake. ZRA returns a security key, SDC ID, and MRC number that are stored securely — the cashier never sees these.
+
+<Info>
+  The initialization is a one-time process. Once a device shows **Active** status, it signs every subsequent sale automatically using the stored credentials.
+</Info>
+
+## Device statuses
+
+| Status | Meaning |
+| --- | --- |
+| **Awaiting Initialization** | Device row created but ZRA handshake not yet completed |
+| **Active** | Fully initialized — all sales from this terminal are fiscalised |
+| **Suspended** | Temporarily disabled — sales will queue but not fiscalise until reactivated |
+| **Error** | Initialization failed — check the error message and retry |
+
+## Sandbox vs Production
+
+<Tabs>
+  <Tab title="Sandbox">
+    Use sandbox for testing and staff training.
+
+    - Submits to ZRA's UAT (User Acceptance Testing) servers
+    - Receipts are generated but have **no legal weight**
+    - Safe to use for practice sales, receipt printing tests, and training new staff
+    - Clearly labelled on every receipt: receipts show local/test status
+
+    **When to use sandbox:** Before going live, when training new cashiers, when testing receipt printer setup.
+  </Tab>
+  <Tab title="Production">
+    Use production for real business operations.
+
+    - Submits to ZRA's live fiscal servers
+    - Every receipt is a legally valid tax invoice
+    - ZRA records these in your tax account
+    - Cannot be easily reversed — voiding requires manager PIN and same-day
+
+    **When to use production:** When you are ready to go live and have passed your ZRA UAT review.
+
+    <Warning>
+      You will be asked to type **CONFIRM** when adding a production device. This is intentional — production fiscalisation is a legal commitment.
+    </Warning>
+  </Tab>
+</Tabs>
+
+## Registering your branch with ZRA
+
+After a device is initialized, you must register your branch details with ZRA. This is a separate step from device initialization.
+
+1. On the Devices tab, find your active device
+2. Click **Register Branch**
+3. DishInk sends your branch name, address, and contact details to ZRA
+
+<Note>
+  Branch registration is required before ZRA will accept sales submissions. A device can be initialized (Active status) but sales will be rejected until the branch is also registered.
+</Note>
+
+## Multi-terminal setup
+
+For restaurants with multiple POS terminals:
+
+- Each physical terminal needs its own device registration
+- Each device has the same TPIN (it is your business TPIN, not per-terminal)
+- Each device has the same branch code (unless you have multiple branches)
+- Each device has a **different** serial number from ZRA
+
+DishInk automatically routes each terminal's sales through its own device. The cashier at Terminal 1 never touches Terminal 2's registration.
+
+## Retrying a failed initialization
+
+If initialization fails (network error, wrong serial number, ZRA server issue):
+
+1. Check the error message shown on the device card
+2. Fix the underlying issue (e.g. correct the serial number)
+3. Click **Retry Initialization**
+
+If the device status is **Active**, you cannot re-initialize without suspending it first. This is a safety guard — re-initializing an active device would wipe its credentials.
+
+## Suspending a device
+
+Suspending stops a device from fiscalising new sales. Use this when:
+
+- A terminal is taken out of service
+- You need to re-initialize with corrected credentials
+- A device is lost or stolen
+
+Sales attempted on a suspended terminal will queue locally. To resume fiscalisation, you must re-activate the device (contact DishInk support for re-activation from an error state).
+
+## Security
+
+- The security key returned by ZRA during initialization is **never sent to the browser**
+- Only DishInk's server-side functions can read the key
+- The key is used to sign every ZRA submission automatically
+- You cannot see or export the key — this is by design and required by ZRA
 
 ## Related pages
 
-- [Overview](/smart-invoice/overview)
-- [Invoice Generation](/smart-invoice/invoice-generation)
-- [Fiscal Compliance](/smart-invoice/fiscal-compliance)
+- [Item Mapping](/smart-invoice/item-mapping)
+- [Fiscalisation Queue](/smart-invoice/fiscalisation-queue)
+- [FAQ](/smart-invoice/faq)

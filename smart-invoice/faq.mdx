@@ -1,21 +1,157 @@
 ---
-title: "Frequently Asked Questions"
+title: "FAQ"
 sidebarTitle: "FAQ"
-description: "Answers to common Smart Invoice and ZRA integration questions."
+description: "Common questions about ZRA Smart Invoice integration in DishInk."
 ---
 
-Answers to the most common questions about DishInk's Smart Invoice and ZRA integration.
+## General
 
-## Overview
+<AccordionGroup>
+  <Accordion title="Do I need ZRA Smart Invoice?">
+    If your business is VAT-registered with ZRA, yes — Smart Invoice is mandatory. All VAT-registered businesses in Zambia are required to use ZRA Smart Invoice to fiscalise every sale.
 
-This FAQ is written for restaurant owners, accountants, and regulatory reviewers.
+    If you are not VAT-registered, you do not need Smart Invoice. Use DishInk's Turnover Tax mode instead.
+  </Accordion>
 
-<Frame caption="Smart Invoice FAQ">
-  ![FAQ](/images/smart-invoice/faq.png)
-</Frame>
+  <Accordion title="What does 'fiscalise' mean?">
+    Fiscalisation means submitting your sale data to ZRA so they can verify it and issue a unique receipt number and digital signature. A fiscalised receipt is legally valid. An unfiscalised receipt is not a valid tax invoice under Zambian law.
+  </Accordion>
+
+  <Accordion title="Does the cashier need to do anything differently?">
+    No. The cashier takes payment exactly as before. DishInk handles the ZRA submission automatically in the background. The cashier never needs to interact with ZRA directly.
+  </Accordion>
+
+  <Accordion title="What happens if ZRA is down during a busy service?">
+    DishInk queues the fiscalisation jobs and retries automatically when ZRA comes back online. The POS continues taking payments uninterrupted. Receipts print with a "Pending Sync" marker, and once ZRA is reachable again, all queued jobs submit in sequence.
+  </Accordion>
+
+  <Accordion title="How long does fiscalisation take?">
+    When ZRA is reachable, the submission completes in under 2 seconds — fast enough that it happens before the receipt finishes printing.
+  </Accordion>
+</AccordionGroup>
+
+## Setup
+
+<AccordionGroup>
+  <Accordion title="How do I get my device serial number from ZRA?">
+    1. Log in to the ZRA Smart Invoice Taxpayer Portal
+    2. Apply for Smart Invoice registration under Device Management
+    3. ZRA reviews and approves your application (this can take a few days)
+    4. Once approved, download the VSDC package — the serial number is in your approval letter
+
+    If you are unsure, contact ZRA's Smart Invoice support team directly.
+  </Accordion>
+
+  <Accordion title="Can I use the same TPIN for multiple terminals?">
+    Yes. Your TPIN is your business's identifier — it is the same across all terminals. Each terminal gets a different device serial number from ZRA, but they all operate under the same TPIN.
+  </Accordion>
+
+  <Accordion title="What is the branch code (bhfId)?">
+    The branch code is a 3-digit identifier ZRA uses to distinguish between different locations of the same business. For a single-location restaurant, it is almost always `000`. For multi-branch businesses, ZRA assigns different codes per branch (`001`, `002`, etc.).
+  </Accordion>
+
+  <Accordion title="Do I need separate devices for sandbox and production?">
+    Yes — sandbox and production environments use separate device registrations. Your ZRA approval will specify which environment you are approved for. Start with sandbox for testing, then apply for production approval after passing ZRA's UAT review.
+  </Accordion>
+
+  <Accordion title="How long does device initialization take?">
+    The initialization handshake with ZRA typically completes in 5-15 seconds. If it takes longer or fails, check your internet connection and that the device serial number exactly matches what ZRA issued.
+  </Accordion>
+</AccordionGroup>
+
+## Item mapping
+
+<AccordionGroup>
+  <Accordion title="What happens if I sell an item that is not mapped?">
+    DishInk completes the sale and fiscalises it using a generic description rather than the specific item name. This is not ideal — ZRA prefers specific item codes. Map your items before going live to ensure accurate fiscal records.
+  </Accordion>
+
+  <Accordion title="Which UNSPSC code should I use for a burger?">
+    Use `50193200` — Prepared meals / burgers. For most prepared food items, the `5019xxxx` range applies. Use DishInk's search to find the closest match, and when in doubt, `50192100` (Prepared meals — main course) is an acceptable fallback for most restaurant dishes.
+  </Accordion>
+
+  <Accordion title="Which VAT category should I use?">
+    For almost all restaurant items, use **A — Standard VAT (16%)**. Exempt (D) applies only to basic unprepared foodstuffs sold as-is (not applicable to most restaurant prepared food). When in doubt, use A and consult your accountant.
+  </Accordion>
+
+  <Accordion title="Do I need to re-sync items after changing the menu?">
+    Yes, for any new items added. Existing items with unchanged codes do not need re-syncing. If you change a classification code on an existing item, you must re-sync that item.
+  </Accordion>
+</AccordionGroup>
+
+## Receipts
+
+<AccordionGroup>
+  <Accordion title="A receipt printed without a ZRA receipt number. What do I do?">
+    1. Go to **ZRA Smart Invoice → Fiscalisation Queue**
+    2. Find the job for that sale (look for FAILED or DEAD status)
+    3. Check the error message
+    4. Click **Retry Now** if appropriate
+    5. Once the job succeeds, reprint the receipt — it will now include the ZRA receipt number and QR code
+  </Accordion>
+
+  <Accordion title="Can a customer demand a receipt with the ZRA number on it?">
+    Yes — they are legally entitled to a valid tax invoice. If the fiscal submission failed, retry the job and reprint. Do not give a customer a receipt marked "Pending Sync" as their final copy unless the fiscal details are subsequently provided.
+  </Accordion>
+
+  <Accordion title="What is the QR code on the receipt?">
+    The QR code encodes your TPIN, branch code, ZRA receipt number, device ID, fiscal signature, and timestamp. ZRA inspectors scan it to verify the receipt is genuine. A ZRA inspector's mobile app will confirm whether the receipt is valid or has been tampered with.
+  </Accordion>
+
+  <Accordion title="A ZRA inspector says my receipt is invalid. What do I do?">
+    1. Check the Fiscalisation Queue for that transaction — confirm it shows **Success**
+    2. If it does, ask the inspector to retry the QR code scan (connectivity issues on their end)
+    3. If the job shows **Failed** or **Dead**, the receipt was genuinely not fiscalised — retry and reprint
+    4. Contact DishInk support with the transaction ID and error details
+  </Accordion>
+</AccordionGroup>
+
+## Purchases and VAT
+
+<AccordionGroup>
+  <Accordion title="What is input VAT and why does it matter?">
+    Input VAT is the VAT you paid to your suppliers when you bought goods. If you are VAT-registered, you can deduct your input VAT from the VAT you owe ZRA. For example: if you paid K160 VAT on ingredients and collected K800 VAT from customers, you only owe ZRA K640.
+
+    To claim input VAT, you must acknowledge the supplier invoices in ZRA Smart Invoice.
+  </Accordion>
+
+  <Accordion title="A supplier's invoice appeared in my purchases. Do I have to approve it?">
+    You should approve it if you genuinely received the goods and the invoice is correct. If you did not receive the goods, or the invoice is wrong, reject it with a reason. Leaving it as Pending indefinitely may cause issues during ZRA audits.
+  </Accordion>
+
+  <Accordion title="My supplier is not on ZRA Smart Invoice. Can I still claim VAT?">
+    No. Input VAT can only be claimed from ZRA-registered suppliers. If your supplier is not on Smart Invoice, they are not collecting VAT on ZRA's behalf, so there is nothing to reclaim. Use the Manual Purchase entry to keep a record for your own accounting.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Device initialization keeps failing">
+    Check each of these in order:
+
+    1. Is the device serial number exactly as shown in your ZRA approval letter? (No spaces, no extra characters)
+    2. Is your TPIN exactly 10 digits?
+    3. Has ZRA approved your Smart Invoice application? (Pending applications cannot initialize)
+    4. Are you using the correct environment — sandbox vs production?
+    5. Is your internet connection working?
+
+    If all of the above are correct and initialization still fails, contact DishInk support with the exact error message shown.
+  </Accordion>
+
+  <Accordion title="The fiscalisation queue is growing and jobs keep failing">
+    This usually means ZRA's servers are experiencing downtime. Check ZRA's official channels for service status. Jobs will retry automatically and submit as soon as ZRA is reachable again. No action is required unless jobs reach Dead status.
+  </Accordion>
+
+  <Accordion title="I added a new menu item but it is not appearing in Item Mapping">
+    Item Mapping reads from your primary restaurant menu. If you added the item under a branch location rather than the primary restaurant, it will not appear. All menu items must be created under the primary location.
+  </Accordion>
+</AccordionGroup>
 
 ## Related pages
 
-- [Overview](/smart-invoice/overview)
 - [ZRA Integration](/smart-invoice/zra-integration)
-- [Fiscal Compliance](/smart-invoice/fiscal-compliance)
+- [Item Mapping](/smart-invoice/item-mapping)
+- [Fiscalisation Queue](/smart-invoice/fiscalisation-queue)
+- [Receipt Format](/smart-invoice/receipt-format)
+- [Purchase Management](/smart-invoice/purchase-management)

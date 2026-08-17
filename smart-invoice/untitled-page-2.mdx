@@ -1,0 +1,135 @@
+---
+title: "Purchase Management"
+sidebarTitle: "Purchase Management"
+description: "Acknowledge supplier invoices from ZRA-registered suppliers to claim input VAT credit."
+---
+
+## What is purchase management?
+
+When a ZRA-registered supplier sells goods to your restaurant, that transaction is recorded in ZRA's Smart Invoice system under your TPIN. ZRA requires you to formally acknowledge these purchases — either approving or rejecting them.
+
+Acknowledging purchases serves two purposes:
+
+1. **Input VAT credit** — When you approve a purchase from a VAT-registered supplier, you can claim back the 16% VAT you paid on those goods, reducing your VAT liability
+2. **Audit compliance** — ZRA tracks the flow of goods between registered businesses. Unacknowledged purchases can raise flags during tax audits
+
+<Info>
+  Only purchases from ZRA-registered suppliers appear automatically. If your supplier is not on Smart Invoice (e.g. a local market vendor), you enter the purchase manually.
+</Info>
+
+## The purchases tab
+
+Go to **ZRA Smart Invoice → Purchases**.
+
+From here you can:
+
+- Sync the latest supplier invoices from ZRA
+- Approve purchases you received
+- Reject purchases that are incorrect
+- Manually enter purchases from non-registered suppliers
+- View the full history of all purchases
+
+## Fetching purchases from ZRA
+
+Click **Sync from ZRA** to pull the latest supplier invoices.
+
+DishInk calls ZRA's API using your device credentials and retrieves all purchase invoices issued to your TPIN since the last sync. New purchases appear with **Pending** status.
+
+<Note>
+  You need at least one active, initialized ZRA device before you can sync purchases. The device credentials authenticate the request to ZRA.
+</Note>
+
+## Approving a purchase
+
+When you receive goods from a ZRA-registered supplier and the invoice is correct:
+
+1. Find the purchase in the list (status: **Pending**)
+2. Click the row to expand it
+3. Verify the supplier name, invoice number, and total amount
+4. Click **Approve**
+
+DishInk sends the approval to ZRA. The purchase status changes to **Approved** and ZRA records your input VAT credit.
+
+<Tip>
+  Approve purchases promptly. ZRA may set time limits on how long you have to acknowledge supplier invoices. Check with your accountant for the current rules.
+</Tip>
+
+## Rejecting a purchase
+
+If a supplier invoice is incorrect, duplicated, or you did not receive the goods:
+
+1. Find the purchase in the list
+2. Click the row to expand it
+3. Click **Reject**
+4. Enter a reason (required)
+5. Confirm
+
+The rejection is sent to ZRA with your reason. The supplier will see that you rejected their invoice and can investigate.
+
+<Warning>
+  Only reject a purchase if you genuinely did not receive the goods or the invoice is incorrect. False rejections can create compliance issues with ZRA.
+</Warning>
+
+## Manual purchase entry
+
+For suppliers who are **not registered on ZRA Smart Invoice** (e.g. small local vendors, market suppliers), their invoices will never appear automatically. You can record these manually.
+
+Click **Manual** in the top right of the Purchases tab and fill in:
+
+| Field | What to enter |
+| --- | --- |
+| Supplier Name | The name of the business or person you bought from |
+| Invoice Number | The reference number on their invoice |
+| Total Amount | The full amount you paid including any taxes |
+| VAT Amount | The tax portion (0 if they did not charge VAT) |
+| Invoice Date | The date on their invoice |
+
+<Note>
+  Manual purchases from non-registered suppliers do not generate input VAT credits because those suppliers did not charge you ZRA-compliant VAT. The record is kept for your own audit trail only.
+</Note>
+
+## Purchase statuses
+
+| Status | Meaning |
+| --- | --- |
+| **Pending** | Fetched from ZRA — awaiting your decision |
+| **Approved** | You confirmed receipt of goods — input VAT credit recorded |
+| **Rejected** | You rejected the invoice — no VAT credit |
+
+## Purchase details
+
+Clicking a purchase row shows:
+
+- **Supplier TPIN** — the supplier's ZRA identifier
+- **ZRA Invoice No** — the reference number in ZRA's system
+- **Total amount** — what you owe or paid
+- **VAT amount** — the tax portion you can potentially reclaim
+- **Invoice date** — when the supplier issued the invoice
+- **Item list** — what goods were included (if provided by the supplier)
+
+## Linking purchases to inventory
+
+After approving a purchase, you may want to update your stock levels to reflect the received goods.
+
+Currently this is a separate step:
+
+1. Go to **Inventory → Stock tab**
+2. Find the relevant ingredient
+3. Click **Restock**
+4. Enter the quantity received and unit cost
+
+<Info>
+  DishInk is working on automatic inventory linking — when you approve a ZRA purchase, you will be able to update stock levels in the same step. This will be available in a future update.
+</Info>
+
+## Who can manage purchases
+
+Only **owners** and **managers** can approve, reject, or manually enter purchases. Regular staff (waiters, cashiers) can view purchases but cannot take action.
+
+This matches ZRA's requirement that compliance actions are performed by authorised personnel.
+
+## Related pages
+
+- [ZRA Integration](/smart-invoice/zra-integration)
+- [Fiscalisation Queue](/smart-invoice/fiscalisation-queue)
+- [FAQ](/smart-invoice/faq)
