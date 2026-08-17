@@ -1,48 +1,287 @@
 ---
 title: "Invoice Generation"
 sidebarTitle: "Invoice Generation"
-description: "Automatic Smart Invoice generation for sales, refunds, batches, and proformas."
+description: "How DishInk generates ZRA-compliant invoices for sales, refunds, split bills, and corporate customers."
 ---
 
-Every completed sale generates a Smart Invoice automatically. Refunds generate corrective invoices. Batches consolidate multiple sales for a reporting period.
+## How invoices are generated
 
-## Overview
+DishInk generates ZRA-compliant invoices automatically at the moment of payment. There is no separate step, no manual trigger, and no batch upload at end of day. When a cashier completes a payment, the invoice is created, submitted to ZRA, and printed — all within a few seconds.
 
-Invoice types:
+This page explains the different invoice types DishInk produces and when each one is used.
 
-- **Sales invoice** — issued on every completed sale
-- **Credit note** — issued on every refund
-- **Batch invoice** — consolidates a period's sales for reporting
-- **Proforma invoice** — issued before payment for corporate customers
+---
 
-## Generate invoices
+## Invoice types
 
-<Steps>
-</Steps>
+<CardGroup cols={2}>
+  <Card title="Sales Invoice" icon="receipt">
+    Issued on every completed sale. The standard tax invoice that customers receive.
+  </Card>
 
-<Frame caption="Invoice generation">
-  ![Invoice](/images/smart-invoice/invoice-generation.png)
-</Frame>
+  <Card title="Credit Note" icon="arrow-rotate-left">
+    Issued on every refund. References the original invoice number and is submitted to ZRA as a corrective document.
+  </Card>
+
+  <Card title="Split Bill Invoice" icon="scissors">
+    Each payer in a split bill receives their own portion invoice. The shared ZRA submission references the full table amount.
+  </Card>
+
+  <Card title="Corporate Invoice" icon="building">
+    A standard sales invoice with the customer's TPIN included. Required for B2B sales to VAT-registered businesses.
+  </Card>
+</CardGroup>
+
+---
+
+## Sales invoice
+
+A sales invoice is generated automatically every time a payment is completed at the POS.
+
+### What triggers it
+
+- Cashier taps **Charge** or **Process Payment**
+- Payment is confirmed (cash, mobile money, card, or complimentary)
+- DishInk creates the transaction record and submits to ZRA
+
+### What it contains
+
+Every sales invoice contains the fields required by ZRA:
+
+- Business name, address, and TPIN
+- **TAX INVOICE** header (required by ZRA)
+- Date and time (server timestamp)
+- CIS Invoice Number (consecutive, server-generated)
+- Line items with description, quantity, and unit price
+- Tax summary by VAT category
+- Total including tax
+- Payment method
+- ZRA receipt number (from ZRA's fiscal response)
+- Digital signature (from ZRA's VSDC)
+- Verified QR code
+
+See [Receipt Format](/smart-invoice/receipt-format) for a full breakdown of every field.
+
+### The CIS Invoice Number
+
+The CIS Invoice Number (`CIS-000001`, `CIS-000002`, etc.) is the consecutive invoice reference ZRA requires. It is:
+
+- Generated server-side — cashiers cannot influence it
+- Sequential with no gaps (ZRA requires this)
+- Unique per restaurant
+- Permanently stored and cannot be reused or modified
 
 <Note>
-  Every invoice includes the verified ZRA QR code, invoice reference, and audit hash.
+  For multi-branch restaurants, each branch maintains its own CIS Invoice Number sequence. The sequence is scoped to the restaurant location, not the entire group.
 </Note>
 
-## Tips & best practices
+---
+
+## Credit note (refund invoice)
+
+When a refund is processed, DishInk automatically generates a credit note — a corrective invoice that ZRA uses to reverse the original sale in your tax record.
+
+### What triggers it
+
+A manager or owner processes a refund through the POS. A manager PIN is required to authorise refunds.
+
+### What it contains
+
+- All standard invoice fields
+- **CREDIT NOTE** header instead of TAX INVOICE
+- The original ZRA receipt number (so ZRA can link the credit to the original sale)
+- A ZRA reason code explaining why the credit was issued
+- The refund amount (shown as a negative value)
+- A new, separate CIS Invoice Number
+
+### ZRA reason codes
+
+When processing a refund, DishInk records a reason code in the ZRA submission. The standard codes are:
+
+| Code | Reason |
+| --- | --- |
+| `01` | Goods returned |
+| `02` | Goods damaged |
+| `03` | Goods lost |
+| `04` | Price correction |
+| `05` | Other |
+
+The cashier or manager enters a free-text reason when processing the refund. DishInk maps this to the appropriate ZRA code.
+
+### Same-day voiding vs refunds
+
+<Tabs>
+  <Tab title="Void (same-day)">
+    A void cancels a transaction from the same business day. It requires a manager PIN and a reason.
+
+    - Only available on the same calendar day as the original transaction (Zambia timezone)
+    - Does not generate a ZRA credit note submission — the transaction is marked voided locally
+    - The CIS Invoice Number remains in the sequence (gaps are acceptable for voids)
+    - Use voids for same-day errors: wrong amount, wrong payment method, accidental duplicate
+
+    <Warning>
+      Voids are not the same as refunds. A void cancels a transaction entirely. A refund issues money back to a customer for a transaction that was originally correct.
+    </Warning>
+  </Tab>
+  <Tab title="Refund (any day)">
+    A refund reverses a completed transaction and issues money back to the customer. Available for any past completed transaction.
+
+    - Generates a ZRA credit note submission referencing the original
+    - Creates a new transaction record with negative amounts
+    - Issues a new CIS Invoice Number for the credit note
+    - Use refunds for: goods returned, customer disputes, overcharging discovered after the same day
+
+    Partial refunds are supported — you can refund a portion of the original amount. Multiple partial refunds on the same transaction are allowed until the full original amount has been refunded.
+  </Tab>
+</Tabs>
+
+---
+
+## Split bill invoices
+
+When a table splits their bill, each payer receives their own invoice showing their portion of the total.
+
+### How it works
+
+1. The bill is split (equally, by items, or custom amounts)
+2. As each payer pays their portion, a transaction record is created
+3. On the **first** portion payment, DishInk submits the **full table total** to ZRA and receives a ZRA receipt number
+4. The first payer's receipt carries the full ZRA fiscal details
+5. Subsequent payers' receipts reference the shared ZRA submission
+
+### What each receipt shows
+
+**First payer:** SPLIT PORTION: Guest 1 · Payer 1 of 3 CIS INVOICE NO: CIS-000042 \[full fiscal footer with ZRA receipt number and QR code\]
+
+text
+
+**Subsequent payers:** SPLIT PORTION: Guest 2 · Payer 2 of 3 SHARED CIS INVOICE NO: CIS-000042 \[reference to shared fiscal submission\]
+
+text
+
+<Note>
+  ZRA requires that the total table amount is fiscalised once, not once per payer. Fiscalising each portion separately would double or triple-count the revenue. DishInk handles this correctly by making a single ZRA submission for the table total.
+</Note>
+
+---
+
+## Corporate invoice (B2B)
+
+When selling to another VAT-registered business, the customer's TPIN must appear on the invoice. This allows the customer to claim input VAT on their purchase.
+
+### How to issue a corporate invoice
+
+At checkout, the cashier enters the customer's TPIN in the **Customer TPIN** field before completing payment. DishInk includes the TPIN in:
+
+- The ZRA submission (`custTpin` field)
+- The printed receipt (`CUSTOMER TPIN: XXXXXXXXXX`)
+- The transaction record (for your audit trail)
+
+There is no separate invoice type — a corporate invoice is a standard sales invoice with the customer TPIN populated.
 
 <Tip>
-  Generate batch invoices at the same cadence as your VAT return submissions — monthly for most SMEs.
+  For regular corporate customers, consider keeping a list of their TPINs so cashiers can enter them quickly without asking each time.
 </Tip>
 
-## Common mistakes
+---
+
+## Invoice numbering
+
+### CIS Invoice Number sequence
+
+DishInk maintains a server-side sequence for CIS Invoice Numbers. The sequence:
+
+- Starts at 1 when Smart Invoice is first activated
+- Increments by 1 for every invoice (sales and credit notes)
+- Never resets (it is permanent, not per-day or per-month)
+- Cannot be edited by any user
+
+### What happens if a transaction fails
+
+If a transaction fails to complete after a CIS Invoice Number has been reserved, that number is used for the next successful transaction. This can occasionally create gaps in the sequence (e.g. `CIS-000041`, `CIS-000043` with no `CIS-000042`). This is acceptable to ZRA for failed/voided transactions.
+
+### Invoice number format
+
+CIS-000001 CIS-000042 CIS-123456
+
+text
+
+Zero-padded to 6 digits. The prefix `CIS` stands for Computerised Invoice System — the term ZRA uses for ERP/POS-generated invoice numbers.
+
+---
+
+## Reprinting invoices
+
+Any past invoice can be reprinted with full fiscal details from DishInk's transaction history.
+
+1. Go to **POS → Transactions**
+2. Find the transaction using date, amount, or receipt number
+3. Tap the receipt icon or **Reprint**
+
+The reprinted copy carries the same CIS Invoice Number, ZRA receipt number, signature, and QR code as the original. It is a legally identical copy of the original invoice.
+
+<Note>
+  Reprinting is only available for transactions where fiscalisation succeeded. Pending or failed transactions can be reprinted once their fiscalisation job completes.
+</Note>
+
+---
+
+## What you cannot do
 
 <Warning>
-  Do not attempt to "delete" an invoice. Corrective credit notes are the only ZRA-approved way to reverse a Smart Invoice.
+  **You cannot delete an invoice.** ZRA does not permit invoice deletion. If an invoice was issued in error, the correct procedure is to process a refund which generates a ZRA-approved credit note. DishInk blocks invoice deletion at the database level.
 </Warning>
+
+<Warning>
+  **You cannot edit an invoice after it is issued.** If an invoice has incorrect amounts, void it (same day) or refund it (any day). Do not attempt to modify the underlying transaction record.
+</Warning>
+
+<Warning>
+  **You cannot reuse a CIS Invoice Number.** The sequence is permanent and enforced server-side. If you believe there is a numbering issue, contact DishInk support — do not attempt to fix it manually.
+</Warning>
+
+---
+
+## Tips and best practices
+
+<Tip>
+  Before your first busy service, complete a small test transaction and confirm the receipt prints with a ZRA receipt number and a scannable QR code. This confirms the entire fiscalisation chain is working end-to-end.
+</Tip>
+
+<Tip>
+  For corporate customers who request invoices after the fact, you can reprint any past transaction from the Transactions history. The reprinted copy is a legally valid duplicate of the original.
+</Tip>
+
+<Tip>
+  Reconcile your CIS Invoice Number sequence against your ZRA Smart Invoice portal records monthly. The counts should match. A discrepancy may indicate unsubmitted (Dead) jobs in the Fiscalisation Queue.
+</Tip>
+
+---
 
 ## Related pages
 
-- [Overview](/smart-invoice/overview)
-- [Fiscal Compliance](/smart-invoice/fiscal-compliance)
-- [Batch Cash-Out](/pos/batch-cash-out)
-- [Refunds](/pos/refunds)
+<CardGroup cols={2}>
+  <Card title="Receipt Format" icon="receipt" href="/smart-invoice/receipt-format">
+    Every field on a ZRA-compliant invoice explained.
+  </Card>
+
+  <Card title="Fiscal Compliance" icon="shield-check" href="/smart-invoice/fiscal-compliance">
+    Audit trails, record retention, and ZRA inspections.
+  </Card>
+
+  <Card title="Fiscalisation Queue" icon="list" href="/smart-invoice/fiscalisation-queue">
+    Monitoring ZRA submission status and resolving failures.
+  </Card>
+
+  <Card title="ZRA Integration" icon="plug" href="/smart-invoice/zra-integration">
+    Device setup and TPIN configuration.
+  </Card>
+
+  <Card title="Refunds" icon="arrow-rotate-left" href="/pos/refunds">
+    How to process refunds and credit notes at the POS.
+  </Card>
+
+  <Card title="FAQ" icon="circle-question" href="/smart-invoice/faq">
+    Common questions about invoices and compliance.
+  </Card>
+</CardGroup>
