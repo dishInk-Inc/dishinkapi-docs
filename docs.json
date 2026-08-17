@@ -221,7 +221,8 @@
               "smart-invoice/fiscal-compliance",
               "smart-invoice/faq",
               "Receipt-Format",
-              "Fiscalisation-Queue"
+              "Fiscalisation-Queue",
+              "Item-Mapping"
             ]
           },
           {
