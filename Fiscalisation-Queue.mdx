@@ -1,0 +1,255 @@
+---
+title: "Fiscalisation Queue"
+sidebarTitle: "Fiscalisation Queue"
+description: "Monitor real-time ZRA submission status, understand offline queuing, and retry failed jobs."
+---
+
+## What is the fiscalisation queue?
+
+Every time a sale is completed at the POS, DishInk creates a fiscalisation job — a record that needs to be submitted to ZRA. The Fiscalisation Queue tab shows the live status of all these jobs.
+
+The queue updates in real time. You can watch jobs flip from **Pending** to **Success** as DishInk processes them in the background. No page refresh needed.
+
+<Frame caption="The Fiscalisation Queue tab showing live job status">
+  ![Fiscalisation Queue](/images/smart-invoice/fiscalisation-queue.png)
+</Frame>
+
+## Job statuses
+
+| Status | Meaning | Action needed |
+| --- | --- | --- |
+| **Pending** | Queued and waiting to be sent to ZRA | None — processes automatically |
+| **Processing** | Currently being submitted to ZRA | None — wait for result |
+| **Success** | Accepted by ZRA, receipt number issued | None |
+| **Failed** | Rejected or timed out — retrying automatically | None unless it reaches Dead |
+| **Dead** | Exhausted all retries — will not retry again | Manual retry or investigate |
+
+## How the queue works
+
+When a cashier completes a payment, DishInk immediately attempts to fiscalise the sale with ZRA. The outcome depends on whether ZRA is reachable at that moment.
+
+<Tabs>
+  <Tab title="ZRA is online">
+    ```text
+    Sale completed
+          │
+          ▼
+    DishInk submits to ZRA (< 2 seconds)
+          │
+          ▼
+    ZRA returns receipt number + signature
+          │
+          ▼
+    Receipt prints with QR code
+    Job status: SUCCESS
+    ```
+
+    The entire process completes before the receipt finishes printing. The cashier and customer see no delay.
+  </Tab>
+  <Tab title="ZRA is offline">
+    ```text
+    Sale completed
+          │
+          ▼
+    DishInk attempts ZRA submission — fails
+          │
+          ▼
+    Job queued in smart_invoice_jobs
+    Receipt prints with "PENDING ZRA SYNC" header
+          │
+          ▼
+    Background worker retries automatically
+    every few minutes with exponential backoff
+          │
+          ▼
+    When ZRA comes back online:
+    Job submits → receipt number issued
+    Job status: SUCCESS
+    ```
+
+    The sale completes normally for the customer. The POS never blocks on ZRA availability.
+  </Tab>
+</Tabs>
+
+## Retry behaviour
+
+Failed jobs retry automatically. The wait time between retries increases exponentially so DishInk does not hammer ZRA during an outage:
+
+| Retry number | Approximate wait |
+| --- | --- |
+| 1st | 1 minute |
+| 2nd | 2 minutes |
+| 3rd | 4 minutes |
+| 4th | 8 minutes |
+| 5th | 16 minutes |
+| 6th | 32 minutes |
+| 7th | 1 hour |
+| 8th–10th | 1 hour (capped) |
+| After 10th | Marked **Dead** — no more retries |
+
+A random ±20% variation is added to each wait time. This prevents all restaurants from retrying ZRA simultaneously during a widespread outage.
+
+## Summary tiles
+
+The top of the Fiscalisation Queue tab shows four counters that update in real time:
+
+<CardGroup cols={4}>
+  <Card title="Pending" icon="clock">
+    Jobs waiting to be sent to ZRA. A non-zero count during normal operations usually means ZRA is briefly slow or unreachable.
+  </Card>
+
+  <Card title="Processing" icon="spinner">
+    Jobs actively being submitted right now. This typically shows 0 or 1.
+  </Card>
+
+  <Card title="Failed" icon="triangle-exclamation">
+    Jobs that failed and are waiting for their next automatic retry. Will clear on its own unless the underlying issue is permanent.
+  </Card>
+
+  <Card title="Success Today" icon="check">
+    Jobs successfully fiscalised today. This is your count of legally compliant receipts for the day.
+  </Card>
+</CardGroup>
+
+## Backlog warning
+
+If the oldest pending job is more than 10 minutes old, DishInk displays a **Backlog Building** warning banner showing how old the oldest job is.
+
+**What to check when you see this:**
+
+<Steps>
+  <Step title="Check your internet connection">
+    Confirm the device running DishInk has a working internet connection. Try opening a website in the browser.
+  </Step>
+  <Step title="Check ZRA service status">
+    ZRA's Smart Invoice service occasionally experiences downtime. Check ZRA's official channels or contact their support team to confirm whether there is a known outage.
+  </Step>
+  <Step title="Check device credentials">
+    Go to the **Devices** tab. If any device shows an **Error** status or has a red error message, the credentials may have been suspended by ZRA. This will cause all jobs for that device to fail.
+  </Step>
+  <Step title="Wait and monitor">
+    If ZRA is experiencing downtime, all you can do is wait. The backlog will clear automatically once ZRA is reachable. No data is lost.
+  </Step>
+</Steps>
+
+## Manually retrying a job
+
+For jobs in **Failed** or **Dead** status that you want to retry immediately:
+
+1. Click the job row to expand it
+2. Read the error message carefully
+3. Fix the underlying issue if needed (e.g. check device credentials)
+4. Click **Retry Now**
+
+The job resets to **Pending** status with a `next_retry_at` of now, so the worker picks it up on its next cycle.
+
+<Note>
+  Only owners and managers can manually retry jobs. Regular staff can view the queue but cannot take action.
+</Note>
+
+## Understanding error messages
+
+### Network errors
+
+network: fetch failed network: VSDC HTTP 503
+
+text
+
+ZRA's servers were unreachable or returned a server error. These are temporary. The job will retry automatically.
+
+### ZRA rejection errors
+
+ZRA 894: Duplicate invoice number ZRA 881: Invalid item classification ZRA 882: TPIN mismatch ZRA 921: Device not registered or suspended
+
+text
+
+| Code | Meaning | What to do |
+| --- | --- | --- |
+| `894` | This invoice was already fiscalised | Safe to ignore — it succeeded previously |
+| `881` | The item's UNSPSC code is invalid | Re-map the item in Item Mapping and re-sync |
+| `882` | The TPIN in the request does not match ZRA's records | Check the device TPIN in the Devices tab |
+| `921` | ZRA has suspended or de-registered this device | Contact ZRA Smart Invoice support |
+
+### Configuration errors
+
+not\_configured: VSDC endpoint not configured endpoint\_not\_configured: no endpoint set
+
+text
+
+The VSDC container for this restaurant has not been set up yet. Contact DishInk support.
+
+## Job details panel
+
+Clicking any job row expands a detail panel showing:
+
+<ResponseField name="Job ID" type="string">
+  Internal reference. Provide this to DishInk support when reporting an issue.
+</ResponseField>
+
+<ResponseField name="Device" type="string">
+  The first 8 characters of the device UUID. Identifies which POS terminal created this job.
+</ResponseField>
+
+<ResponseField name="Transaction" type="string">
+  The first 8 characters of the POS transaction UUID. Links this job to the sale record.
+</ResponseField>
+
+<ResponseField name="Created" type="timestamp">
+  When the job was created — matches the time of the sale.
+</ResponseField>
+
+<ResponseField name="Last attempt" type="timestamp">
+  When DishInk last tried to submit this job to ZRA.
+</ResponseField>
+
+<ResponseField name="Next retry" type="timestamp">
+  When the next automatic retry will happen. Only shown for Failed jobs.
+</ResponseField>
+
+<ResponseField name="Error code" type="string">
+  The ZRA result code or internal error kind.
+</ResponseField>
+
+<ResponseField name="Error message" type="string">
+  The full error message from ZRA or from the network layer.
+</ResponseField>
+
+## Offline mode and legal compliance
+
+<Warning>
+  ZRA's own guidance states that invoices should not be issued when the VSDC is offline for an extended period. Receipts showing **PENDING ZRA SYNC** are not yet legally complete tax invoices.
+</Warning>
+
+In practice DishInk handles brief outages gracefully — a few minutes of ZRA unavailability is common and the queue handles it transparently. For extended outages (hours), consider:
+
+- Informing customers their receipt will be updated once connectivity is restored
+- Reprinting receipts after the jobs succeed — the reprinted copy will carry the full fiscal details
+- Keeping a note of which transactions are in the queue so you can follow up
+
+Once the queue clears and jobs succeed, the full fiscal details (receipt number, signature, QR code) are stored against every transaction in DishInk and can be reprinted at any time.
+
+## Realtime updates
+
+The Fiscalisation Queue updates automatically without page refresh. DishInk uses Supabase Realtime to listen for changes to the job queue — when the background worker processes a job, the status change appears on screen within a second or two.
+
+You do not need to click Refresh to see the current state.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="ZRA Integration" icon="plug" href="/smart-invoice/zra-integration">
+    Device setup and initialization.
+  </Card>
+
+  <Card title="Receipt Format" icon="receipt" href="/smart-invoice/receipt-format">
+    What appears on a ZRA-compliant tax invoice.
+  </Card>
+
+  <Card title="FAQ" icon="circle-question" href="/smart-invoice/faq">
+    Common questions and troubleshooting.
+  </Card>
+
+  <Card title="Overview" icon="house" href="/smart-invoice/overview">
+    Back to Smart Invoice overview.
+  </Card>
+</CardGroup>

@@ -1,0 +1,330 @@
+---
+title: "Receipt Format"
+sidebarTitle: "Receipt Format"
+description: "What appears on a ZRA-compliant tax invoice and why each field is legally required."
+---
+
+## ZRA tax invoice requirements
+
+ZRA specifies the minimum fields that must appear on every tax invoice issued by a VAT-registered business. DishInk prints all of them automatically — no configuration required beyond the initial device setup.
+
+This page explains what each field means, where it comes from, and why ZRA requires it.
+
+<Frame caption="A complete ZRA-compliant DishInk tax invoice">
+  ![ZRA Tax Invoice](/images/smart-invoice/receipt-format.png)
+</Frame>
+
+## Complete receipt structure
+
+Here is a full example of a ZRA-compliant DishInk receipt with annotations: ═══════════════════════════════════════════ MAMA MIA RESTAURANT ← Business name (required) Lusaka, Zambia ← Business address (required) TPIN: 1234567890 ← Business TPIN (required) ═══════════════════════════════════════════ TAX INVOICE ← Must say TAX INVOICE (required) ─────────────────────────────────────────── DATE: 15/01/2025 14:32:00 ← Date and time (required) RECEIPT NO: TXN-20250115-1234 ← Internal reference number CIS INVOICE NO: CIS-000042 ← Consecutive ZRA sequence (required) ─────────────────────────────────────────── 2x Grilled Chicken ZMW 120.00 ← Item description (required) 1x Coca Cola ZMW 25.00 ← Quantity and unit price (required) 1x Chips ZMW 35.00 ← Line total (required) ─────────────────────────────────────────── SUBTOTAL (EXCL TAX): ZMW 155.17 TAX SUMMARY ← Tax breakdown (required) A — Standard VAT (16%): ZMW 24.83 TOTAL TAX: ZMW 24.83 TOTAL: ZMW 180.00 ← Total including tax (required) ─────────────────────────────────────────── TENDERED: ZMW 200.00 CHANGE: ZMW 20.00 PAYMENT METHOD: CASH ─────────────────────────────────────────── INVOICE MODE: ZRA\_LIVE VSDC ID: VSDC0001234 ← ZRA device ID (required) FISCAL ID: ZRA-00000042 ← ZRA receipt number (required) SIGNATURE: ABC123XYZ... ← Digital signature (required)
+
+text
+
+\[■■■■■■■■■■■■■■■\] \[■              ■\] \[■  ■■■■■■■■■  ■\]               ← QR code (required) \[■              ■\] \[■■■■■■■■■■■■■■■\]
+
+SCAN TO VERIFY — ZRA FISCAL RECEIPT ═══════════════════════════════════════════ Thank you for dining with us! Powered by dishink.com ═══════════════════════════════════════════
+
+text
+
+---
+
+## Section by section
+
+### Business header
+
+MAMA MIA RESTAURANT Lusaka, Zambia TPIN: 1234567890
+
+text
+
+<ResponseField name="Business name" type="Required by ZRA spec item 19(ii)">
+  Your restaurant name as configured in DishInk Settings. Appears at the top in bold.
+</ResponseField>
+
+<ResponseField name="Business address" type="Required by ZRA spec item 19(ii)">
+  Your location or address from DishInk Settings.
+</ResponseField>
+
+<ResponseField name="TPIN" type="Required by ZRA spec item 19(ii)">
+  Your 10-digit Taxpayer Identification Number. Comes from the device registration — specifically `device.tpin` stored when the device was initialized with ZRA. This is the TPIN that was actually used to submit the receipt to ZRA, which may differ from what is in your restaurant profile if you have multiple locations with different TPINs.
+</ResponseField>
+
+---
+
+### Receipt header
+
+TAX INVOICE
+
+text
+
+<ResponseField name="TAX INVOICE" type="Required by ZRA spec item 19(i)">
+  ZRA requires these exact words to appear prominently on every VAT invoice. DishInk uses bold, centered text. Non-VAT receipts show "SALES RECEIPT" instead.
+
+  **Variants:**
+
+  - `TAX INVOICE` — standard fiscalised receipt
+  - `TAX INVOICE (PENDING ZRA SYNC)` — fiscalised offline, awaiting ZRA submission
+  - `LOCAL INTERNAL STORE RECEIPT` — sandbox or no active device
+  - `SALES RECEIPT` — non-VAT (turnover tax or exempt) businesses
+</ResponseField>
+
+---
+
+### Transaction details
+
+DATE: 15/01/2025 14:32:00 RECEIPT NO: TXN-20250115-1234 CIS INVOICE NO: CIS-000042 CUSTOMER TPIN: 4567890123 (B2B only)
+
+text
+
+<ResponseField name="Date and time" type="Required by ZRA spec item 19(v)">
+  The server timestamp at the moment of payment. Uses the server clock — not the device clock — to prevent manipulation.
+</ResponseField>
+
+<ResponseField name="Receipt number" type="Internal reference">
+  DishInk's internal transaction reference. Format: `TXN-YYYYMMDD-XXXXXX`. Useful for locating a specific transaction in DishInk's history.
+</ResponseField>
+
+<ResponseField name="CIS Invoice No" type="Required by ZRA spec item 19(iv) and 17*">
+  A consecutive, unmodifiable sequence number assigned server-side. ZRA requires invoice numbers to be sequential and gap-free. Format: `CIS-000001`, `CIS-000002`, etc. Cashiers cannot influence or skip this number.
+</ResponseField>
+
+<ResponseField name="Customer TPIN" type="Required for B2B — ZRA spec item 19(iii)">
+  The customer's TPIN. Only appears when the cashier enters a customer TPIN at checkout. Required when selling to another VAT-registered business. For regular dine-in customers (B2C), this field is omitted.
+</ResponseField>
+
+---
+
+### Line items
+
+2x Grilled Chicken ZMW 120.00 1x Coca Cola ZMW 25.00 1x Chips ZMW 35.00
+
+text
+
+<ResponseField name="Item description" type="Required by ZRA spec item 19(vi)">
+  The menu item name. ZRA requires a description of the goods or services sold. DishInk uses the menu item name as configured in Menu Management.
+</ResponseField>
+
+<ResponseField name="Quantity" type="Required by ZRA spec item 19(vii)">
+  How many units were sold.
+</ResponseField>
+
+<ResponseField name="Unit price" type="Required by ZRA spec item 19(vii)">
+  The price per unit including VAT (VAT-inclusive pricing).
+</ResponseField>
+
+<ResponseField name="Line total" type="Required by ZRA spec item 19(vii)">
+  Quantity × unit price.
+</ResponseField>
+
+<Note>
+  On 58mm paper, long item names wrap across lines rather than truncating. DishInk automatically adjusts the layout based on your configured paper width.
+</Note>
+
+---
+
+### Tax summary
+
+SUBTOTAL (EXCL TAX): ZMW 155.17 TAX SUMMARY A — Standard VAT (16%): ZMW 24.83 TOTAL TAX: ZMW 24.83 TOTAL: ZMW 180.00
+
+text
+
+<ResponseField name="Subtotal (excl tax)" type="Required by ZRA spec item 19(viii)">
+  The taxable amount before VAT is added. For VAT-inclusive pricing (standard in Zambia), this is derived by extracting VAT from the gross total.
+</ResponseField>
+
+<ResponseField name="Tax Summary" type="Required by ZRA spec item 19(viii)">
+  A breakdown of tax by VAT category. When all items share the same category, a single line appears. When items span multiple categories, each appears separately: TAX SUMMARY A — Standard VAT (16%): ZMW 24.83 D — Exempt: ZMW 0.00 TOTAL TAX: ZMW 24.83
+
+  text
+
+  **VAT categories:**
+
+  | Code | Label | Rate |
+  | --- | --- | --- |
+  | A | Standard VAT | 16% |
+  | B | Minimum-rate VAT | Reduced |
+  | C | Zero-rated | 0% |
+  | D | Exempt | 0% |
+  | E | Tourism Levy | Special |
+</ResponseField>
+
+<ResponseField name="Total" type="Required by ZRA spec item 19(ix)">
+  The final amount including all taxes. This is what the customer pays.
+</ResponseField>
+
+---
+
+### Tips
+
+When a tip is included: TOTAL: ZMW 180.00 TIP (STAFF GRATUITY): ZMW 20.00 GRAND TOTAL: ZMW 200.00
+
+text
+
+Tips are displayed separately from the fiscal total. The fiscalised amount with ZRA is the pre-tip total. Tips are tracked separately for staff payroll purposes.
+
+---
+
+### Payment details
+
+TENDERED: ZMW 200.00 CHANGE: ZMW 20.00 PAYMENT METHOD: CASH
+
+text
+
+Payment method codes submitted to ZRA:
+
+| DishInk method | ZRA code |
+| --- | --- |
+| Cash | `01` |
+| Mobile Money | `02` |
+| Card | `03` |
+| Other | `03` |
+
+---
+
+### ZRA fiscal footer
+
+This is the legally critical section. Every field comes directly from ZRA's response to the fiscal submission. INVOICE MODE: ZRA\_LIVE VSDC ID: VSDC0001234 FISCAL ID: ZRA-00000042 SIGNATURE: ABC123XYZ...DEF456
+
+text
+
+<ResponseField name="Invoice Mode" type="Internal indicator">
+  Shows which mode was used:
+
+  - `ZRA_LIVE` — submitted to ZRA's live servers
+  - `LOCAL` — not submitted (no device, sandbox, or error)
+  - `NON_VAT` — business is not VAT-registered
+</ResponseField>
+
+<ResponseField name="VSDC ID" type="Required by ZRA spec item 19(x)">
+  The SDC ID assigned to your device by ZRA during initialization. Identifies which device fiscalised this receipt.
+</ResponseField>
+
+<ResponseField name="Fiscal Receipt ID" type="Required by ZRA spec item 19(x)">
+  The unique receipt number issued by ZRA. This is the definitive proof that ZRA accepted and recorded this transaction. A receipt without this number is not a valid tax invoice.
+</ResponseField>
+
+<ResponseField name="Fiscal Signature" type="Required by ZRA spec item 19(xi)">
+  A digital signature generated by ZRA's VSDC confirming the receipt data has not been tampered with. The full signature is printed; the QR code includes a truncated version for efficient scanning.
+</ResponseField>
+
+---
+
+### The QR code
+
+text
+
+\[■■■■■■■■■■■■■■■\] SCAN TO VERIFY — ZRA FISCAL RECEIPT text
+
+<ResponseField name="QR code" type="Required by ZRA spec item 19(xii)">
+  A scannable QR code encoding the fiscal data in ZRA's verified format. ZRA inspectors scan this to instantly verify the receipt is genuine.
+
+  **QR payload format:** TPIN|BranchCode|ReceiptNumber|DeviceID|Signature|DateTime
+
+  text
+
+  **Example:** 1234567890|000|ZRA-00000042|VSDC0001234|ABC123XYZ|2025-01-15T14:32:00
+
+  text
+
+  The QR code only appears on receipts where fiscalisation was successful (Fiscal Receipt ID is present). Pending or local receipts do not include the QR code since there is no verified data to encode.
+</ResponseField>
+
+<Warning>
+  A receipt without the Fiscal Receipt ID and QR code is not a legally valid tax invoice. If a customer requires a valid VAT receipt, ensure the fiscalisation job succeeded before providing the final copy.
+</Warning>
+
+---
+
+## Receipt variants
+
+### Standard sale receipt
+
+The full receipt as described above. Most common for dine-in table service.
+
+### Quick sale receipt
+
+When the cashier processes a direct payment without a table session, the items list shows the items charged. The fiscal structure is identical to a standard receipt.
+
+### Split bill — portion receipt
+
+Each payer in a split bill receives their own receipt showing their portion: SPLIT PORTION: Guest 1 · Payer 1 of 3 · ZMW 60.00 SHARED CIS INVOICE NO: CIS-000042
+
+text
+
+The fiscal details (receipt number, QR code) reference the ZRA submission made for the overall table total. Only the first portion triggers the ZRA submission — subsequent portions reference that shared fiscal record.
+
+### Refund / credit note receipt
+
+CREDIT NOTE Original Invoice: ZRA-00000042 Reason: Customer returned item
+
+text
+
+Refunds are submitted to ZRA as credit notes. The `orgIncNo` field in the ZRA submission references the original receipt number. The receipt clearly shows it is a credit, the original invoice number, and the refund reason.
+
+### Offline-buffered receipt
+
+When ZRA was unreachable at the time of sale: TAX INVOICE (PENDING ZRA SYNC)
+
+DATE: 15/01/2025 14:32:00 RECEIPT NO: TXN-20250115-1234 CIS INVOICE NO: CIS-000042
+
+\[items and totals as normal\]
+
+FISCAL STATUS: Queued — awaiting ZRA connectivity
+
+text
+
+The QR code and Fiscal Receipt ID are absent. Once the fiscalisation job succeeds, reprint the receipt — it will include the full fiscal footer.
+
+---
+
+## Paper widths
+
+<Tabs>
+  <Tab title="80mm (standard)">
+    The standard thermal receipt width. DishInk uses 48 characters per line.
+
+    Item names up to about 36 characters fit on one line alongside the price. Longer names wrap to the next line with the price right-aligned below.
+
+    Most thermal receipt printers support 80mm paper. This is the recommended setting.
+  </Tab>
+  <Tab title="58mm (narrow)">
+    Narrower paper for smaller printers. DishInk uses 32 characters per line.
+
+    Item names wrap more aggressively. The fiscal footer is still fully printed but may span more lines.
+
+    Configure under **Settings → Hardware → Printer → Paper Width**.
+  </Tab>
+</Tabs>
+
+---
+
+## Reprinting receipts
+
+Any past receipt can be reprinted from DishInk's transaction history with full fiscal details intact (as long as the fiscalisation job succeeded).
+
+1. Go to **POS → Transactions** (or the relevant report)
+2. Find the transaction
+3. Tap the receipt icon or **Reprint**
+
+The reprinted copy carries the same ZRA receipt number, signature, and QR code as the original.
+
+---
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="ZRA Integration" icon="plug" href="/smart-invoice/zra-integration">
+    Device setup and TPIN configuration.
+  </Card>
+
+  <Card title="Fiscalisation Queue" icon="list" href="/smart-invoice/fiscalisation-queue">
+    Monitoring job status and retrying failures.
+  </Card>
+
+  <Card title="Item Mapping" icon="tag" href="/smart-invoice/item-mapping">
+    UNSPSC codes and VAT categories.
+  </Card>
+
+  <Card title="FAQ" icon="circle-question" href="/smart-invoice/faq">
+    Common questions and troubleshooting.
+  </Card>
+</CardGroup>

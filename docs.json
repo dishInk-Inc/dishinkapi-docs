@@ -219,7 +219,9 @@
               "smart-invoice/invoice-generation",
               "smart-invoice/untitled-page-2",
               "smart-invoice/fiscal-compliance",
-              "smart-invoice/faq"
+              "smart-invoice/faq",
+              "Receipt-Format",
+              "Fiscalisation-Queue"
             ]
           },
           {
