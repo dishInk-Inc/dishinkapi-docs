@@ -223,10 +223,19 @@ Clicking any job row expands a detail panel showing:
 In practice DishInk handles brief outages gracefully — a few minutes of ZRA unavailability is common and the queue handles it transparently. For extended outages (hours), consider:
 
 - Informing customers their receipt will be updated once connectivity is restored
-- Reprinting receipts after the jobs succeed — the reprinted copy will carry the full fiscal details
 - Keeping a note of which transactions are in the queue so you can follow up
 
 Once the queue clears and jobs succeed, the full fiscal details (receipt number, signature, QR code) are stored against every transaction in DishInk and can be reprinted at any time.
+
+### How to reprint delayed receipts
+
+When a previously queued job successfully processes in the background, DishInk automatically alerts the cashier so they can print the official copy.
+
+1. Go to **POS → Transactions** (the transaction history panel).
+2. Look for transactions marked with a green **✓ FISCAL RECEIPT READY** badge.
+3. Click the **🧾 Reprint Fiscal** button on that transaction.
+
+Expanding the transaction row will also display a message explaining that the receipt was originally printed locally and is now ready for an official fiscal reprint. This ensures your customers can always receive a legally valid tax invoice, even if the network was down at the exact moment they paid.
 
 ## Realtime updates
 
